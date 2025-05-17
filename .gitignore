@@ -2,3 +2,4 @@ backend/.idea/
 backend/gradle/
 backend/.gradle/
 .idea/
+backend/source/main/resources/application.properties
