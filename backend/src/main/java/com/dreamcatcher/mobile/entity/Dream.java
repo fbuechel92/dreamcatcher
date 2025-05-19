@@ -9,32 +9,52 @@ import jakarta.persistence.Id;
 public class Dream {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private String name;
+    private Integer dreamId;
+    private Integer userId;
+    private Integer analysisId;
+    private Integer sleepId;
+    private Integer theoryId;
     private String visitor;
     private String plot;
     private String location;
     private String mood;
+    private String additionalInfo;
 
     //Constructor
     public Dream(){};
 
-    public Dream(Integer id, String name, String visitor, String plot, String location, String mood){
-        this.id = id;
-        this.name = name;
+    public Dream(Integer dreamId, Integer userId, Integer analysisId, Integer sleepId, Integer theoryId, String visitor, String plot, String location, String mood, String additionalInfo){
+        this.dreamId = dreamId;
+        this.userId = userId;
+        this.analysisId = analysisId;
+        this.sleepId = sleepId;
+        this.theoryId = theoryId;
         this.visitor = visitor;
         this.plot = plot;
         this.location = location;
         this.mood = mood;
+        this.additionalInfo = additionalInfo;
     }
 
     //Getters
-    public Integer getId(){
-        return id;
+    public Integer getDreamId(){
+        return dreamId;
     }
 
-    public String getName(){
-        return name;
+    public Integer getUserId(){
+        return userId;
+    }
+
+    public Integer getAnalysisId(){
+        return analysisId;
+    }
+
+    public Integer getSleepId(){
+        return sleepId;
+    }
+
+    public Integer getTheoryId(){
+        return theoryId;
     }
 
     public String getVisitor(){
@@ -53,13 +73,29 @@ public class Dream {
         return mood;
     }
 
-    //Setters
-    public void setId(Integer id) {
-        this.id = id;
+    public String getAdditionalInfo(){
+        return additionalInfo;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    //Setters
+    public void setId(Integer dreamId) {
+        this.dreamId = dreamId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public void setAnalysisId(Integer analysisId) {
+        this.analysisId = analysisId;
+    }
+
+    public void setSleepId(Integer sleepId) {
+        this.sleepId = sleepId;
+    }
+
+    public void setTheoryId(Integer theoryId) {
+        this.theoryId = theoryId;
     }
 
     public void setVisitor(String visitor) {
@@ -78,16 +114,24 @@ public class Dream {
         this.mood = mood;
     }
 
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
+
     //toString
     @Override
-    public String toString(){
+    public String toString() {
         return "Dream{" +
-            "id=" + id +
-            ", name=" + name +
-            ", visitor=" + visitor +
-            ", plot=" + plot +
-            ", location=" + location +
-            ", mood=" + mood +
-            "}";
+            "dreamId=" + dreamId +
+            ", userId=" + userId +
+            ", analysisId=" + analysisId +
+            ", sleepId=" + sleepId +
+            ", theoryId=" + theoryId +
+            ", visitor='" + visitor +
+            ", plot='" + plot +
+            ", location='" + location +
+            ", mood='" + mood +
+            ", additionalInfo='" + additionalInfo +
+            '}';
     }
 }
