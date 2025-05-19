@@ -1,42 +1,42 @@
 package com.dreamcatcher.mobile.entity;
 
 public class SleepQuality {
-    private int sleepId;
-    private int sleepQuality; // 0: no answer, 1: bad, 2: ok, 3: great
-    private int sleepLength; // in hours
+    private Integer sleepId;
+    private Integer sleepQuality; // 0: no answer, 1: bad, 2: ok, 3: great
+    private Integer sleepLength; // in hours
 
     //Constructor
     public SleepQuality(){};
 
-    public SleepQuality(int sleepId, int sleepQuality, int sleepLength) {
+    public SleepQuality(Integer sleepId, Integer sleepQuality, Integer sleepLength) {
         this.sleepId = sleepId;
         this.sleepQuality = sleepQuality;
         this.sleepLength = sleepLength;
     }
 
     //Getters
-    public int getSleepId() {
+    public Integer getSleepId() {
         return sleepId;
     }
 
-    public int getSleepQuality() {
+    public Integer getSleepQuality() {
         return sleepQuality;
     }
 
-    public int getSleepLength() {
+    public Integer getSleepLength() {
         return sleepLength;
     }
 
     //Setters
-    public void setSleepId(int sleepId) {
+    public void setSleepId(Integer sleepId) {
         this.sleepId = sleepId;
     }
 
-    public void setSleepQuality(int sleepQuality) {
+    public void setSleepQuality(Integer sleepQuality) {
         this.sleepQuality = sleepQuality;
     }
 
-    public void setSleepLength(int sleepLength) {
+    public void setSleepLength(Integer sleepLength) {
         this.sleepLength = sleepLength;
     }
 
