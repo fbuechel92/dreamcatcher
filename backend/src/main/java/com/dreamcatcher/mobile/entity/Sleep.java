@@ -1,14 +1,14 @@
 package com.dreamcatcher.mobile.entity;
 
-public class SleepQuality {
+public class Sleep {
     private Integer sleepId;
     private Integer sleepQuality; // 0: no answer, 1: bad, 2: ok, 3: great
     private Integer sleepLength; // in hours
 
     //Constructor
-    public SleepQuality(){};
+    public Sleep(){};
 
-    public SleepQuality(Integer sleepId, Integer sleepQuality, Integer sleepLength) {
+    public Sleep(Integer sleepId, Integer sleepQuality, Integer sleepLength) {
         this.sleepId = sleepId;
         this.sleepQuality = sleepQuality;
         this.sleepLength = sleepLength;

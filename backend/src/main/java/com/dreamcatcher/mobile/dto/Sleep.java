@@ -1,6 +1,6 @@
 package com.dreamcatcher.mobile.dto;
 
-public record SleepQuality(
+public record Sleep(
     int sleepId,
     int sleepQuality,
     int sleepLength
