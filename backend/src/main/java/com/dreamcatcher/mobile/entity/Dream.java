@@ -18,8 +18,8 @@ public class Dream {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "analysisId", nullable = false)
-    private Analysis analysis;
+    @JoinColumn(name = "dreamAnalysisId", nullable = false)
+    private DreamAnalysis dreamAnalysis;
 
     @ManyToOne
     @JoinColumn(name = "sleepId", nullable = false)
@@ -38,10 +38,10 @@ public class Dream {
     //Constructor
     public Dream(){};
 
-    public Dream(Integer dreamId, User user, Analysis analysis, Sleep sleep, Theory theory, String visitor, String plot, String location, String mood, String additionalInfo){
+    public Dream(Integer dreamId, User user, DreamAnalysis dreamAnalysis, Sleep sleep, Theory theory, String visitor, String plot, String location, String mood, String additionalInfo){
         this.dreamId = dreamId;
         this.user = user;
-        this.analysis = analysis;
+        this.dreamAnalysis = dreamAnalysis;
         this.sleep = sleep;
         this.theory = theory;
         this.visitor = visitor;
@@ -60,8 +60,8 @@ public class Dream {
         return user;
     }
 
-    public Analysis getAnalysis(){
-        return analysis;
+    public DreamAnalysis getDreamAnalysis(){
+        return dreamAnalysis;
     }
 
     public Sleep getSleep(){
@@ -101,8 +101,8 @@ public class Dream {
         this.user = user;
     }
 
-    public void setAnalysis(Analysis analysis) {
-        this.analysis = analysis;
+    public void setDreamAnalysis(DreamAnalysis dreamAnalysis) {
+        this.dreamAnalysis = dreamAnalysis;
     }
 
     public void setSleep(Sleep sleep) {
@@ -138,8 +138,8 @@ public class Dream {
     public String toString() {
         return "Dream{" +
             "dreamId=" + dreamId +
-            ", userId=" + (user != null ? user.getId() : null) +
-            ", analysisId=" + (analysis != null ? analysis.getId() : null) +
+            ", userId=" + (user != null ? user.getUserId() : null) +
+            ", analysisId=" + (dreamAnalysis != null ? dreamAnalysis.getDreamAnalysisId() : null) +
             ", sleepId=" + (sleep != null ? sleep.getSleepId() : null) +
             ", theoryId=" + (theory != null ? theory.getTheoryId() : null) +
             ", visitor='" + visitor +

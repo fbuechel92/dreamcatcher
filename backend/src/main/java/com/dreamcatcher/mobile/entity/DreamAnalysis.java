@@ -33,7 +33,7 @@ public class DreamAnalysis {
     }
 
     // Getters
-    public Integer getPointAnalysisId() {
+    public Integer getDreamAnalysisId() {
         return dreamAnalysisId;
     }
 
@@ -58,8 +58,8 @@ public class DreamAnalysis {
     }
 
     // Setters
-    public void setPointAnalysisId(Integer pointAnalysisId) {
-        this.dreamAnalysisId = pointAnalysisId;
+    public void setDreamAnalysisId(Integer dreamAnalysisId) {
+        this.dreamAnalysisId = dreamAnalysisId;
     }
 
     public void setUser(User user) {
@@ -84,8 +84,8 @@ public class DreamAnalysis {
 
     @Override
     public String toString() {
-        return "PointAnalysis{" +
-                "pointAnalysisId=" + dreamAnalysisId +
+        return "DreamAnalysis{" +
+                "DreamAnalysisId=" + dreamAnalysisId +
                 ", user=" + user +
                 ", dreamTitle=" + dreamTitle +
                 ", dreamTheme=" + dreamTheme +
