@@ -4,16 +4,31 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Dream {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer dreamId;
-    private Integer userId;
-    private Integer analysisId;
-    private Integer sleepId;
-    private Integer theoryId;
+
+    @ManyToOne
+    @JoinColumn(name = "userId", nullable = false)
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "analysisId", nullable = false)
+    private Analysis analysis;
+
+    @ManyToOne
+    @JoinColumn(name = "sleepId", nullable = false)
+    private Sleep sleep;
+
+    @ManyToOne
+    @JoinColumn(name = "theoryId", nullable = false)
+    private Theory theory;
+
     private String visitor;
     private String plot;
     private String location;
@@ -23,12 +38,12 @@ public class Dream {
     //Constructor
     public Dream(){};
 
-    public Dream(Integer dreamId, Integer userId, Integer analysisId, Integer sleepId, Integer theoryId, String visitor, String plot, String location, String mood, String additionalInfo){
+    public Dream(Integer dreamId, User user, Analysis analysis, Sleep sleep, Theory theory, String visitor, String plot, String location, String mood, String additionalInfo){
         this.dreamId = dreamId;
-        this.userId = userId;
-        this.analysisId = analysisId;
-        this.sleepId = sleepId;
-        this.theoryId = theoryId;
+        this.user = user;
+        this.analysis = analysis;
+        this.sleep = sleep;
+        this.theory = theory;
         this.visitor = visitor;
         this.plot = plot;
         this.location = location;
@@ -41,20 +56,20 @@ public class Dream {
         return dreamId;
     }
 
-    public Integer getUserId(){
-        return userId;
+    public User getUser(){
+        return user;
     }
 
-    public Integer getAnalysisId(){
-        return analysisId;
+    public Analysis getAnalysis(){
+        return analysis;
     }
 
-    public Integer getSleepId(){
-        return sleepId;
+    public Sleep getSleep(){
+        return sleep;
     }
 
-    public Integer getTheoryId(){
-        return theoryId;
+    public Theory getTheory(){
+        return theory;
     }
 
     public String getVisitor(){
@@ -82,20 +97,20 @@ public class Dream {
         this.dreamId = dreamId;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public void setAnalysisId(Integer analysisId) {
-        this.analysisId = analysisId;
+    public void setAnalysis(Analysis analysis) {
+        this.analysis = analysis;
     }
 
-    public void setSleepId(Integer sleepId) {
-        this.sleepId = sleepId;
+    public void setSleep(Sleep sleep) {
+        this.sleep = sleep;
     }
 
-    public void setTheoryId(Integer theoryId) {
-        this.theoryId = theoryId;
+    public void setTheory(Theory theory) {
+        this.theory = theory;
     }
 
     public void setVisitor(String visitor) {
@@ -123,10 +138,10 @@ public class Dream {
     public String toString() {
         return "Dream{" +
             "dreamId=" + dreamId +
-            ", userId=" + userId +
-            ", analysisId=" + analysisId +
-            ", sleepId=" + sleepId +
-            ", theoryId=" + theoryId +
+            ", userId=" + (user != null ? user.getId() : null) +
+            ", analysisId=" + (analysis != null ? analysis.getId() : null) +
+            ", sleepId=" + (sleep != null ? sleep.getSleepId() : null) +
+            ", theoryId=" + (theory != null ? theory.getTheoryId() : null) +
             ", visitor='" + visitor +
             ", plot='" + plot +
             ", location='" + location +
