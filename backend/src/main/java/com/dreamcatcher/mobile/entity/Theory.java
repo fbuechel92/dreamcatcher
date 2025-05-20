@@ -1,7 +1,16 @@
 package com.dreamcatcher.mobile.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Theory {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer theoryId;
+
     private String theoryName;
     private String theoryDescription;
 

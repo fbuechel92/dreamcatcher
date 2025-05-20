@@ -1,6 +1,15 @@
 package com.dreamcatcher.mobile.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Sleep {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Integer sleepId;
     private Integer sleepQuality; // 0: no answer, 1: bad, 2: ok, 3: great
     private Integer sleepLength; // in hours
