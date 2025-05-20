@@ -55,7 +55,7 @@ public class Sleep {
                 "sleepId=" + sleepId +
                 ", sleepQuality=" + sleepQuality +
                 ", sleepLength=" + sleepLength +
-                '}';
+                "}";
     }
 }
 

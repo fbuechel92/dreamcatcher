@@ -79,9 +79,9 @@ public class DreamTrendAnalysis {
         return "DreamTrendAnalysis{" +
                 "dreamTrendAnalysisId=" + dreamTrendAnalysisId +
                 ", user=" + user +
-                ", trend='" + trend +
-                ", interpretation='" + interpretation +
-                ", implications='" + implications +
+                ", trend=" + trend +
+                ", interpretation=" + interpretation +
+                ", implications=" + implications +
                 "}";
     }
 }

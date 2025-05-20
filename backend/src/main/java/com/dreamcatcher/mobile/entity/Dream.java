@@ -142,11 +142,11 @@ public class Dream {
             ", analysisId=" + (dreamAnalysis != null ? dreamAnalysis.getDreamAnalysisId() : null) +
             ", sleepId=" + (sleep != null ? sleep.getSleepId() : null) +
             ", theoryId=" + (theory != null ? theory.getTheoryId() : null) +
-            ", visitor='" + visitor +
-            ", plot='" + plot +
-            ", location='" + location +
-            ", mood='" + mood +
-            ", additionalInfo='" + additionalInfo +
-            '}';
+            ", visitor=" + visitor +
+            ", plot=" + plot +
+            ", location=" + location +
+            ", mood=" + mood +
+            ", additionalInfo=" + additionalInfo +
+            "}";
     }
 }

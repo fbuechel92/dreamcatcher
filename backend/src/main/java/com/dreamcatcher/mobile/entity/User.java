@@ -109,6 +109,6 @@ public class User {
             ", birthdate=" + birthdate +
             ", country=" + country +
             ", occupation=" + occupation +
-            '}';
+            "}";
     }
 }
