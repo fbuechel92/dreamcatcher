@@ -1,5 +1,11 @@
+-- Create database
+CREATE DATABASE IF NOT EXISTS dreamdb;
+
+-- Use the created database
+USE dreamdb;
+
 -- User table
-CREATE TABLE user (
+CREATE TABLE dreamdb.user (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -13,7 +19,7 @@ CREATE TABLE user (
 );
 
 -- Theory table
-CREATE TABLE theory (
+CREATE TABLE dreamdb.theory (
     theory_id INT AUTO_INCREMENT PRIMARY KEY,
     theory_name VARCHAR(255),
     theory_description TEXT,
@@ -22,7 +28,7 @@ CREATE TABLE theory (
 );
 
 -- Sleep table
-CREATE TABLE sleep (
+CREATE TABLE dreamdb.sleep (
     sleep_id INT AUTO_INCREMENT PRIMARY KEY,
     sleep_quality INT,
     sleep_length INT,
@@ -31,7 +37,7 @@ CREATE TABLE sleep (
 );
 
 -- DreamAnalysis table
-CREATE TABLE dream_analysis (
+CREATE TABLE dreamdb.dream_analysis (
     dream_analysis_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     dream_title VARCHAR(255),
@@ -44,7 +50,7 @@ CREATE TABLE dream_analysis (
 );
 
 -- DreamTrendAnalysis table
-CREATE TABLE dream_trend_analysis (
+CREATE TABLE dreamdb.dream_trend_analysis (
     dream_trend_analysis_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     trend VARCHAR(255),
@@ -56,7 +62,7 @@ CREATE TABLE dream_trend_analysis (
 );
 
 -- Dream table
-CREATE TABLE dream (
+CREATE TABLE dreamdb.dream (
     dream_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     dream_analysis_id INT NOT NULL,
@@ -74,4 +80,3 @@ CREATE TABLE dream (
     FOREIGN KEY (sleep_id) REFERENCES sleep(sleep_id),
     FOREIGN KEY (theory_id) REFERENCES theory(theory_id)
 );
-
