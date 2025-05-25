@@ -23,8 +23,7 @@ public class User {
     //Constructor
     public User(){};
 
-    public User(Integer userId, String email, String password, String name, String gender, Date birthdate, String country, String occupation){
-        this.userId = userId;
+    public User(String email, String password, String name, String gender, Date birthdate, String country, String occupation){
         this.email = email;
         this.name = name;
         this.gender = gender;
