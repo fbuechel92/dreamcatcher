@@ -3,3 +3,5 @@ backend/gradle/
 backend/.gradle/
 .idea/
 backend/src/main/resources/application.properties
+backend/src/main/resources/schema.sql
+backend/src/main/resources/data.sql
