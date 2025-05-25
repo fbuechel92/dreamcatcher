@@ -25,6 +25,7 @@ public class User {
 
     public User(String email, String password, String name, String gender, Date birthdate, String country, String occupation){
         this.email = email;
+        this.password = password;
         this.name = name;
         this.gender = gender;
         this.birthdate = birthdate;

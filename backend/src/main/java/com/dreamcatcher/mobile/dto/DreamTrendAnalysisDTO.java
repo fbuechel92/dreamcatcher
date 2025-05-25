@@ -1,10 +1,9 @@
 package com.dreamcatcher.mobile.dto;
 
-public record DreamAnalysis(
-    Integer dreamAnalysisId,
+public record DreamTrendAnalysisDTO(
+    Integer dreamTrendAnalysisId,
     Integer userId,
-    String dreamTitle,
-    String dreamTheme,
+    String trend,
     String interpretation,
     String implications
 ) {}

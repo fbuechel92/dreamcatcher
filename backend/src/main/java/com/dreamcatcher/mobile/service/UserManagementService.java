@@ -1,8 +1,9 @@
 package com.dreamcatcher.mobile.service;
 
+import com.dreamcatcher.mobile.dto.UserDTO;
 import com.dreamcatcher.mobile.entity.User;
 import com.dreamcatcher.mobile.repository.UserRepository;
-import java.util.Date;
+import com.dreamcatcher.mobile.utilities.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,16 +11,27 @@ import org.springframework.stereotype.Service;
 public class UserManagementService {
 
     private UserRepository userRepository;
+    private UserMapper userMapper;
 
-    //Constructor
     @Autowired
-    public UserManagementService(UserRepository userRepository){
+    public UserManagementService(UserRepository userRepository, UserMapper userMapper){
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
-    private void createUser(String email, String password, String name, String gender, Date birthdate, String country, String occupation) {
-        // Logic to create a user profile
-        User user = new User(email, password, name, gender, birthdate, country, occupation);
-        userRepository.save(user);
+    //Method to save user to the database
+    public User createUser(UserDTO userDTO) {
+        //Check if mail already exists in db
+        if(userRepository.existsByEmail(userDTO.email())){
+            throw new IllegalArgumentException("Email already exists. Please use another email address.");
+        }
+
+        User user = userMapper.mapToEntity(userDTO);
+
+        try {
+            return userRepository.save(user);
+        } catch (Exception e) {
+            throw new RuntimeException("Error saving user: " + e.getMessage());
+        }
     }
 }
