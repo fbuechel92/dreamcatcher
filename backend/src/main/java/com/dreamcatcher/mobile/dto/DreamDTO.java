@@ -1,6 +1,6 @@
 package com.dreamcatcher.mobile.dto;
 
-public record Dream(
+public record DreamDTO(
     Integer dreamId,
     Integer userId,
     Integer analysisId,

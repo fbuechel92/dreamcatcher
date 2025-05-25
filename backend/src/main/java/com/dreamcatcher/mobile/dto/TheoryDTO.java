@@ -1,6 +1,6 @@
 package com.dreamcatcher.mobile.dto;
 
-public record Theory(
+public record TheoryDTO(
     Integer theoryId,
     String theoryName,
     String theoryDescription
