@@ -29,10 +29,11 @@ public class UserManagementService {
             throw new IllegalArgumentException("Email already exists. Please use another email address.");
         }
 
+        User user = userMapper.mapToEntity(userDTO);
+
         //Create hashed password
         String hashedPassword = passwordEncoder.encode(userDTO.password());
-
-        User user = userMapper.mapToEntity(userDTO);
+        user.setPassword(hashedPassword);
 
         try {
             return userRepository.save(user);
