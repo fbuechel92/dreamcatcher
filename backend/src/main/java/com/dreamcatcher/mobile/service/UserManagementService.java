@@ -41,4 +41,15 @@ public class UserManagementService {
             throw new RuntimeException("Error saving user: " + e.getMessage());
         }
     }
+
+    //Method to provide user information if user visits user profile
+    public UserDTO getUserData(Integer userId){
+        try {
+            User user = userRepository.findById(userId).orElseThrow();
+            UserDTO userDTO = userMapper.mapToDTO(user);
+            return userDTO;
+        } catch (Exception e) {
+            throw new IllegalArgumentException("User with ID " + userId + " not found");
+        }
+    }
 }
