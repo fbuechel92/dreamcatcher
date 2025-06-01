@@ -1,12 +1,16 @@
 package com.dreamcatcher.mobile.utilities;
 
 import com.dreamcatcher.mobile.entity.User;
+import jakarta.transaction.Transactional;
 import java.lang.reflect.Method;
 import java.util.Objects;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ReflectionUpdater {
 
     //Method identifies getter and setter methods, then invokes the setter IF there was a change
+    @Transactional
     public boolean updateFields(User currentUser, User submittedUser){
 
         String fieldName;
