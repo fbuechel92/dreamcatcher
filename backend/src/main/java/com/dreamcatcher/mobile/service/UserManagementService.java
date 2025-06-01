@@ -82,4 +82,13 @@ public class UserManagementService {
             throw new RuntimeException("We had trouble saving this :-(");
         }
     }
+
+    //Method to delete User
+    public void deleteUser(Integer userId){
+        try {
+            userRepository.deleteById(userId);
+        } catch (Exception e) {
+            throw new RuntimeException("User with id " + userId + " could not be deleted");
+        }
+    }
 }
