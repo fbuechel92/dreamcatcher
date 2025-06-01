@@ -2,10 +2,8 @@ package com.dreamcatcher.mobile.dto;
 
 import java.util.Date;
 
-public record UserDTO(
-    Integer userId,
+public record UserAccountDTO(
     String email,
-    String password,
     String name,
     String gender,
     Date birthdate,

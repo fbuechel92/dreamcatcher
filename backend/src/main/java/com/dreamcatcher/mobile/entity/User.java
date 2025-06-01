@@ -20,18 +20,23 @@ public class User {
     private String country;
     private String occupation;
 
-    //Constructor
-    public User(){};
-
-    public User(String email, String password, String name, String gender, Date birthdate, String country, String occupation){
+    //Constructors
+    public User(String email, String name, String gender, Date birthdate, String country, String occupation){
         this.email = email;
-        this.password = password;
         this.name = name;
         this.gender = gender;
         this.birthdate = birthdate;
         this.country = country;
         this.occupation = occupation;
     };
+
+    public User(String email, String password, String name){
+        this.email = email;
+        this.password = password;
+        this.name = name;
+    };
+
+    public User(){};
 
     //Getter
     public Integer getUserId(){
