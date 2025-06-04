@@ -1,13 +1,16 @@
 package com.dreamcatcher.mobile.unitTest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import com.dreamcatcher.mobile.dto.UserAccountCreationDTO;
+import com.dreamcatcher.mobile.entity.User;
 import com.dreamcatcher.mobile.repository.UserRepository;
 import com.dreamcatcher.mobile.service.UserManagementService;
 import com.dreamcatcher.mobile.utilities.ReflectionUpdater;
 import com.dreamcatcher.mobile.utilities.UserDTOMapper;
 import com.dreamcatcher.mobile.utilities.UserEntityMapper;
+import java.time.LocalDate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -15,14 +18,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class UserManagementServiceUnitTest {
 
-    private UserRepository userRepository = Mockito.mock(UserRepository.class);
-    private UserEntityMapper userEntityMapper = Mockito.mock(UserEntityMapper.class);
-    private UserDTOMapper userDTOMapper = Mockito.mock(UserDTOMapper.class);
-    private BCryptPasswordEncoder passwordEncoder = Mockito.mock(BCryptPasswordEncoder.class);
-    private ReflectionUpdater reflectionUpdater = Mockito.mock(ReflectionUpdater.class);
-
     @Test
     public void testDuplicateEmailThrowsException(){
+        UserRepository userRepository = Mockito.mock(UserRepository.class);
+        UserEntityMapper userEntityMapper = Mockito.mock(UserEntityMapper.class);
+        UserDTOMapper userDTOMapper = Mockito.mock(UserDTOMapper.class);
+        BCryptPasswordEncoder passwordEncoder = Mockito.mock(BCryptPasswordEncoder.class);
+        ReflectionUpdater reflectionUpdater = Mockito.mock(ReflectionUpdater.class);
+
         //mock repo and method
         when(userRepository.existsByEmail("test@gmail.com")).thenReturn(true);
 
@@ -40,6 +43,32 @@ public class UserManagementServiceUnitTest {
         });
 
         // Verify exception message
-        Assertions.assertEquals("Email already exists. Please use another email address.", exception.getMessage());
+        assertEquals("Email already exists. Please use another email address.", exception.getMessage());
+    }
+
+    @Test
+    public void testDifferingUserData(){
+        //Create User
+        User currentUser = new User("test@gmail.com", "Heisenberg", "male", LocalDate.parse("1901-12-05"), "Germany", "Physicist");
+        User submittedUser = new User("test@gmail.com", "Heisenberga", "female", LocalDate.parse("1901-12-05"), "Germany", "Physicist");
+
+        //Apply change to current user and check if change was made
+        ReflectionUpdater reflectionUpdater = new ReflectionUpdater();
+        boolean userAppliedChange = reflectionUpdater.updateFields(currentUser, submittedUser);
+
+        Assertions.assertTrue(userAppliedChange, "The result of userAppliedChange should be true but it's false");
+    }
+
+    @Test
+    public void testSameUserData(){
+        //Create User
+        User currentUser = new User("test@gmail.com", "Heisenberg", "male", LocalDate.parse("1901-12-05"), "Germany", "Physicist");
+        User submittedUser = new User("test@gmail.com", "Heisenberg", "male", LocalDate.parse("1901-12-05"), "Germany", "Physicist");
+
+        //Apply change to current user and check if change was made
+        ReflectionUpdater reflectionUpdater = new ReflectionUpdater();
+        boolean userAppliedChange = reflectionUpdater.updateFields(currentUser, submittedUser);
+
+        Assertions.assertFalse(userAppliedChange, "The result of userAppliedChange should be false but it's true");
     }
 }

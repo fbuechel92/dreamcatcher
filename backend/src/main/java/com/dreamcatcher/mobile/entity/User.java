@@ -4,7 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 public class User {
@@ -16,12 +16,12 @@ public class User {
     private String password;
     private String name;
     private String gender;
-    private Date birthdate;
+    private LocalDate birthdate;
     private String country;
     private String occupation;
 
     //Constructors
-    public User(String email, String name, String gender, Date birthdate, String country, String occupation){
+    public User(String email, String name, String gender, LocalDate birthdate, String country, String occupation){
         this.email = email;
         this.name = name;
         this.gender = gender;
@@ -59,7 +59,7 @@ public class User {
         return gender;
     }
 
-    public Date getBirthdate(){
+    public LocalDate getBirthdate(){
         return birthdate;
     }
 
@@ -91,7 +91,7 @@ public class User {
         this.gender = gender;
     }
 
-    public void setBirthdate(Date birthdate){
+    public void setBirthdate(LocalDate birthdate){
         this.birthdate = birthdate;
     }
 

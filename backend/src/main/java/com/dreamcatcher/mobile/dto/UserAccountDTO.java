@@ -1,12 +1,12 @@
 package com.dreamcatcher.mobile.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public record UserAccountDTO(
     String email,
     String name,
     String gender,
-    Date birthdate,
+    LocalDate birthdate,
     String country,
     String occupation
 ) {}
