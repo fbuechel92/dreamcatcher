@@ -22,7 +22,7 @@ public class ReflectionUpdater {
             Method[] methods = currentUser.getClass().getMethods();
 
             for(Method method:methods){
-                if(method.getName().substring(0,3).equals("get")){
+                if(method.getName().substring(0,3).equals("get") && !method.getName().equals("getClass")){
 
                     //Determine getter and setter
                     fieldName = method.getName().substring(3);

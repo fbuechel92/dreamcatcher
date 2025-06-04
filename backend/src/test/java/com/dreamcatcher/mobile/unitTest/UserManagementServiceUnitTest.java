@@ -50,13 +50,14 @@ public class UserManagementServiceUnitTest {
     public void testDifferingUserData(){
         //Create User
         User currentUser = new User("test@gmail.com", "Heisenberg", "male", LocalDate.parse("1901-12-05"), "Germany", "Physicist");
-        User submittedUser = new User("test@gmail.com", "Heisenberga", "female", LocalDate.parse("1901-12-05"), "Germany", "Physicist");
+        User submittedUser = new User("test@gmail.com", "Curie", "female", LocalDate.parse("1934-07-04"), "Germany", "Physicist");
 
         //Apply change to current user and check if change was made
         ReflectionUpdater reflectionUpdater = new ReflectionUpdater();
         boolean userAppliedChange = reflectionUpdater.updateFields(currentUser, submittedUser);
 
         Assertions.assertTrue(userAppliedChange, "The result of userAppliedChange should be true but it's false");
+        Assertions.assertEquals("Curie", currentUser.getName(),"The user name should have changed to Curie but it didn't");
     }
 
     @Test
