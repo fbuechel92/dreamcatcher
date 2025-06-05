@@ -8,16 +8,31 @@ import com.dreamcatcher.mobile.entity.User;
 import com.dreamcatcher.mobile.repository.UserRepository;
 import com.dreamcatcher.mobile.service.UserManagementService;
 import com.dreamcatcher.mobile.utilities.ReflectionUpdater;
+import com.dreamcatcher.mobile.utilities.UserDTOMapper;
+import com.dreamcatcher.mobile.utilities.UserEntityMapper;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class UserManagementServiceUnitTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private UserEntityMapper userEntityMapper;
+
+    @Mock
+    private UserDTOMapper userDTOMapper;
+
+    @Mock
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Mock
+    private ReflectionUpdater reflectionUpdate;
 
     @InjectMocks
     private UserManagementService userManagementService;
