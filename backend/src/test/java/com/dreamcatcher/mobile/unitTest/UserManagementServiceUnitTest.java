@@ -8,34 +8,28 @@ import com.dreamcatcher.mobile.entity.User;
 import com.dreamcatcher.mobile.repository.UserRepository;
 import com.dreamcatcher.mobile.service.UserManagementService;
 import com.dreamcatcher.mobile.utilities.ReflectionUpdater;
-import com.dreamcatcher.mobile.utilities.UserDTOMapper;
-import com.dreamcatcher.mobile.utilities.UserEntityMapper;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 public class UserManagementServiceUnitTest {
 
+    @Mock
+    private UserRepository userRepository;
+
+    @InjectMocks
+    private UserManagementService userManagementService;
+
     @Test
     public void testDuplicateEmailThrowsException(){
-        UserRepository userRepository = Mockito.mock(UserRepository.class);
-        UserEntityMapper userEntityMapper = Mockito.mock(UserEntityMapper.class);
-        UserDTOMapper userDTOMapper = Mockito.mock(UserDTOMapper.class);
-        BCryptPasswordEncoder passwordEncoder = Mockito.mock(BCryptPasswordEncoder.class);
-        ReflectionUpdater reflectionUpdater = Mockito.mock(ReflectionUpdater.class);
 
-        //mock repo and method
+        //mock method
         when(userRepository.existsByEmail("test@gmail.com")).thenReturn(true);
 
         //create dto
         UserAccountCreationDTO dto = new UserAccountCreationDTO("test@gmail.com", "1234", "Heisenberg");
-
-        // Instantiate service
-        UserManagementService userManagementService = new UserManagementService(
-            userRepository, userEntityMapper, userDTOMapper, passwordEncoder, reflectionUpdater
-        );
 
         // Assert exception
         Throwable exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
