@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @Controller
 public class UserController {
@@ -32,6 +33,12 @@ public class UserController {
     @PostMapping("/profile")
     public ResponseEntity<User> createUser(UserAccountCreationDTO userAccountCreationDTO){
         User user = userManagementService.createUser(userAccountCreationDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
+    @PutMapping("/profile/{userId}")
+    public ResponseEntity<User> modifyUser(Integer userId, UserAccountDTO userAccountDTO){
+        User user = userManagementService.modifyUser(userId, userAccountDTO);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 }
