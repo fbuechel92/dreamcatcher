@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class UserController {
 
     private UserManagementService userManagementService;
@@ -32,20 +35,20 @@ public class UserController {
     }
 
     @PostMapping("/profile")
-    public ResponseEntity<User> createUser(UserAccountCreationDTO userAccountCreationDTO){
+    public ResponseEntity<User> createUser(@RequestBody UserAccountCreationDTO userAccountCreationDTO){
         User user = userManagementService.createUser(userAccountCreationDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     @PutMapping("/profile/{userId}")
-    public ResponseEntity<User> modifyUser(Integer userId, UserAccountDTO userAccountDTO){
+    public ResponseEntity<User> modifyUser(@PathVariable Integer userId, @RequestBody UserAccountDTO userAccountDTO){
         User user = userManagementService.modifyUser(userId, userAccountDTO);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
     @DeleteMapping("/profile")
-    public ResponseEntity<Void> deleteUser(Integer userId){
+    public ResponseEntity<Void> deleteUser(@RequestParam Integer userId){
         userManagementService.deleteUser(userId);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
