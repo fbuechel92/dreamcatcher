@@ -42,7 +42,7 @@ public class ReflectionUpdater {
             }
             return changeDetected;
         } catch (Exception e) {
-            throw new RuntimeException("We had trouble saving this :-(");
+            throw new RuntimeException("The updateFields method in the ReflectionUpdater class threw an exception");
         }
     }
 }
