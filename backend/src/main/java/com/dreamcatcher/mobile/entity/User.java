@@ -21,9 +21,7 @@ public class User {
     private String occupation;
 
     //Constructors
-    public User(String email, String name, String gender, LocalDate birthdate, String country, String occupation){
-        this.email = email;
-        this.name = name;
+    public User(String gender, LocalDate birthdate, String country, String occupation){
         this.gender = gender;
         this.birthdate = birthdate;
         this.country = country;
