@@ -7,8 +7,6 @@ import com.dreamcatcher.mobile.repository.UserRepository;
 import com.dreamcatcher.mobile.utilities.ReflectionUpdater;
 import com.dreamcatcher.mobile.utilities.UserDTOMapper;
 import com.dreamcatcher.mobile.utilities.UserEntityMapper;
-import java.util.Date;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -79,6 +77,7 @@ public class UserManagementService {
                 return currentUser;
             }
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException("The modifyUser method in the UserService class threw an exception.");
         }
     }
