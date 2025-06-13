@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class UserDTOMapper {
 
     public UserProfileDTO mapToUserProfileDTO(User user){
-        return new UserAuthDTO(
+        return new UserProfileDTO(
             user.getGender(),
             user.getBirthdate(),
             user.getCountry(),
