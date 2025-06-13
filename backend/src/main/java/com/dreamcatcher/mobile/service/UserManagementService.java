@@ -1,7 +1,7 @@
 package com.dreamcatcher.mobile.service;
 
-import com.dreamcatcher.mobile.dto.UserAccountCreationDTO;
-import com.dreamcatcher.mobile.dto.UserAccountDTO;
+import com.dreamcatcher.mobile.dto.UserAuthDTO;
+import com.dreamcatcher.mobile.dto.UserProfileDTO;
 import com.dreamcatcher.mobile.entity.User;
 import com.dreamcatcher.mobile.repository.UserRepository;
 import com.dreamcatcher.mobile.utilities.ReflectionUpdater;
@@ -31,16 +31,16 @@ public class UserManagementService {
     }
 
     //Method to save user to the database
-    public User createUser(UserAccountCreationDTO userAccountCreationDTO) {
+    public User createUser(UserAuthDTO userAuthDTO) {
         //Check if mail already exists in db
-        if (userRepository.existsByEmail(userAccountCreationDTO.email())) {
+        if (userRepository.existsByEmail(userAuthDTO.email())) {
             throw new IllegalArgumentException("The createUser method in the UserService class failed because the email exists already.");
         }
 
-        User user = userEntityMapper.mapToUserAccountCreationEntity(userAccountCreationDTO);
+        User user = userEntityMapper.mapToUserAuthEntity(userAuthDTO);
 
         //Create hashed password
-        String hashedPassword = passwordEncoder.encode(userAccountCreationDTO.password());
+        String hashedPassword = passwordEncoder.encode(userAuthDTO.password());
         user.setPassword(hashedPassword);
 
         try {
@@ -51,22 +51,22 @@ public class UserManagementService {
     }
 
     //Method to provide user information if user visits user profile
-    public UserAccountDTO getUser(Integer userId) {
+    public UserProfileDTO getUser(Integer userId) {
         try {
             User user = userRepository.findById(userId).orElseThrow();
-            UserAccountDTO userAccountDTO = userDTOMapper.mapToUserAccountDTO(user);
-            return userAccountDTO;
+            UserProfileDTO userProfileDTO = userDTOMapper.mapToUserProfileDTO(user);
+            return userProfileDTO;
         } catch (Exception e) {
             throw new IllegalArgumentException("User with ID " + userId + " not found");
         }
     }
 
-    //Method to change user data
-    public User modifyUser(Integer userId, UserAccountDTO userAccountDTO) {
+    //Method to change profile data
+    public User modifyProfile(Integer userId, UserProfileDTO userProfileDTO) {
         try {
             //Retrieving user by id from repo and converting dto user to entity user
             User currentUser = userRepository.findById(userId).orElseThrow();
-            User submittedUser = userEntityMapper.mapToUserAccountEntity(userAccountDTO);
+            User submittedUser = userEntityMapper.mapToUserProfileEntity(userProfileDTO);
 
             //Apply change to current user and check if change was made
             boolean userAppliedChange = reflectionUpdater.updateFields(currentUser, submittedUser);
@@ -77,8 +77,27 @@ public class UserManagementService {
                 return currentUser;
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("The modifyUser method in the UserService class threw an exception.");
+            throw new RuntimeException("There was a problem saving the profile data using modifyProfile().");
+        }
+    }
+
+    //Method to change user auth data
+    public User modifyAuth(Integer userId, UserAuthDTO userAuthDTO) {
+        try {
+            //Retrieving user by id from repo and converting dto user to entity user
+            User currentUser = userRepository.findById(userId).orElseThrow();
+            User submittedUser = userEntityMapper.mapToUserAuthEntity(userAuthDTO);
+
+            //Apply change to current user and check if change was made
+            boolean userAppliedChange = reflectionUpdater.updateFields(currentUser, submittedUser);
+
+            if (userAppliedChange) {
+                return userRepository.save(currentUser);
+            } else {
+                return currentUser;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("There was a problem saving the profile data using modifyAuth().");
         }
     }
 
