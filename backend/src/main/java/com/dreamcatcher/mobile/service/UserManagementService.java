@@ -7,8 +7,6 @@ import com.dreamcatcher.mobile.repository.UserRepository;
 import com.dreamcatcher.mobile.utilities.ReflectionUpdater;
 import com.dreamcatcher.mobile.utilities.UserDTOMapper;
 import com.dreamcatcher.mobile.utilities.UserEntityMapper;
-import java.util.Date;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,7 +34,7 @@ public class UserManagementService {
     public User createUser(UserAccountCreationDTO userAccountCreationDTO) {
         //Check if mail already exists in db
         if (userRepository.existsByEmail(userAccountCreationDTO.email())) {
-            throw new IllegalArgumentException("Email already exists. Please use another email address.");
+            throw new IllegalArgumentException("The createUser method in the UserService class failed because the email exists already.");
         }
 
         User user = userEntityMapper.mapToUserAccountCreationEntity(userAccountCreationDTO);
@@ -48,7 +46,7 @@ public class UserManagementService {
         try {
             return userRepository.save(user);
         } catch (Exception e) {
-            throw new RuntimeException("Error saving user: " + e.getMessage());
+            throw new RuntimeException("The createUser method in the UserService class threw an exception.");
         }
     }
 
@@ -79,7 +77,8 @@ public class UserManagementService {
                 return currentUser;
             }
         } catch (Exception e) {
-            throw new RuntimeException("We had trouble saving this :-(");
+            e.printStackTrace();
+            throw new RuntimeException("The modifyUser method in the UserService class threw an exception.");
         }
     }
 
