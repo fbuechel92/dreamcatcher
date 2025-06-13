@@ -4,6 +4,7 @@ import com.dreamcatcher.mobile.dto.UserAccountCreationDTO;
 import com.dreamcatcher.mobile.dto.UserAccountDTO;
 import com.dreamcatcher.mobile.entity.User;
 import com.dreamcatcher.mobile.service.UserManagementService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 public class UserController {
 
     private UserManagementService userManagementService;
-
-    @Autowired
-    public UserController(UserManagementService userManagementService){
-        this.userManagementService = userManagementService;
-    }
 
     //Controller Methods
     @GetMapping("/profile/{userId}")
