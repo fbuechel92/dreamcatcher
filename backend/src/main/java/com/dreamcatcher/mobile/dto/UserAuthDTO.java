@@ -1,6 +1,6 @@
 package com.dreamcatcher.mobile.dto;
 
-public record UserAccountCreationDTO(
+public record UserAuthDTO(
     String email,
     String password,
     String name

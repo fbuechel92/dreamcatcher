@@ -1,30 +1,27 @@
 package com.dreamcatcher.mobile.utilities;
 
-import com.dreamcatcher.mobile.dto.UserAccountCreationDTO;
-import com.dreamcatcher.mobile.dto.UserAccountDTO;
+import com.dreamcatcher.mobile.dto.UserAuthDTO;
+import com.dreamcatcher.mobile.dto.UserProfileDTO;
 import com.dreamcatcher.mobile.entity.User;
-import java.util.Date;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserEntityMapper {
 
-    public User mapToUserAccountCreationEntity(UserAccountCreationDTO userAccountCreationDTO) {
+    public User mapToUserAuthEntity(UserAuthDTO userAuthDTO) {
         return new User(
-            userAccountCreationDTO.email(),
-            userAccountCreationDTO.password(),
-            userAccountCreationDTO.name()
+            userAuthDTO.email(),
+            userAuthDTO.password(),
+            userAuthDTO.name()
         );
     }
 
-    public User mapToUserAccountEntity(UserAccountDTO userAccountDTO) {
+    public User mapToUserProfileEntity(UserProfileDTO userProfileDTO) {
         return new User(
-            userAccountDTO.email(),
-            userAccountDTO.name(),
-            userAccountDTO.gender(),
-            userAccountDTO.birthdate(),
-            userAccountDTO.country(),
-            userAccountDTO.occupation()
+            userProfileDTO.gender(),
+            userProfileDTO.birthdate(),
+            userProfileDTO.country(),
+            userProfileDTO.occupation()
         );
     }
 }
