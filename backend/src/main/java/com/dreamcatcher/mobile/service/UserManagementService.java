@@ -4,9 +4,9 @@ import com.dreamcatcher.mobile.dto.UserAuthDTO;
 import com.dreamcatcher.mobile.dto.UserProfileDTO;
 import com.dreamcatcher.mobile.entity.User;
 import com.dreamcatcher.mobile.repository.UserRepository;
-import com.dreamcatcher.mobile.utilities.ReflectionUpdater;
 import com.dreamcatcher.mobile.utilities.UserDTOMapper;
 import com.dreamcatcher.mobile.utilities.UserEntityMapper;
+import com.dreamcatcher.mobile.utilities.UserUpdater;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,16 +18,16 @@ public class UserManagementService {
     private UserEntityMapper userEntityMapper;
     private UserDTOMapper userDTOMapper;
     private BCryptPasswordEncoder passwordEncoder;
-    private ReflectionUpdater reflectionUpdater;
+    private UserUpdater userUpdater;
 
     @Autowired
     public UserManagementService(UserRepository userRepository, UserEntityMapper userEntityMapper,
-                                 UserDTOMapper userDTOMapper, BCryptPasswordEncoder passwordEncoder, ReflectionUpdater reflectionUpdater) {
+                                 UserDTOMapper userDTOMapper, BCryptPasswordEncoder passwordEncoder, UserUpdater userUpdater) {
         this.userRepository = userRepository;
         this.userEntityMapper = userEntityMapper;
         this.userDTOMapper = userDTOMapper;
         this.passwordEncoder = passwordEncoder;
-        this.reflectionUpdater = reflectionUpdater;
+        this.userUpdater = userUpdater;
     }
 
     //Method to save user to the database
@@ -69,7 +69,7 @@ public class UserManagementService {
             User submittedUser = userEntityMapper.mapToUserProfileEntity(userProfileDTO);
 
             //Apply change to current user and check if change was made
-            boolean userAppliedChange = reflectionUpdater.updateFields(currentUser, submittedUser);
+            boolean userAppliedChange = userUpdater.updateProfileFields(currentUser, submittedUser);
 
             if (userAppliedChange) {
                 return userRepository.save(currentUser);
@@ -89,7 +89,7 @@ public class UserManagementService {
             User submittedUser = userEntityMapper.mapToUserAuthEntity(userAuthDTO);
 
             //Apply change to current user and check if change was made
-            boolean userAppliedChange = reflectionUpdater.updateFields(currentUser, submittedUser);
+            boolean userAppliedChange = userUpdater.updateAuthFields(currentUser, submittedUser);
 
             if (userAppliedChange) {
                 return userRepository.save(currentUser);

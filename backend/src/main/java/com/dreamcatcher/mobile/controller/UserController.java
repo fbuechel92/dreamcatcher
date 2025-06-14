@@ -1,14 +1,12 @@
 package com.dreamcatcher.mobile.controller;
 
-import com.dreamcatcher.mobile.dto.UserAccountCreationDTO;
-import com.dreamcatcher.mobile.dto.UserAccountDTO;
+import com.dreamcatcher.mobile.dto.UserAuthDTO;
+import com.dreamcatcher.mobile.dto.UserProfileDTO;
 import com.dreamcatcher.mobile.entity.User;
 import com.dreamcatcher.mobile.service.UserManagementService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,20 +24,20 @@ public class UserController {
 
     //Controller Methods
     @GetMapping("/profile/{userId}")
-    public ResponseEntity<UserAccountDTO> getUser(@PathVariable Integer userId){
-        UserAccountDTO userAccountDTO = userManagementService.getUser(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(userAccountDTO);
+    public ResponseEntity<UserProfileDTO> getUser(@PathVariable Integer userId){
+        UserProfileDTO userProfileDTO = userManagementService.getUser(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(userProfileDTO);
     }
 
     @PostMapping("/profile")
-    public ResponseEntity<User> createUser(@RequestBody UserAccountCreationDTO userAccountCreationDTO){
-        User user = userManagementService.createUser(userAccountCreationDTO);
+    public ResponseEntity<User> createUser(@RequestBody UserAuthDTO userAuthDTO){
+        User user = userManagementService.createUser(userAuthDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     @PutMapping("/profile/{userId}")
-    public ResponseEntity<User> modifyUser(@PathVariable Integer userId, @RequestBody UserAccountDTO userAccountDTO){
-        User user = userManagementService.modifyUser(userId, userAccountDTO);
+    public ResponseEntity<User> modifyUser(@PathVariable Integer userId, @RequestBody UserProfileDTO userProfileDTO){
+        User user = userManagementService.modifyProfile(userId, userProfileDTO);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 

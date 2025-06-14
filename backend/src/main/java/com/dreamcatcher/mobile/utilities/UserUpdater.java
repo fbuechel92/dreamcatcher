@@ -2,67 +2,81 @@ package com.dreamcatcher.mobile.utilities;
 
 import com.dreamcatcher.mobile.entity.User;
 import jakarta.transaction.Transactional;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ReflectionUpdater {
+public class UserUpdater {
 
     private final PasswordEncoder passwordEncoder;
 
     // Constructor injection for PasswordEncoder
-    public ReflectionUpdater(PasswordEncoder passwordEncoder) {
+    public UserUpdater(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
-    //Method identifies getter and setter methods, then invokes the setter IF there was a change
+    //Method updates profile fields if changes are detected
     @Transactional
-    public boolean updateFields(User currentUser, User submittedUser){
+    public boolean updateProfileFields(User currentUser, User submittedUser) {
 
-        String fieldName;
-        String setterName;
-        boolean changeDetected = false;
+        boolean userAppliedChange = false;
 
-        // Those fields should be excluded from any changes
-        List<String> excludedFields = Arrays.asList("getClass", "getUserId", "getPassword");
-
-        try{
-            //Identify field names
-            Method[] methods = currentUser.getClass().getMethods();
-
-            for(Method method:methods){
-                if(method.getName().substring(0,3).equals("get") && excludedFields.stream().noneMatch(method.getName()::equals)) {
-
-                    //Determine getter and setter
-                    fieldName = method.getName().substring(3);
-                    setterName = "set" + fieldName;
-                    Method setter = currentUser.getClass().getMethod(setterName, method.getReturnType());
-                    Method getter = method;
-
-                    //Compare values
-                    Object currentValue = getter.invoke(currentUser);
-                    Object submittedValue;
-
-                    if(getter.getName().equals("getPassword")){
-                        submittedValue = passwordEncoder.encode(submittedUser.getPassword());
-                    } else {
-                        submittedValue = getter.invoke(submittedUser);
-                    }
-
-                    if(!Objects.equals(currentValue, submittedValue)){
-                        setter.invoke(currentUser, submittedValue);
-                        changeDetected = true;
-                    }
-                }
+        try {
+            if (!currentUser.getGender().equals(submittedUser.getGender())) {
+                currentUser.setGender(submittedUser.getGender());
+                userAppliedChange = true;
             }
-            return changeDetected;
+
+            if (!currentUser.getBirthdate().equals(submittedUser.getBirthdate())) {
+                currentUser.setBirthdate(submittedUser.getBirthdate());
+                userAppliedChange = true;
+            }
+
+            if (!currentUser.getCountry().equals(submittedUser.getCountry())) {
+                currentUser.setCountry(submittedUser.getCountry());
+                userAppliedChange = true;
+            }
+
+            if (!currentUser.getOccupation().equals(submittedUser.getOccupation())) {
+                currentUser.setOccupation(submittedUser.getOccupation());
+                userAppliedChange = true;
+            }
+
+            return userAppliedChange;
+
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("The updateFields method in the ReflectionUpdater class threw an exception");
+            throw new RuntimeException();
+        }
+    }
+
+    //Method updates auth fields if changes are detected
+    @Transactional
+    public boolean updateAuthFields(User currentUser, User submittedUser) {
+
+        boolean userAppliedChange = false;
+
+        try {
+            if (!currentUser.getEmail().equals(submittedUser.getEmail())) {
+                currentUser.setEmail(submittedUser.getEmail());
+                userAppliedChange = true;
+            }
+
+            String hashedPassword = passwordEncoder.encode(submittedUser.getPassword());
+
+            if (!currentUser.getPassword().equals(hashedPassword)) {
+                currentUser.setPassword(hashedPassword);
+                userAppliedChange = true;
+            }
+
+            if (!currentUser.getName().equals(submittedUser.getName())) {
+                currentUser.setName(submittedUser.getName());
+                userAppliedChange = true;
+            }
+
+            return userAppliedChange;
+
+        } catch (Exception e) {
+            throw new RuntimeException();
         }
     }
 }
