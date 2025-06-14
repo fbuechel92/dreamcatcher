@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
 
-    private UserManagementService userManagementService;
+    private final UserManagementService userManagementService;
 
     //Controller Methods
     @GetMapping("/profile/{userId}")
