@@ -43,4 +43,24 @@ public class UserManagementServiceUnitTest {
         Assertions.assertFalse(userAppliedChange, "There was no data change but updateAuthFields returns True.");
         Assertions.assertEquals("Curie", currentUser.getName(),"The user name should have stayed the same but it changed.");
     }
+
+    @Test
+    public void testModifyAuthWithDataChange(){
+
+        String hashedPassword = "$2a$12$65Fi4l1I7iUW3Vy7fAb2P.UmcLlT5vSF0In7.y6bGQk01oy1XLiJK";
+
+        //Create User
+        User currentUser = new User("test@gmail.com", hashedPassword, "Curie");
+        User submittedUser = new User("test@gmail.com", "password123","Heisenberg");
+
+        //mock password encoder
+        when(passwordEncoder.encode(anyString())).thenReturn(hashedPassword);
+
+        //Apply change to current user and check if change was made
+        UserUpdater userUpdater = new UserUpdater(passwordEncoder);
+        boolean userAppliedChange = userUpdater.updateAuthFields(currentUser, submittedUser);
+
+        Assertions.assertTrue(userAppliedChange, "There was a data change but updateAuthFields returns False.");
+        Assertions.assertEquals("Heisenberg", currentUser.getName(),"The user name should have changed to Heisenberg but it didn't.");
+    }
 }
