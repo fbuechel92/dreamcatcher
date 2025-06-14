@@ -77,6 +77,7 @@ public class UserManagementService {
                 return currentUser;
             }
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException("There was a problem saving the profile data using modifyProfile().");
         }
     }
