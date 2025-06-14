@@ -103,4 +103,24 @@ public class UserManagementServiceUnitTest {
         Assertions.assertTrue(userAppliedChange, "There was a data change but updateProfileFields returns False.");
         Assertions.assertEquals("Clown", currentUser.getOccupation(),"The occupation should have become Clown but it didn't.");
     }
+
+    @Test
+    public void testModifyProfileWithNullChange(){
+
+        String hashedPassword = "$2a$12$65Fi4l1I7iUW3Vy7fAb2P.UmcLlT5vSF0In7.y6bGQk01oy1XLiJK";
+
+        //Create User
+        User currentUser = new User("male", LocalDate.parse("1901-12-05"), "Germany", "Physicist");
+        User submittedUser = new User("male", LocalDate.parse("1901-12-05"), "Germany", null);
+
+        //mock password encoder
+        when(passwordEncoder.encode(anyString())).thenReturn(hashedPassword);
+
+        //Apply change to current user and check if change was made
+        UserUpdater userUpdater = new UserUpdater(passwordEncoder);
+        boolean userAppliedChange = userUpdater.updateProfileFields(currentUser, submittedUser);
+
+        Assertions.assertTrue(userAppliedChange, "There was a data change but updateProfileFields returns False.");
+        Assertions.assertEquals(null, currentUser.getOccupation(),"The occupation should have become null but it didn't.");
+    }
 }
