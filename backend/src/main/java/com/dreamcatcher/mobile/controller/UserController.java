@@ -41,6 +41,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
+    @PutMapping("/auth/{userId}")
+    public ResponseEntity<User> modifyAuth(@PathVariable Integer userId, @RequestBody UserAuthDTO userAuthDTO){
+        User user = userManagementService.modifyAuth(userId, userAuthDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
     @DeleteMapping("/profile")
     public ResponseEntity<Void> deleteUser(@RequestParam Integer userId){
         userManagementService.deleteUser(userId);
