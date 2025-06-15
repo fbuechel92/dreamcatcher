@@ -45,8 +45,6 @@ public class UserManagementServiceUnitTest {
     @Test
     public void testModifyProfileWithoutDataChange(){
 
-        String hashedPassword = "$2a$12$65Fi4l1I7iUW3Vy7fAb2P.UmcLlT5vSF0In7.y6bGQk01oy1XLiJK";
-
         //Create User
         User currentUser = new User("male", LocalDate.parse("1901-12-05"), "Germany", "Physicist");
         User submittedUser = new User("male", LocalDate.parse("1901-12-05"), "Germany", "Physicist");
@@ -80,8 +78,6 @@ public class UserManagementServiceUnitTest {
     @Test
     public void testModifyProfileWithDataChange(){
 
-        String hashedPassword = "$2a$12$65Fi4l1I7iUW3Vy7fAb2P.UmcLlT5vSF0In7.y6bGQk01oy1XLiJK";
-
         //Create User
         User currentUser = new User("male", LocalDate.parse("1901-12-05"), "Germany", "Physicist");
         User submittedUser = new User("male", LocalDate.parse("1901-12-05"), "Germany", "Clown");
@@ -95,8 +91,6 @@ public class UserManagementServiceUnitTest {
 
     @Test
     public void testModifyProfileWithNullChange(){
-
-        String hashedPassword = "$2a$12$65Fi4l1I7iUW3Vy7fAb2P.UmcLlT5vSF0In7.y6bGQk01oy1XLiJK";
 
         //Create User
         User currentUser = new User("male", LocalDate.parse("1901-12-05"), "Germany", "Physicist");
