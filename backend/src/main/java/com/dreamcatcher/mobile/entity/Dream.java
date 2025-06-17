@@ -18,16 +18,12 @@ public class Dream {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "dreamAnalysisId", nullable = false)
+    @JoinColumn(name = "dreamAnalysisId", nullable = true)
     private DreamAnalysis dreamAnalysis;
 
     @ManyToOne
-    @JoinColumn(name = "sleepId", nullable = false)
+    @JoinColumn(name = "sleepId", nullable = true)
     private Sleep sleep;
-
-    @ManyToOne
-    @JoinColumn(name = "theoryId", nullable = false)
-    private Theory theory;
 
     private String visitor;
     private String plot;
@@ -38,12 +34,11 @@ public class Dream {
     //Constructor
     public Dream(){};
 
-    public Dream(Integer dreamId, User user, DreamAnalysis dreamAnalysis, Sleep sleep, Theory theory, String visitor, String plot, String location, String mood, String additionalInfo){
+    public Dream(Integer dreamId, User user, DreamAnalysis dreamAnalysis, Sleep sleep, String visitor, String plot, String location, String mood, String additionalInfo){
         this.dreamId = dreamId;
         this.user = user;
         this.dreamAnalysis = dreamAnalysis;
         this.sleep = sleep;
-        this.theory = theory;
         this.visitor = visitor;
         this.plot = plot;
         this.location = location;
@@ -66,10 +61,6 @@ public class Dream {
 
     public Sleep getSleep(){
         return sleep;
-    }
-
-    public Theory getTheory(){
-        return theory;
     }
 
     public String getVisitor(){
@@ -109,10 +100,6 @@ public class Dream {
         this.sleep = sleep;
     }
 
-    public void setTheory(Theory theory) {
-        this.theory = theory;
-    }
-
     public void setVisitor(String visitor) {
         this.visitor = visitor;
     }
@@ -141,7 +128,6 @@ public class Dream {
             ", userId=" + (user != null ? user.getUserId() : null) +
             ", analysisId=" + (dreamAnalysis != null ? dreamAnalysis.getDreamAnalysisId() : null) +
             ", sleepId=" + (sleep != null ? sleep.getSleepId() : null) +
-            ", theoryId=" + (theory != null ? theory.getTheoryId() : null) +
             ", visitor=" + visitor +
             ", plot=" + plot +
             ", location=" + location +

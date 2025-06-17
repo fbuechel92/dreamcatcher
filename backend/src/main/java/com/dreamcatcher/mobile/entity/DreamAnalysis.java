@@ -17,6 +17,10 @@ public class DreamAnalysis {
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "theoryId", nullable = false)
+    private Theory theory;
+
     private String dreamTitle;
     private String dreamTheme;
     private String interpretation;
@@ -25,9 +29,10 @@ public class DreamAnalysis {
     // Constructor
     public DreamAnalysis() {}
 
-    public DreamAnalysis(Integer dreamAnalysisId, User user, String dreamTitle, String dreamTheme, String interpretation, String implications) {
+    public DreamAnalysis(Integer dreamAnalysisId, User user, Theory theory, String dreamTitle, String dreamTheme, String interpretation, String implications) {
         this.dreamAnalysisId = dreamAnalysisId;
         this.user = user;
+        this.theory = theory;
         this.dreamTitle = dreamTitle;
         this.dreamTheme = dreamTheme;
         this.interpretation = interpretation;
@@ -41,6 +46,10 @@ public class DreamAnalysis {
 
     public User getUser() {
         return user;
+    }
+
+    public Theory getTheory() {
+        return theory;
     }
 
     public String getDreamTitle() {
@@ -68,6 +77,10 @@ public class DreamAnalysis {
         this.user = user;
     }
 
+    public void setTheory(Theory theory){
+        this.theory = theory;
+    }
+
     public void setDreamTitle(String dreamTitle) {
         this.dreamTitle = dreamTitle;
     }
@@ -89,6 +102,7 @@ public class DreamAnalysis {
         return "DreamAnalysis{" +
                 "DreamAnalysisId=" + dreamAnalysisId +
                 ", user=" + user +
+                ", theory=" + theory +
                 ", dreamTitle=" + dreamTitle +
                 ", dreamTheme=" + dreamTheme +
                 ", interpretation=" + interpretation +

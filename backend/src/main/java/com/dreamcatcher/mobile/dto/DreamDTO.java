@@ -5,7 +5,6 @@ public record DreamDTO(
     Integer userId,
     Integer analysisId,
     Integer sleepId,
-    Integer theoryId,
     String visitor,
     String plot,
     String location,
