@@ -34,10 +34,8 @@ public class Dream {
     //Constructor
     public Dream(){};
 
-    public Dream(Integer dreamId, User user, DreamAnalysis dreamAnalysis, Sleep sleep, String visitor, String plot, String location, String mood, String additionalInfo){
-        this.dreamId = dreamId;
+    public Dream(User user, Sleep sleep, String visitor, String plot, String location, String mood, String additionalInfo){
         this.user = user;
-        this.dreamAnalysis = dreamAnalysis;
         this.sleep = sleep;
         this.visitor = visitor;
         this.plot = plot;
