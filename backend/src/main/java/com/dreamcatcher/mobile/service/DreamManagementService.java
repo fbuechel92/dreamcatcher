@@ -8,7 +8,7 @@ public class DreamManagementService {
 
     private DreamRepository dreamRepository;
 
-    DreamManagementService dreamManagementService(DreamRepository dreamRepository){
+    public DreamManagementService(DreamRepository dreamRepository){
         this.dreamRepository = dreamRepository;
     }
 
