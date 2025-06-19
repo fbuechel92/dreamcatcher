@@ -4,10 +4,10 @@ public record DreamDTO(
     Integer dreamId,
     Integer userId,
     Integer analysisId,
-    Integer sleepId,
     String visitor,
     String plot,
     String location,
     String mood,
+    String sleepQuality,
     String additionalInfo
 ) {}
