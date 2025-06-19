@@ -1,7 +1,7 @@
 package com.dreamcatcher.mobile.service;
 
+import com.dreamcatcher.mobile.dto.DreamDTO;
 import com.dreamcatcher.mobile.entity.Dream;
-import com.dreamcatcher.mobile.entity.User;
 import com.dreamcatcher.mobile.repository.DreamRepository;
 
 public class DreamManagementService {
@@ -13,10 +13,10 @@ public class DreamManagementService {
     }
 
     //Create Dream Method
-    public Dream createDream(User user, String visitor, String plot, String location, String mood, String sleepQuality, String additionalInfo){
+    public Dream createDream(DreamDTO dreamDTO){
 
-        //Create dream
-        Dream dream = new Dream(user, visitor, plot, location, mood, sleepQuality, additionalInfo);
+        //Translate DTO to entity
+        Dream dream = DreamEntityMapper.mapToDreamEntity(dreamDTO);
 
         //save dream to db
         return dreamRepository.save(dream);
