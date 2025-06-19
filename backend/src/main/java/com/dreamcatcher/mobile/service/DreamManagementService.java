@@ -13,14 +13,13 @@ public class DreamManagementService {
     }
 
     //Create Dream Method
-    public User createDream(User user, String visitor, String plot, String location, String mood, String sleepQuality, String additionalInfo){
+    public Dream createDream(User user, String visitor, String plot, String location, String mood, String sleepQuality, String additionalInfo){
 
         //Create dream
         Dream dream = new Dream(user, visitor, plot, location, mood, sleepQuality, additionalInfo);
 
-
         //save dream to db
-        dreamRepository.save(dream);
+        return dreamRepository.save(dream);
     }
 
     //Get all dreams for a user by userID
