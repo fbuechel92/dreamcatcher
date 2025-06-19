@@ -1,7 +1,6 @@
 package com.dreamcatcher.mobile.service;
 
 import com.dreamcatcher.mobile.entity.Dream;
-import com.dreamcatcher.mobile.entity.Sleep;
 import com.dreamcatcher.mobile.entity.User;
 import com.dreamcatcher.mobile.repository.DreamRepository;
 
@@ -14,10 +13,11 @@ public class DreamManagementService {
     }
 
     //Create Dream Method
-    public User createDream(User user, String visitor, String plot, String location, String mood, String additionalInfo, String sleepQuality, String sleepLength){
+    public User createDream(User user, String visitor, String plot, String location, String mood, String sleepQuality, String additionalInfo){
 
         //Create dream
-        Dream dream = new Dream(User user, String visitor, String plot, String location, String mood, String sleepQuality, String additionalInfo)
+        Dream dream = new Dream(user, visitor, plot, location, mood, sleepQuality, additionalInfo);
+
 
         //save dream to db
         dreamRepository.save(dream);
