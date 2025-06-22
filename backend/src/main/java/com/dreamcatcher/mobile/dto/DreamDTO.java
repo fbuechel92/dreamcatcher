@@ -2,7 +2,6 @@ package com.dreamcatcher.mobile.dto;
 
 public record DreamDTO(
     Integer dreamId,
-    Integer analysisId,
     String visitor,
     String plot,
     String location,
