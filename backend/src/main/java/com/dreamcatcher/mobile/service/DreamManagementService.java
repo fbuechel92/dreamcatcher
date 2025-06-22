@@ -6,6 +6,9 @@ import com.dreamcatcher.mobile.entity.User;
 import com.dreamcatcher.mobile.mapper.DreamEntityMapper;
 import com.dreamcatcher.mobile.repository.DreamRepository;
 import com.dreamcatcher.mobile.repository.UserRepository;
+import java.util.NoSuchElementException;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 public class DreamManagementService {
 
@@ -23,11 +26,15 @@ public class DreamManagementService {
     public Dream createDream(Integer userId, DreamDTO dreamDTO){
 
         //Translate DTO to entity
-        User user = userRepository.findById(userId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + userId + " not found", 1));
         Dream dream = dreamEntityMapper.mapToDreamEntity(user, dreamDTO);
 
         //save dream to db
-        return dreamRepository.save(dream);
+        try {
+            return dreamRepository.save(dream);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Database error occurred while saving the dream", e);
+        }
     }
 
     //Get all dreams for a user by userID
