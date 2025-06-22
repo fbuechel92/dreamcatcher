@@ -8,6 +8,8 @@ import com.dreamcatcher.mobile.mapper.UserDTOMapper;
 import com.dreamcatcher.mobile.mapper.UserEntityMapper;
 import com.dreamcatcher.mobile.utilities.UserUpdater;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -45,60 +47,61 @@ public class UserManagementService {
 
         try {
             return userRepository.save(user);
-        } catch (Exception e) {
-            throw new RuntimeException("The createUser method in the UserService class threw an exception.");
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Database error occurred while saving the user", e);
         }
     }
 
     //Method to provide user information if user visits user profile
     public UserProfileDTO getUser(Integer userId) {
-        try {
-            User user = userRepository.findById(userId).orElseThrow();
-            UserProfileDTO userProfileDTO = userDTOMapper.mapToUserProfileDTO(user);
-            return userProfileDTO;
-        } catch (Exception e) {
-            throw new IllegalArgumentException("User with ID " + userId + " not found");
-        }
+
+        //Retrieve user from db
+        User user = userRepository.findById(userId).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + userId + " not found", 1));
+
+        return userDTOMapper.mapToUserProfileDTO(user);
     }
 
     //Method to change profile data
     public User modifyProfile(Integer userId, UserProfileDTO userProfileDTO) {
-        try {
-            //Retrieving user by id from repo and converting dto user to entity user
-            User currentUser = userRepository.findById(userId).orElseThrow();
-            User submittedUser = userEntityMapper.mapToUserProfileEntity(userProfileDTO);
 
-            //Apply change to current user and check if change was made
-            boolean userAppliedChange = userUpdater.updateProfileFields(currentUser, submittedUser);
+        //Retrieving user by id from repo and converting dto user to entity user
+        User currentUser = userRepository.findById(userId).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + userId + " not found", 1));
 
-            if (userAppliedChange) {
+        User submittedUser = userEntityMapper.mapToUserProfileEntity(userProfileDTO);
+
+        //Apply change to current user and check if change was made
+        boolean userAppliedChange = userUpdater.updateProfileFields(currentUser, submittedUser);
+
+        if (userAppliedChange) {
+            try {
                 return userRepository.save(currentUser);
-            } else {
-                return currentUser;
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Database error occurred while saving the user", e);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("There was a problem saving the profile data using modifyProfile().");
+        } else {
+            return currentUser;
         }
     }
 
     //Method to change user auth data
     public User modifyAuth(Integer userId, UserAuthDTO userAuthDTO) {
-        try {
-            //Retrieving user by id from repo and converting dto user to entity user
-            User currentUser = userRepository.findById(userId).orElseThrow();
-            User submittedUser = userEntityMapper.mapToUserAuthEntity(userAuthDTO);
 
-            //Apply change to current user and check if change was made
-            boolean userAppliedChange = userUpdater.updateAuthFields(currentUser, submittedUser);
+        //Retrieving user by id from repo and converting dto user to entity user
+        User currentUser = userRepository.findById(userId).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + userId + " not found", 1));
 
-            if (userAppliedChange) {
+        User submittedUser = userEntityMapper.mapToUserAuthEntity(userAuthDTO);
+
+        //Apply change to current user and check if change was made
+        boolean userAppliedChange = userUpdater.updateAuthFields(currentUser, submittedUser);
+
+        if (userAppliedChange) {
+            try {
                 return userRepository.save(currentUser);
-            } else {
-                return currentUser;
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Database error occurred while saving the user", e);
             }
-        } catch (Exception e) {
-            throw new RuntimeException("There was a problem saving the profile data using modifyAuth().");
+        } else {
+            return currentUser;
         }
     }
 
@@ -106,8 +109,8 @@ public class UserManagementService {
     public void deleteUser(Integer userId){
         try {
             userRepository.deleteById(userId);
-        } catch (Exception e) {
-            throw new RuntimeException("User with id " + userId + " could not be deleted");
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Database error occurred while deleting the user", e);
         }
     }
 }
