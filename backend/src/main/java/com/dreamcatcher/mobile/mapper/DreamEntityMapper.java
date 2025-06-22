@@ -2,14 +2,15 @@ package com.dreamcatcher.mobile.mapper;
 
 import com.dreamcatcher.mobile.dto.DreamDTO;
 import com.dreamcatcher.mobile.entity.Dream;
+import com.dreamcatcher.mobile.entity.User;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DreamEntityMapper {
 
-    public Dream mapToDreamEntity(DreamDTO dreamDTO) {
+    public Dream mapToDreamEntity(User user, DreamDTO dreamDTO) {
         return new Dream(
-            dreamDTO.userId(),
+            user,
             dreamDTO.visitor(),
             dreamDTO.plot(),
             dreamDTO.location(),
