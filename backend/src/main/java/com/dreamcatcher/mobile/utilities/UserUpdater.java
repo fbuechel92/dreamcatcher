@@ -44,8 +44,10 @@ public class UserUpdater {
 
             return userAppliedChange;
 
+        } catch (NullPointerException e) {
+            throw new RuntimeException("Failed to update user profile fields due to null values.", e);
         } catch (Exception e) {
-            throw new RuntimeException();
+            throw new RuntimeException("An unexpected error occurred while updating user profile fields.", e);
         }
     }
 
@@ -75,8 +77,10 @@ public class UserUpdater {
 
             return userAppliedChange;
 
+        } catch (NullPointerException e) {
+            throw new RuntimeException("Failed to update user profile fields due to null values.", e);
         } catch (Exception e) {
-            throw new RuntimeException();
+            throw new RuntimeException("An unexpected error occurred while updating user profile fields.", e);
         }
     }
 }
