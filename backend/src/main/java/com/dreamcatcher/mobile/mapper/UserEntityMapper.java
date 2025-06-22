@@ -1,4 +1,4 @@
-package com.dreamcatcher.mobile.utilities;
+package com.dreamcatcher.mobile.mapper;
 
 import com.dreamcatcher.mobile.dto.UserAuthDTO;
 import com.dreamcatcher.mobile.dto.UserProfileDTO;

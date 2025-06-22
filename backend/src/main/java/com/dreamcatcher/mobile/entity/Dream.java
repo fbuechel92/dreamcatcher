@@ -18,36 +18,26 @@ public class Dream {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "dreamAnalysisId", nullable = false)
+    @JoinColumn(name = "dreamAnalysisId", nullable = true)
     private DreamAnalysis dreamAnalysis;
-
-    @ManyToOne
-    @JoinColumn(name = "sleepId", nullable = false)
-    private Sleep sleep;
-
-    @ManyToOne
-    @JoinColumn(name = "theoryId", nullable = false)
-    private Theory theory;
 
     private String visitor;
     private String plot;
     private String location;
     private String mood;
+    private String sleepQuality;
     private String additionalInfo;
 
     //Constructor
     public Dream(){};
 
-    public Dream(Integer dreamId, User user, DreamAnalysis dreamAnalysis, Sleep sleep, Theory theory, String visitor, String plot, String location, String mood, String additionalInfo){
-        this.dreamId = dreamId;
+    public Dream(User user, String visitor, String plot, String location, String mood, String sleepQuality, String additionalInfo){
         this.user = user;
-        this.dreamAnalysis = dreamAnalysis;
-        this.sleep = sleep;
-        this.theory = theory;
         this.visitor = visitor;
         this.plot = plot;
         this.location = location;
         this.mood = mood;
+        this.sleepQuality = sleepQuality;
         this.additionalInfo = additionalInfo;
     }
 
@@ -64,14 +54,6 @@ public class Dream {
         return dreamAnalysis;
     }
 
-    public Sleep getSleep(){
-        return sleep;
-    }
-
-    public Theory getTheory(){
-        return theory;
-    }
-
     public String getVisitor(){
         return visitor;
     }
@@ -86,6 +68,10 @@ public class Dream {
 
     public String getMood(){
         return mood;
+    }
+
+    public String getSleepQuality(){
+        return sleepQuality;
     }
 
     public String getAdditionalInfo(){
@@ -105,14 +91,6 @@ public class Dream {
         this.dreamAnalysis = dreamAnalysis;
     }
 
-    public void setSleep(Sleep sleep) {
-        this.sleep = sleep;
-    }
-
-    public void setTheory(Theory theory) {
-        this.theory = theory;
-    }
-
     public void setVisitor(String visitor) {
         this.visitor = visitor;
     }
@@ -129,6 +107,10 @@ public class Dream {
         this.mood = mood;
     }
 
+    public void setSleepQuality(String sleepQuality) {
+        this.sleepQuality = sleepQuality;
+    }
+
     public void setAdditionalInfo(String additionalInfo) {
         this.additionalInfo = additionalInfo;
     }
@@ -140,12 +122,11 @@ public class Dream {
             "dreamId=" + dreamId +
             ", userId=" + (user != null ? user.getUserId() : null) +
             ", analysisId=" + (dreamAnalysis != null ? dreamAnalysis.getDreamAnalysisId() : null) +
-            ", sleepId=" + (sleep != null ? sleep.getSleepId() : null) +
-            ", theoryId=" + (theory != null ? theory.getTheoryId() : null) +
             ", visitor=" + visitor +
             ", plot=" + plot +
             ", location=" + location +
             ", mood=" + mood +
+            ", sleepQuality=" + sleepQuality +
             ", additionalInfo=" + additionalInfo +
             "}";
     }
