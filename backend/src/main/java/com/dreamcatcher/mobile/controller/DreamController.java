@@ -7,10 +7,10 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,32 +18,32 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DreamController {
 
-    private DreamManagementService dreamManagementService;
+    private final DreamManagementService dreamManagementService;
 
     //Creating dreams
-    @PostMapping("/dream/")
-    public ResponseEntity<Dream> createDream(@RequestBody Integer userId, @RequestBody DreamDTO dreamDTO){
+    @PostMapping("users/{userId}/dreams")
+    public ResponseEntity<Dream> createDream(@PathVariable Integer userId, @RequestBody DreamDTO dreamDTO){
         Dream dream = dreamManagementService.createDream(userId, dreamDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(dream);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dream);
     }
 
     //Getting specific dream
-    @GetMapping("/dream/{dreamId}")
-    public ResponseEntity<Dream> getDreamById(@PathVariable Integer dreamId) {
+    @GetMapping("users/{userId}/dreams/{dreamId}")
+    public ResponseEntity<Dream> getDreamById(@PathVariable Integer userId, @PathVariable Integer dreamId) {
         Dream dream = dreamManagementService.getDreamById(dreamId);
         return ResponseEntity.status(HttpStatus.OK).body(dream);
     }
 
     //Getting all dreams
-    @GetMapping("/dreams/{userId}")
+    @GetMapping("/users/{userId}/dreams")
     public ResponseEntity<List<Dream>> getAllDreamsByUser(@PathVariable Integer userId) {
         List<Dream> dreams = dreamManagementService.getAllDreamsByUserId(userId);
         return ResponseEntity.status(HttpStatus.OK).body(dreams);
     }
 
     //Delete dream
-    @PutMapping("/dream/{dreamId}")
-    public ResponseEntity<Void> deleteDreamById(Integer dreamId){
+    @DeleteMapping("dreams/{dreamId}")
+    public ResponseEntity<Void> deleteDreamById(@PathVariable Integer dreamId){
         dreamManagementService.deleteDreamById(dreamId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
