@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Service;
 
+@Service
 public class DreamManagementService {
 
     private DreamRepository dreamRepository;
