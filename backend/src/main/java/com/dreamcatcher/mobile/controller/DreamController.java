@@ -28,8 +28,8 @@ public class DreamController {
     }
 
     //Getting specific dream
-    @GetMapping("users/{userId}/dreams/{dreamId}")
-    public ResponseEntity<Dream> getDreamById(@PathVariable Integer userId, @PathVariable Integer dreamId) {
+    @GetMapping("dreams/{dreamId}")
+    public ResponseEntity<Dream> getDreamById(@PathVariable Integer dreamId) {
         Dream dream = dreamManagementService.getDreamById(dreamId);
         return ResponseEntity.status(HttpStatus.OK).body(dream);
     }
