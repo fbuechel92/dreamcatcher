@@ -38,18 +38,26 @@ public class DreamManagementService {
         }
     }
 
-    //Get all dreams for a user by userID
-    public List<Dream> getAllDreamsByUserId(Integer userId){
-        return dreamRepository.findByUserId(userId);
-    }
-
     //Get Dream by ID
     public Dream getDreamById(Integer dreamId){
         return dreamRepository.findById(dreamId).orElseThrow(() -> new EmptyResultDataAccessException("Dream with ID " + dreamId + " not found", 1));
     }
 
+    //Get all dreams for a user by userID
+    public List<Dream> getAllDreamsByUserId(Integer userId){
+        return dreamRepository.findByUserId(userId);
+    }
+
     //Delete Dream by ID
     public void deleteDreamById(Integer dreamId){
-        dreamRepository.deleteById(dreamId);
+        if (!dreamRepository.existsById(dreamId)) {
+            throw new RuntimeException("Dream with ID " + dreamId + " does not exist.");
+        }
+
+        try {
+            dreamRepository.deleteById(dreamId);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Failed to delete dream with ID " + dreamId, e);
+        }
     }
 }
