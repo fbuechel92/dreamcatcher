@@ -6,6 +6,7 @@ import com.dreamcatcher.mobile.entity.User;
 import com.dreamcatcher.mobile.mapper.DreamEntityMapper;
 import com.dreamcatcher.mobile.repository.DreamRepository;
 import com.dreamcatcher.mobile.repository.UserRepository;
+import java.util.List;
 import java.util.NoSuchElementException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -37,9 +38,26 @@ public class DreamManagementService {
         }
     }
 
-    //Get all dreams for a user by userID
-
     //Get Dream by ID
+    public Dream getDreamById(Integer dreamId){
+        return dreamRepository.findById(dreamId).orElseThrow(() -> new EmptyResultDataAccessException("Dream with ID " + dreamId + " not found", 1));
+    }
+
+    //Get all dreams for a user by userID
+    public List<Dream> getAllDreamsByUserId(Integer userId){
+        return dreamRepository.findByUserId(userId);
+    }
 
     //Delete Dream by ID
+    public void deleteDreamById(Integer dreamId){
+        if (!dreamRepository.existsById(dreamId)) {
+            throw new RuntimeException("Dream with ID " + dreamId + " does not exist.");
+        }
+
+        try {
+            dreamRepository.deleteById(dreamId);
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Failed to delete dream with ID " + dreamId, e);
+        }
+    }
 }
