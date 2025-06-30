@@ -1,8 +1,9 @@
-backend/.idea/
-backend/gradle/
-backend/.gradle/
+server/.idea/
+server/gradle/
+server/.gradle/
 .idea/
-backend/src/main/resources/application.properties
-backend/src/main/resources/schema.sql
-backend/src/main/resources/data.sql
-backend/build/
+server/src/main/resources/application.properties
+server/src/main/resources/schema.sql
+server/src/main/resources/data.sql
+server/build
+client/node_modules/
