@@ -7,7 +7,6 @@ import com.dreamcatcher.mobile.mapper.DreamEntityMapper;
 import com.dreamcatcher.mobile.repository.DreamRepository;
 import com.dreamcatcher.mobile.repository.UserRepository;
 import java.util.List;
-import java.util.NoSuchElementException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
