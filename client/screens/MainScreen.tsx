@@ -1,7 +1,12 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { router } from 'expo-router';
 
 export default function MainScreen() {
+  const handleCatchDream = () => {
+    router.push('/dream');
+  };
+  
   return (
     <View style={styles.container}>
       
@@ -15,7 +20,7 @@ export default function MainScreen() {
           
           <View style={styles.buttonRow}>
             <Image source={require('../assets/images/dreamcatcher.png')} style={styles.buttonIcon} />
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={handleCatchDream}>
               <Text style={styles.buttonText}>Catch Dream</Text>
             </TouchableOpacity>
           </View>
