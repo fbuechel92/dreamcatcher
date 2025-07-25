@@ -3,6 +3,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { router } from 'expo-router';
 
 export default function MainScreen() {
+  
   const handleCatchDream = () => {
     router.push('/dream');
   };
@@ -53,9 +54,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   upperSection: {
-    paddingTop: 60,
-    paddingHorizontal: 20,
-    paddingBottom: 20, // Remove flex: 1, just use padding
+    paddingTop: 20,
+    paddingLeft: 20,
+    paddingBottom: 50,
   },
   lowerSection: {
     flex: 1,
@@ -67,9 +68,6 @@ const styles = StyleSheet.create({
     fontSize:28,
     fontWeight: 'bold',
     color: '#8A2BE2',
-    position: 'absolute',
-    top: 10,
-    left: 20,
     fontFamily: 'Bradley Hand'
   },
   buttonContainer: {
