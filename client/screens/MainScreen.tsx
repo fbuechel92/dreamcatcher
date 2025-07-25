@@ -1,5 +1,6 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text } from 'react-native';
+import { Layout, Button } from '@ui-kitten/components';
 import { router } from 'expo-router';
 
 export default function MainScreen() {
@@ -9,41 +10,41 @@ export default function MainScreen() {
   };
   
   return (
-    <View style={styles.container}>
+    <Layout style={styles.container}>
       
-      <View style={styles.upperSection}>
+      <Layout style={styles.upperSection}>
         <Text style={styles.title}>Dreamcatcher</Text>
-      </View>
+      </Layout>
 
-      <View style={styles.lowerSection}>
+      <Layout style={styles.lowerSection}>
         
-        <View style={styles.buttonContainer}>  
+        <Layout style={styles.buttonContainer}>  
           
-          <View style={styles.buttonRow}>
+          <Layout style={styles.buttonRow}>
             <Image source={require('../assets/images/dreamcatcher.png')} style={styles.buttonIcon} />
-            <TouchableOpacity style={styles.button} onPress={handleCatchDream}>
+            <Button style={styles.button} onPress={handleCatchDream}>
               <Text style={styles.buttonText}>Catch Dream</Text>
-            </TouchableOpacity>
-          </View>
+            </Button>
+          </Layout>
 
-          <View style={styles.buttonRow}>
+          <Layout style={styles.buttonRow}>
             <Image source={require('../assets/images/dreamcatcher.png')} style={styles.buttonIcon} />
-            <TouchableOpacity style={styles.button}>
+            <Button style={styles.button}>
               <Text style={styles.buttonText}>Archive</Text>
-            </TouchableOpacity>
-          </View>
+            </Button>
+          </Layout>
 
-          <View style={styles.buttonRow}>
+          <Layout style={styles.buttonRow}>
             <Image source={require('../assets/images/dreamcatcher.png')} style={styles.buttonIcon} />
-            <TouchableOpacity style={styles.button}>
+            <Button style={styles.button}>
               <Text style={styles.buttonText}>Trends</Text>
-            </TouchableOpacity>
-          </View>
+            </Button>
+          </Layout>
 
-        </View>
-      </View>
+        </Layout>
+      </Layout>
 
-    </View>
+    </Layout>
   );
 }
 
