@@ -1,6 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, ImageBackground } from 'react-native';
-import { Layout, Button } from '@ui-kitten/components';
+import { StyleSheet, Text, ImageBackground, View, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
 
 export default function MainScreen() {
@@ -15,30 +14,30 @@ export default function MainScreen() {
       style={styles.backgroundImage}
       resizeMode="cover"
     >
-      <Layout style={styles.container}>
+      <View style={styles.container}>
         
-        <Layout style={styles.upperSection}>
+        <View style={styles.upperSection}>
           <Text style={styles.title}>Dreamcatcher</Text>
-        </Layout>
+        </View>
 
-        <Layout style={styles.lowerSection}>
-          <Layout style={styles.buttonContainer}>  
+        <View style={styles.lowerSection}>
+          <View style={styles.buttonContainer}>  
             
-            <Button style={styles.button} onPress={handleCatchDream}>
-              <Text>Catch Dream</Text>
-            </Button>
+            <TouchableOpacity style={styles.touchableButton} onPress={handleCatchDream}>
+              <Text style={styles.buttonText}>Catch Dream</Text>
+            </TouchableOpacity>
 
-            <Button style={styles.button}>
-              <Text>Archive</Text>
-            </Button>
+            <TouchableOpacity style={styles.touchableButton}>
+              <Text style={styles.buttonText}>Archive</Text>
+            </TouchableOpacity>
 
-            <Button style={styles.button}>
-              <Text>Trends</Text>
-            </Button>
+            <TouchableOpacity style={styles.touchableButton}>
+              <Text style={styles.buttonText}>Trends</Text>
+            </TouchableOpacity>
 
-          </Layout>
-        </Layout>
-      </Layout>
+          </View>
+        </View>
+      </View>
     </ImageBackground>
   );
 }
@@ -71,10 +70,17 @@ const styles = StyleSheet.create({
   buttonRow: {
     backgroundColor: 'transparent',
   },
-  button: {
+  touchableButton: {
     marginVertical: 8,
+    padding: 15,
     backgroundColor: 'rgba(255, 255, 255, 0.2)', // Milky white background
     borderColor: 'rgba(255, 255, 255, 0.6)',
+    borderWidth: 1,
     borderRadius: 25,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
