@@ -5,17 +5,21 @@ export default function DreamScreen() {
     
     const [currentStep, setCurrentStep] = React.useState(0);
     const [dreamData, setDreamData] = React.useState({
-        who: '',
-        what: '',
-        where: '',
-        feeling: ''
+        visitor: '',
+        plot: '',
+        location: '',
+        mood: '',
+        sleepQuality: '',
+        anything: '',
     });
 
     const questions = [
-        { key: 'who', label: 'Who was in your dream?' },
-        { key: 'what', label: 'What happened in your dream?' },
-        { key: 'where', label: 'Where did your dream take place?' },
-        { key: 'feeling', label: 'How did the dream make you feel?' }
+        { key: 'visitor', label: 'Who was in your dream?' },
+        { key: 'plot', label: 'What happened in your dream?' },
+        { key: 'location', label: 'Where did your dream take place?' },
+        { key: 'mood', label: 'How did the dream make you feel?' },
+        { key: 'sleepQuality', label: 'How well did you sleep?' },
+        { key: 'anything', label: 'Anyting else you remember?' },
     ];
 
     const handleNext = () => {
@@ -73,6 +77,17 @@ export default function DreamScreen() {
                 </View>
 
                     <View style={[
+                        styles.saveButton,
+                    ]}>
+
+                        {currentStep === questions.length -1 && (
+                            <TouchableOpacity style={[styles.button, styles.submitButton]}>
+                                <Text style={styles.buttonText}>Save Dream</Text>
+                            </TouchableOpacity>
+                        )}
+                    </View>
+                    
+                    <View style={[
                         styles.navigationButtons,
                         currentStep === 0 && { justifyContent: 'flex-end' },
                     ]}>
@@ -87,14 +102,7 @@ export default function DreamScreen() {
                                 <Text style={styles.buttonText}>Next</Text>
                             </TouchableOpacity>
                         )}
-                        
-                        {currentStep === questions.length -1 && (
-                            <TouchableOpacity style={[styles.button, styles.submitButton]}>
-                                <Text style={styles.buttonText}>Save Dream</Text>
-                            </TouchableOpacity>
-                        )}
                     </View>
-
             </View>
 
         </ImageBackground>
@@ -159,6 +167,11 @@ const styles = StyleSheet.create({
         width: '100%',
         marginTop: 30,
         paddingHorizontal: 18,
+    },
+    saveButton:{
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginBottom: 100,
     },
     button: {
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
