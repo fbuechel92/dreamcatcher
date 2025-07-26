@@ -1,10 +1,49 @@
 import React from 'react';
-import { StyleSheet, Text, ImageBackground, View, TextInput } from 'react-native';
+import { StyleSheet, Text, ImageBackground, View, TextInput, TouchableOpacity } from 'react-native';
 
 export default function DreamScreen() {
     
-    const [dreamText, setDreamText] = React.useState('');
-    
+    const [currentStep, setCurrentStep] = React.useState(0);
+    const [dreamData, setDreamData] = React.useState({
+        visitor: '',
+        plot: '',
+        location: '',
+        mood: '',
+        sleepQuality: '',
+        anything: '',
+    });
+
+    const questions = [
+        { key: 'visitor', label: 'Who was in your dream?' },
+        { key: 'plot', label: 'What happened in your dream?' },
+        { key: 'location', label: 'Where did your dream take place?' },
+        { key: 'mood', label: 'How did the dream make you feel?' },
+        { key: 'sleepQuality', label: 'How well did you sleep?' },
+        { key: 'anything', label: 'Anyting else you remember?' },
+    ];
+
+    const handleNext = () => {
+        if (currentStep < questions.length - 1) {
+            setCurrentStep(currentStep + 1);
+        }
+    };
+
+    const handlePrevious = () => {
+        if (currentStep > 0) {
+            setCurrentStep(currentStep - 1);
+        }
+    };
+
+    const updateDreamData = (value: string) => {
+        setDreamData(prev => ({
+            ...prev,
+            [questions[currentStep].key]: value
+        }));
+    };
+
+    const currentQuestion = questions[currentStep];
+    const currentValue = dreamData[currentQuestion.key as keyof typeof dreamData];
+
     return(
 
         <ImageBackground 
@@ -19,19 +58,51 @@ export default function DreamScreen() {
                     <Text style={styles.title}>
                         Dreamcatcher
                     </Text>
+                    <Text style={styles.stepIndicator}>
+                        {currentStep + 1} of {questions.length}
+                    </Text>
                 </View>
 
                 <View style={styles.lowerSection}>
-                    <Text style={styles.inputLabel}>Who was in your dream?</Text>
+                    <Text style={styles.inputLabel}>{currentQuestion.label}</Text>
                     <TextInput
                         style={styles.input}
-                        value={dreamText}
-                        onChangeText={setDreamText}
+                        value={currentValue}
+                        onChangeText={updateDreamData}
                         multiline={true}
                         numberOfLines={4}
+                        placeholder="Share your dream..."
+                        placeholderTextColor="rgba(255, 255, 255, 0.5)"
                     />
                 </View>
 
+                    <View style={[
+                        styles.saveButton,
+                    ]}>
+
+                        {currentStep === questions.length -1 && (
+                            <TouchableOpacity style={[styles.button, styles.submitButton]}>
+                                <Text style={styles.buttonText}>Save Dream</Text>
+                            </TouchableOpacity>
+                        )}
+                    </View>
+                    
+                    <View style={[
+                        styles.navigationButtons,
+                        currentStep === 0 && { justifyContent: 'flex-end' },
+                    ]}>
+                        {currentStep > 0 && (
+                            <TouchableOpacity style={styles.button} onPress={handlePrevious}>
+                                <Text style={styles.buttonText}>Previous</Text>
+                            </TouchableOpacity>
+                        )}
+                        
+                        {currentStep < questions.length -1 && (
+                            <TouchableOpacity style={styles.button} onPress={handleNext}>
+                                <Text style={styles.buttonText}>Next</Text>
+                            </TouchableOpacity>
+                        )}
+                    </View>
             </View>
 
         </ImageBackground>
@@ -82,5 +153,43 @@ const styles = StyleSheet.create({
         color: 'rgb(255,255,255)',
         marginBottom: 10,
         fontFamily: 'Bradley Hand'
+    },
+    stepIndicator: {
+        textAlign: 'center',
+        fontSize: 16,
+        color: 'rgba(255, 255, 255, 0.8)',
+        fontFamily: 'Bradley Hand',
+        marginTop: 10,
+    },
+    navigationButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+        marginTop: 30,
+        paddingHorizontal: 18,
+    },
+    saveButton:{
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginBottom: 100,
+    },
+    button: {
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        paddingHorizontal: 20,
+        paddingVertical: 12,
+        borderRadius: 25,
+        borderWidth: 1,
+        borderColor: 'rgba(255, 255, 255, 0.6)',
+    },
+    submitButton: {
+        backgroundColor: 'rgba(100, 150, 255, 0.3)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: '600',
+        fontFamily: 'Bradley Hand',
     },
 });
