@@ -1,36 +1,48 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, ImageBackground, View, TextInput } from 'react-native';
 
 export default function DreamScreen() {
     
     const [dreamText, setDreamText] = React.useState('');
     
     return(
-        <View style={styles.container}>
-           
-            <View style={styles.upperSection}>
-                <Text style={styles.title}>
-                    Dreamcatcher
-                </Text>
+
+        <ImageBackground 
+              source={require('../assets/images/nightsky_milky.png')} 
+              style={styles.backgroundImage}
+              resizeMode="cover"
+        >
+
+            <View style={styles.container}>
+            
+                <View style={styles.upperSection}>
+                    <Text style={styles.title}>
+                        Dreamcatcher
+                    </Text>
+                </View>
+
+                <View style={styles.lowerSection}>
+                    <Text style={styles.inputLabel}>Who was in your dream?</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={dreamText}
+                        onChangeText={setDreamText}
+                        multiline={true}
+                        numberOfLines={4}
+                    />
+                </View>
+
             </View>
 
-            <View style={styles.lowerSection}>
-                <Text style={styles.inputLabel}>Who was in your dream?</Text>
-                <TextInput
-                    style={styles.input}
-                    value={dreamText}
-                    onChangeText={setDreamText}
-                    multiline={true}
-                    numberOfLines={4}
-                />
-            </View>
-
-        </View>
+        </ImageBackground>
 
     );
 }
 
 const styles = StyleSheet.create({
+    backgroundImage: {
+        flex: 1,
+    },
     container: {
         flex: 1,
     },
@@ -47,16 +59,17 @@ const styles = StyleSheet.create({
         paddingTop: 200,
     },
     title: {
+        textAlign: 'center',
         fontSize:28,
         fontWeight: 'bold',
-        color: '#8A2BE2',
+        color: 'rgb(255,255,255)',
         fontFamily: 'Bradley Hand'
     },
     input: {
         width: '80%',
         height: 100,
         borderWidth: 1,
-        borderColor: '#8A2BE2',
+        borderColor: 'rgba(255, 255, 255, 0.6)',
         borderRadius: 10,
         padding: 10,
         marginTop: 20,
@@ -66,7 +79,7 @@ const styles = StyleSheet.create({
     inputLabel: {
         fontSize: 20,
         fontWeight: '600',
-        color: '#8A2BE2',
+        color: 'rgb(255,255,255)',
         marginBottom: 10,
         fontFamily: 'Bradley Hand'
     },

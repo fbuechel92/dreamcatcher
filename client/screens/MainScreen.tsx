@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, ImageBackground, View, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
 
 export default function MainScreen() {
@@ -9,97 +9,78 @@ export default function MainScreen() {
   };
   
   return (
-    <View style={styles.container}>
-      
-      <View style={styles.upperSection}>
-        <Text style={styles.title}>Dreamcatcher</Text>
-      </View>
-
-      <View style={styles.lowerSection}>
+    <ImageBackground 
+      source={require('../assets/images/nightsky_milky.png')} 
+      style={styles.backgroundImage}
+      resizeMode="cover"
+    >
+      <View style={styles.container}>
         
-        <View style={styles.buttonContainer}>  
-          
-          <View style={styles.buttonRow}>
-            <Image source={require('../assets/images/dreamcatcher.png')} style={styles.buttonIcon} />
-            <TouchableOpacity style={styles.button} onPress={handleCatchDream}>
+        <View style={styles.upperSection}>
+          <Text style={styles.title}>Dreamcatcher</Text>
+        </View>
+
+        <View style={styles.lowerSection}>
+          <View style={styles.buttonContainer}>  
+            
+            <TouchableOpacity style={styles.touchableButton} onPress={handleCatchDream}>
               <Text style={styles.buttonText}>Catch Dream</Text>
             </TouchableOpacity>
-          </View>
 
-          <View style={styles.buttonRow}>
-            <Image source={require('../assets/images/dreamcatcher.png')} style={styles.buttonIcon} />
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.touchableButton}>
               <Text style={styles.buttonText}>Archive</Text>
             </TouchableOpacity>
-          </View>
 
-          <View style={styles.buttonRow}>
-            <Image source={require('../assets/images/dreamcatcher.png')} style={styles.buttonIcon} />
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.touchableButton}>
               <Text style={styles.buttonText}>Trends</Text>
             </TouchableOpacity>
-          </View>
 
+          </View>
         </View>
       </View>
-
-    </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
-    flexDirection: 'column',
+    padding: 20,
+    backgroundColor: 'transparent',
   },
   upperSection: {
-    paddingTop: 20,
-    paddingLeft: 20,
-    paddingBottom: 50,
+    backgroundColor: 'transparent',
   },
   lowerSection: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    paddingHorizontal: 20,
+    backgroundColor: 'transparent',
   },
   title: {
-    fontSize:28,
-    fontWeight: 'bold',
-    color: '#8A2BE2',
-    fontFamily: 'Bradley Hand'
+    textAlign: 'center',
+    marginBottom: 40,
+    fontFamily: 'Bradley Hand',
+    color: 'rgb(255,255,255)',
+    fontSize: 30,
   },
   buttonContainer: {
-    flexDirection: 'column',
+    backgroundColor: 'transparent',
   },
   buttonRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 15,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12, //rounded corners
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
-  button: {
     backgroundColor: 'transparent',
-    paddingVertical: 18, //enlarge click/button area vertically
-    borderRadius: 12, //to match the rounded corners of the buttonRow
-    flex: 1,
-},
-  buttonText: {
-    color: '#8A2BE2',
-    fontSize: 18,
-    fontWeight: '600',
-    textAlign: 'center',
-    fontFamily: 'System'
   },
-  buttonIcon: {
-    width: 70,
-    height: 70,
-    marginBottom: 5,
+  touchableButton: {
+    marginVertical: 8,
+    padding: 15,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)', // Milky white background
+    borderColor: 'rgba(255, 255, 255, 0.6)',
+    borderWidth: 1,
+    borderRadius: 25,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
