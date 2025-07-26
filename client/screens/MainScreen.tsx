@@ -22,30 +22,22 @@ export default function MainScreen() {
         </Layout>
 
         <Layout style={styles.lowerSection}>
-          
           <Layout style={styles.buttonContainer}>  
             
-            <Layout style={styles.buttonRow}>
-              <Button style={styles.button} onPress={handleCatchDream}>
-                <Text style={styles.buttonText}>Catch Dream</Text>
-              </Button>
-            </Layout>
+            <Button style={styles.button} onPress={handleCatchDream}>
+              <Text>Catch Dream</Text>
+            </Button>
 
-            <Layout style={styles.buttonRow}>
-              <Button style={styles.button}>
-                <Text style={styles.buttonText}>Archive</Text>
-              </Button>
-            </Layout>
+            <Button style={styles.button}>
+              <Text>Archive</Text>
+            </Button>
 
-            <Layout style={styles.buttonRow}>
-              <Button style={styles.button}>
-                <Text style={styles.buttonText}>Trends</Text>
-              </Button>
-            </Layout>
+            <Button style={styles.button}>
+              <Text>Trends</Text>
+            </Button>
 
           </Layout>
         </Layout>
-
       </Layout>
     </ImageBackground>
   );
@@ -70,7 +62,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 40,
     fontFamily: 'Bradley Hand',
-    color: '#FFFFFF',
+    color: 'rgb(255,255,255)',
     fontSize: 30,
   },
   buttonContainer: {
@@ -84,9 +76,5 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.2)', // Milky white background
     borderColor: 'rgba(255, 255, 255, 0.6)',
     borderRadius: 25,
-  },
-  buttonText: {
-  },
-  buttonIcon: {
   },
 });
