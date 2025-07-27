@@ -6,3 +6,4 @@ server/src/main/resources/application.properties
 server/src/main/resources/schema.sql
 server/src/main/resources/data.sql
 server/build
+server/bin
