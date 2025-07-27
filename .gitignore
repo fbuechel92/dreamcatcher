@@ -7,3 +7,5 @@ server/src/main/resources/schema.sql
 server/src/main/resources/data.sql
 server/build
 server/bin
+server/target
+server/out
