@@ -24,8 +24,8 @@ public class UserController {
     //Controller Methods
     @GetMapping("/profile/{userId}")
     public ResponseEntity<UserProfileDTO> getUser(@PathVariable Integer userId){
-        UserProfileDTO userProfileDTO = userManagementService.getUser(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(userProfileDTO);
+        UserProfileDTO foundUserProfile = userManagementService.getUser(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(foundUserProfile);
     }
 
     @PostMapping("/profile")
