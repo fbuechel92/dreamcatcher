@@ -2,7 +2,6 @@ package com.dreamcatcher.mobile.controller;
 
 import com.dreamcatcher.mobile.dto.UserAuthDTO;
 import com.dreamcatcher.mobile.dto.UserProfileDTO;
-import com.dreamcatcher.mobile.entity.User;
 import com.dreamcatcher.mobile.service.UserManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,26 +24,26 @@ public class UserController {
     //Controller Methods
     @GetMapping("/profile/{userId}")
     public ResponseEntity<UserProfileDTO> getUser(@PathVariable Integer userId){
-        UserProfileDTO userProfileDTO = userManagementService.getUser(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(userProfileDTO);
+        UserProfileDTO foundUserProfile = userManagementService.getUser(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(foundUserProfile);
     }
 
     @PostMapping("/profile")
-    public ResponseEntity<User> createUser(@RequestBody UserAuthDTO userAuthDTO){
-        User user = userManagementService.createUser(userAuthDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    public ResponseEntity<UserAuthDTO> createUser(@RequestBody UserAuthDTO userAuthDTO){
+        UserAuthDTO createdUser = userManagementService.createUser(userAuthDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     @PutMapping("/profile/{userId}")
-    public ResponseEntity<User> modifyUser(@PathVariable Integer userId, @RequestBody UserProfileDTO userProfileDTO){
-        User user = userManagementService.modifyProfile(userId, userProfileDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(user);
+    public ResponseEntity<UserProfileDTO> modifyUser(@PathVariable Integer userId, @RequestBody UserProfileDTO userProfileDTO){
+        UserProfileDTO modifiedUser = userManagementService.modifyProfile(userId, userProfileDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(modifiedUser);
     }
 
     @PutMapping("/auth/{userId}")
-    public ResponseEntity<User> modifyAuth(@PathVariable Integer userId, @RequestBody UserAuthDTO userAuthDTO){
-        User user = userManagementService.modifyAuth(userId, userAuthDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(user);
+    public ResponseEntity<UserAuthDTO> modifyAuth(@PathVariable Integer userId, @RequestBody UserAuthDTO userAuthDTO){
+        UserAuthDTO modifiedUser = userManagementService.modifyAuth(userId, userAuthDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(modifiedUser);
     }
 
     @DeleteMapping("/profile")

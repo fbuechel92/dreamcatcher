@@ -31,8 +31,7 @@ public class Dream {
     //Constructor
     public Dream(){};
 
-    public Dream(User user, String visitor, String plot, String location, String mood, String sleepQuality, String additionalInfo){
-        this.user = user;
+    public Dream(String visitor, String plot, String location, String mood, String sleepQuality, String additionalInfo){
         this.visitor = visitor;
         this.plot = plot;
         this.location = location;

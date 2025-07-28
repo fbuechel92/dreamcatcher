@@ -1,7 +1,6 @@
 package com.dreamcatcher.mobile.controller;
 
 import com.dreamcatcher.mobile.dto.DreamDTO;
-import com.dreamcatcher.mobile.entity.Dream;
 import com.dreamcatcher.mobile.service.DreamManagementService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -22,23 +21,23 @@ public class DreamController {
 
     //Creating dreams
     @PostMapping("users/{userId}/dreams")
-    public ResponseEntity<Dream> createDream(@PathVariable Integer userId, @RequestBody DreamDTO dreamDTO){
-        Dream dream = dreamManagementService.createDream(userId, dreamDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(dream);
+    public ResponseEntity<DreamDTO> createDream(@PathVariable Integer userId, @RequestBody DreamDTO dreamDTO){
+        DreamDTO createdDream = dreamManagementService.createDream(userId, dreamDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdDream);
     }
 
     //Getting specific dream
     @GetMapping("dreams/{dreamId}")
-    public ResponseEntity<Dream> getDreamById(@PathVariable Integer dreamId) {
-        Dream dream = dreamManagementService.getDreamById(dreamId);
-        return ResponseEntity.status(HttpStatus.OK).body(dream);
+    public ResponseEntity<DreamDTO> getDreamById(@PathVariable Integer dreamId) {
+        DreamDTO foundDream = dreamManagementService.getDreamById(dreamId);
+        return ResponseEntity.status(HttpStatus.OK).body(foundDream);
     }
 
     //Getting all dreams
     @GetMapping("/users/{userId}/dreams")
-    public ResponseEntity<List<Dream>> getAllDreamsByUser(@PathVariable Integer userId) {
-        List<Dream> dreams = dreamManagementService.getAllDreamsByUserId(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(dreams);
+    public ResponseEntity<List<DreamDTO>> getAllDreamsByUser(@PathVariable Integer userId) {
+        List<DreamDTO> foundDreams = dreamManagementService.getAllDreamsByUserId(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(foundDreams);
     }
 
     //Delete dream
