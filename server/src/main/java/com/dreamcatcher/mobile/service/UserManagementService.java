@@ -63,7 +63,7 @@ public class UserManagementService {
     }
 
     //Method to change profile data
-    public User modifyProfile(Integer userId, UserProfileDTO userProfileDTO) {
+    public UserProfileDTO modifyProfile(Integer userId, UserProfileDTO userProfileDTO) {
 
         //Retrieving user by id from repo and converting dto user to entity user
         User currentUser = userRepository.findById(userId).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + userId + " not found", 1));
@@ -75,17 +75,18 @@ public class UserManagementService {
 
         if (userAppliedChange) {
             try {
-                return userRepository.save(currentUser);
+                User savedUser = userRepository.save(currentUser);
+                return userDTOMapper.mapToUserProfileDTO(savedUser);
             } catch (DataAccessException e) {
                 throw new RuntimeException("Database error occurred while saving the user", e);
             }
         } else {
-            return currentUser;
+            return userDTOMapper.mapToUserProfileDTO(currentUser);
         }
     }
 
     //Method to change user auth data
-    public User modifyAuth(Integer userId, UserAuthDTO userAuthDTO) {
+    public UserAuthDTO modifyAuth(Integer userId, UserAuthDTO userAuthDTO) {
 
         //Retrieving user by id from repo and converting dto user to entity user
         User currentUser = userRepository.findById(userId).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + userId + " not found", 1));
@@ -97,12 +98,13 @@ public class UserManagementService {
 
         if (userAppliedChange) {
             try {
-                return userRepository.save(currentUser);
+                User savedUser = userRepository.save(currentUser);
+                return userDTOMapper.mapToUserAuthDTO(savedUser);
             } catch (DataAccessException e) {
                 throw new RuntimeException("Database error occurred while saving the user", e);
             }
         } else {
-            return currentUser;
+            return userDTOMapper.mapToUserAuthDTO(currentUser);
         }
     }
 

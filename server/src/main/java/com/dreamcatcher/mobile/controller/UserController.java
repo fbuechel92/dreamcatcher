@@ -36,15 +36,15 @@ public class UserController {
     }
 
     @PutMapping("/profile/{userId}")
-    public ResponseEntity<User> modifyUser(@PathVariable Integer userId, @RequestBody UserProfileDTO userProfileDTO){
-        User user = userManagementService.modifyProfile(userId, userProfileDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(user);
+    public ResponseEntity<UserProfileDTO> modifyUser(@PathVariable Integer userId, @RequestBody UserProfileDTO userProfileDTO){
+        UserProfileDTO modifiedUser = userManagementService.modifyProfile(userId, userProfileDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(modifiedUser);
     }
 
     @PutMapping("/auth/{userId}")
-    public ResponseEntity<User> modifyAuth(@PathVariable Integer userId, @RequestBody UserAuthDTO userAuthDTO){
-        User user = userManagementService.modifyAuth(userId, userAuthDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(user);
+    public ResponseEntity<UserAuthDTO> modifyAuth(@PathVariable Integer userId, @RequestBody UserAuthDTO userAuthDTO){
+        UserAuthDTO modifiedUser = userManagementService.modifyAuth(userId, userAuthDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(modifiedUser);
     }
 
     @DeleteMapping("/profile")
