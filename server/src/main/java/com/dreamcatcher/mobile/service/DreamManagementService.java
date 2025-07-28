@@ -4,6 +4,7 @@ import com.dreamcatcher.mobile.dto.DreamDTO;
 import com.dreamcatcher.mobile.entity.Dream;
 import com.dreamcatcher.mobile.entity.User;
 import com.dreamcatcher.mobile.mapper.DreamEntityMapper;
+import com.dreamcatcher.mobile.mapper.DreamDTOMapper;
 import com.dreamcatcher.mobile.repository.DreamRepository;
 import com.dreamcatcher.mobile.repository.UserRepository;
 import java.util.List;
@@ -16,16 +17,18 @@ public class DreamManagementService {
 
     private DreamRepository dreamRepository;
     private DreamEntityMapper dreamEntityMapper;
+    private DreamDTOMapper dreamDTOMapper;
     private UserRepository userRepository;
 
-    public DreamManagementService(DreamRepository dreamRepository, UserRepository userRepository, DreamEntityMapper dreamEntityMapper){
+    public DreamManagementService(DreamRepository dreamRepository, UserRepository userRepository, DreamDTOMapper dreamDTOMapper, DreamEntityMapper dreamEntityMapper){
         this.dreamRepository = dreamRepository;
         this.dreamEntityMapper = dreamEntityMapper;
+        this.dreamDTOMapper = dreamDTOMapper;
         this.userRepository = userRepository;
     }
 
     //Create Dream Method
-    public Dream createDream(Integer userId, DreamDTO dreamDTO){
+    public DreamDTO createDream(Integer userId, DreamDTO dreamDTO){
 
         //Translate DTO to entity
         User user = userRepository.findById(userId).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + userId + " not found", 1));
@@ -33,20 +36,25 @@ public class DreamManagementService {
 
         //save dream to db
         try {
-            return dreamRepository.save(dream);
+            Dream createdDream = dreamRepository.save(dream);
+            return dreamDTOMapper.mapToDreamDTO(createdDream);
         } catch (DataAccessException e) {
             throw new RuntimeException("Database error occurred while saving the dream", e);
         }
     }
 
     //Get Dream by ID
-    public Dream getDreamById(Integer dreamId){
-        return dreamRepository.findById(dreamId).orElseThrow(() -> new EmptyResultDataAccessException("Dream with ID " + dreamId + " not found", 1));
+    public DreamDTO getDreamById(Integer dreamId){
+        Dream foundDream = dreamRepository.findById(dreamId).orElseThrow(() -> new EmptyResultDataAccessException("Dream with ID " + dreamId + " not found", 1));
+        return dreamDTOMapper.mapToDreamDTO(foundDream);
     }
 
     //Get all dreams for a user by userID
-    public List<Dream> getAllDreamsByUserId(Integer userId){
-        return dreamRepository.findByUserId(userId);
+    public List<DreamDTO> getAllDreamsByUserId(Integer userId){
+        List<Dream> foundDreams = dreamRepository.findByUserId(userId);
+        return foundDreams.stream()
+            .map(dreamDTOMapper::mapToDreamDTO)
+            .toList();
     }
 
     //Delete Dream by ID
