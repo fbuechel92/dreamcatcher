@@ -5,6 +5,9 @@ import com.dreamcatcher.mobile.entity.Dream;
 import com.dreamcatcher.mobile.mapper.DreamEntityMapper;
 import com.dreamcatcher.mobile.mapper.DreamDTOMapper;
 import com.dreamcatcher.mobile.repository.DreamRepository;
+import com.dreamcatcher.mobile.repository.UserRepository;
+import com.dreamcatcher.mobile.entity.User;
+
 import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -14,20 +17,29 @@ import org.springframework.stereotype.Service;
 public class DreamManagementService {
 
     private DreamRepository dreamRepository;
+    private UserRepository userRepository;
     private DreamEntityMapper dreamEntityMapper;
     private DreamDTOMapper dreamDTOMapper;
 
-    public DreamManagementService(DreamRepository dreamRepository, DreamDTOMapper dreamDTOMapper, DreamEntityMapper dreamEntityMapper){
+
+    public DreamManagementService(DreamRepository dreamRepository, UserRepository userRepository, DreamDTOMapper dreamDTOMapper, DreamEntityMapper dreamEntityMapper){
         this.dreamRepository = dreamRepository;
+        this.userRepository = userRepository;
         this.dreamEntityMapper = dreamEntityMapper;
         this.dreamDTOMapper = dreamDTOMapper;
     }
 
     //Create Dream Method
-    public DreamDTO createDream(DreamDTO dreamDTO){
+    public DreamDTO createDream(Integer userId, DreamDTO dreamDTO){
 
         //Translate DTO to entity
         Dream createdDream = dreamEntityMapper.mapToDreamEntity(dreamDTO);
+
+        //Get user from database
+        User user = userRepository.findById(userId).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + userId + " not found", 1));
+
+        //we need this because we require the FK from user
+        createdDream.setUser(user);
 
         //save dream to db
         try {

@@ -22,7 +22,7 @@ public class DreamController {
     //Creating dreams
     @PostMapping("users/{userId}/dreams")
     public ResponseEntity<DreamDTO> createDream(@PathVariable Integer userId, @RequestBody DreamDTO dreamDTO){
-        DreamDTO createdDream = dreamManagementService.createDream(dreamDTO);
+        DreamDTO createdDream = dreamManagementService.createDream(userId, dreamDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdDream);
     }
 
