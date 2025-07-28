@@ -57,9 +57,9 @@ public class UserManagementService {
     public UserProfileDTO getUser(Integer userId) {
 
         //Retrieve user from db
-        User user = userRepository.findById(userId).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + userId + " not found", 1));
+        User foundUser = userRepository.findById(userId).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + userId + " not found", 1));
 
-        return userDTOMapper.mapToUserProfileDTO(user);
+        return userDTOMapper.mapToUserProfileDTO(foundUser);
     }
 
     //Method to change profile data
