@@ -33,7 +33,7 @@ public class UserManagementService {
     }
 
     //Method to save user to the database
-    public User createUser(UserAuthDTO userAuthDTO) {
+    public UserAuthDTO createUser(UserAuthDTO userAuthDTO) {
         //Check if mail already exists in db
         if (userRepository.existsByEmail(userAuthDTO.email())) {
             throw new IllegalArgumentException("The createUser method in the UserService class failed because the email exists already.");
@@ -46,7 +46,8 @@ public class UserManagementService {
         user.setPassword(hashedPassword);
 
         try {
-            return userRepository.save(user);
+            User savedUser = userRepository.save(user);
+            return userDTOMapper.mapToUserAuthDTO(savedUser);
         } catch (DataAccessException e) {
             throw new RuntimeException("Database error occurred while saving the user", e);
         }

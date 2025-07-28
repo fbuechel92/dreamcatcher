@@ -30,9 +30,9 @@ public class UserController {
     }
 
     @PostMapping("/profile")
-    public ResponseEntity<User> createUser(@RequestBody UserAuthDTO userAuthDTO){
-        User user = userManagementService.createUser(userAuthDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    public ResponseEntity<UserAuthDTO> createUser(@RequestBody UserAuthDTO userAuthDTO){
+        UserAuthDTO createdUser = userManagementService.createUser(userAuthDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     @PutMapping("/profile/{userId}")
