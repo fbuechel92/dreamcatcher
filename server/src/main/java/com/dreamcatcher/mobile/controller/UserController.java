@@ -2,7 +2,6 @@ package com.dreamcatcher.mobile.controller;
 
 import com.dreamcatcher.mobile.dto.UserAuthDTO;
 import com.dreamcatcher.mobile.dto.UserProfileDTO;
-import com.dreamcatcher.mobile.entity.User;
 import com.dreamcatcher.mobile.service.UserManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
