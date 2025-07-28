@@ -1,7 +1,6 @@
 package com.dreamcatcher.mobile.controller;
 
 import com.dreamcatcher.mobile.dto.DreamDTO;
-import com.dreamcatcher.mobile.entity.Dream;
 import com.dreamcatcher.mobile.service.DreamManagementService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
