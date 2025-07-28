@@ -2,11 +2,9 @@ package com.dreamcatcher.mobile.service;
 
 import com.dreamcatcher.mobile.dto.DreamDTO;
 import com.dreamcatcher.mobile.entity.Dream;
-import com.dreamcatcher.mobile.entity.User;
 import com.dreamcatcher.mobile.mapper.DreamEntityMapper;
 import com.dreamcatcher.mobile.mapper.DreamDTOMapper;
 import com.dreamcatcher.mobile.repository.DreamRepository;
-import com.dreamcatcher.mobile.repository.UserRepository;
 import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -18,26 +16,23 @@ public class DreamManagementService {
     private DreamRepository dreamRepository;
     private DreamEntityMapper dreamEntityMapper;
     private DreamDTOMapper dreamDTOMapper;
-    private UserRepository userRepository;
 
-    public DreamManagementService(DreamRepository dreamRepository, UserRepository userRepository, DreamDTOMapper dreamDTOMapper, DreamEntityMapper dreamEntityMapper){
+    public DreamManagementService(DreamRepository dreamRepository, DreamDTOMapper dreamDTOMapper, DreamEntityMapper dreamEntityMapper){
         this.dreamRepository = dreamRepository;
         this.dreamEntityMapper = dreamEntityMapper;
         this.dreamDTOMapper = dreamDTOMapper;
-        this.userRepository = userRepository;
     }
 
     //Create Dream Method
-    public DreamDTO createDream(Integer userId, DreamDTO dreamDTO){
+    public DreamDTO createDream(DreamDTO dreamDTO){
 
         //Translate DTO to entity
-        User user = userRepository.findById(userId).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + userId + " not found", 1));
-        Dream dream = dreamEntityMapper.mapToDreamEntity(user, dreamDTO);
+        Dream createdDream = dreamEntityMapper.mapToDreamEntity(dreamDTO);
 
         //save dream to db
         try {
-            Dream createdDream = dreamRepository.save(dream);
-            return dreamDTOMapper.mapToDreamDTO(createdDream);
+            Dream savedDream = dreamRepository.save(createdDream);
+            return dreamDTOMapper.mapToDreamDTO(savedDream);
         } catch (DataAccessException e) {
             throw new RuntimeException("Database error occurred while saving the dream", e);
         }

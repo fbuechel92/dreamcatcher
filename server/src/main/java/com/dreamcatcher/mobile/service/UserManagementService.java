@@ -39,14 +39,14 @@ public class UserManagementService {
             throw new IllegalArgumentException("The createUser method in the UserService class failed because the email exists already.");
         }
 
-        User user = userEntityMapper.mapToUserAuthEntity(userAuthDTO);
+        User createdUser = userEntityMapper.mapToUserAuthEntity(userAuthDTO);
 
         //Create hashed password
         String hashedPassword = passwordEncoder.encode(userAuthDTO.password());
-        user.setPassword(hashedPassword);
+        createdUser.setPassword(hashedPassword);
 
         try {
-            User savedUser = userRepository.save(user);
+            User savedUser = userRepository.save(createdUser);
             return userDTOMapper.mapToUserAuthDTO(savedUser);
         } catch (DataAccessException e) {
             throw new RuntimeException("Database error occurred while saving the user", e);
