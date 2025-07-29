@@ -9,6 +9,7 @@ public class DreamDTOMapper {
     
     public DreamDTO mapToDreamDTO(Dream dream){
         return new DreamDTO(
+            dream.getDreamId(),
             dream.getVisitor(),
             dream.getPlot(),
             dream.getLocation(),
