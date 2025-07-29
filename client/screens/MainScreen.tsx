@@ -7,6 +7,10 @@ export default function MainScreen() {
   const handleCatchDream = () => {
     router.push('/dream');
   };
+
+  const handleArchive = () => {
+    router.push('/archive');
+  };
   
   return (
     <ImageBackground 
@@ -27,7 +31,7 @@ export default function MainScreen() {
               <Text style={styles.buttonText}>Catch Dream</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.touchableButton}>
+            <TouchableOpacity style={styles.touchableButton} onPress={handleArchive}>
               <Text style={styles.buttonText}>Archive</Text>
             </TouchableOpacity>
 
