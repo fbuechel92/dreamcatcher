@@ -15,7 +15,9 @@ public class DreamDTOMapper {
             dream.getLocation(),
             dream.getMood(),
             dream.getSleepQuality(),
-            dream.getAdditionalInfo()
+            dream.getAdditionalInfo(),
+            dream.getcreatedAt(),
+            dream.getUpdatedAt()
         );
     }
 }
