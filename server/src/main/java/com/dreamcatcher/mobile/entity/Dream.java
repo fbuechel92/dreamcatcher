@@ -92,7 +92,7 @@ public class Dream {
         return additionalInfo;
     }
     
-    public LocalDateTime getcreatedAt(){
+    public LocalDateTime getCreatedAt(){
         return createdAt;
     }
 
