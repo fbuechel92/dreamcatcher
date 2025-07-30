@@ -56,7 +56,7 @@ export default function DreamScreen() {
             
                 <View style={styles.upperSection}>
                     <Text style={styles.title}>
-                        Dreamcatcher
+                        Catching Dreams
                     </Text>
                     <Text style={styles.stepIndicator}>
                         {currentStep + 1} of {questions.length}

@@ -1,5 +1,7 @@
 package com.dreamcatcher.mobile.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,17 +29,21 @@ public class Dream {
     private String mood;
     private String sleepQuality;
     private String additionalInfo;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     //Constructor
     public Dream(){};
 
-    public Dream(String visitor, String plot, String location, String mood, String sleepQuality, String additionalInfo){
+    public Dream(String visitor, String plot, String location, String mood, String sleepQuality, String additionalInfo, LocalDateTime createdAt, LocalDateTime updatedAt){
         this.visitor = visitor;
         this.plot = plot;
         this.location = location;
         this.mood = mood;
         this.sleepQuality = sleepQuality;
         this.additionalInfo = additionalInfo;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     //Getters
@@ -75,6 +81,14 @@ public class Dream {
 
     public String getAdditionalInfo(){
         return additionalInfo;
+    }
+    
+    public LocalDateTime getcreatedAt(){
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt(){
+        return updatedAt;
     }
 
     //Setters
@@ -114,6 +128,14 @@ public class Dream {
         this.additionalInfo = additionalInfo;
     }
 
+    public LocalDateTime setCreatedAt(){
+        return createdAt;
+    }
+
+    public LocalDateTime setUpdatedAt(){
+        return updatedAt;
+    }
+
     //toString
     @Override
     public String toString() {
@@ -127,6 +149,8 @@ public class Dream {
             ", mood=" + mood +
             ", sleepQuality=" + sleepQuality +
             ", additionalInfo=" + additionalInfo +
+            ", additionalInfo=" + createdAt +
+            ", additionalInfo=" + updatedAt +
             "}";
     }
 }
