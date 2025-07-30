@@ -14,9 +14,7 @@ public class DreamEntityMapper {
             dreamDTO.location(),
             dreamDTO.mood(),
             dreamDTO.sleepQuality(),
-            dreamDTO.additionalInfo(),
-            dreamDTO.createdAt(),
-            dreamDTO.updatedAt()
+            dreamDTO.additionalInfo()
         );
     }
 }

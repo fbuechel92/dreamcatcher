@@ -46,6 +46,15 @@ public class Dream {
         this.updatedAt = updatedAt;
     }
 
+    public Dream(String visitor, String plot, String location, String mood, String sleepQuality, String additionalInfo){
+        this.visitor = visitor;
+        this.plot = plot;
+        this.location = location;
+        this.mood = mood;
+        this.sleepQuality = sleepQuality;
+        this.additionalInfo = additionalInfo;
+    }
+
     //Getters
     public Integer getDreamId(){
         return dreamId;
