@@ -1,6 +1,5 @@
 package com.dreamcatcher.mobile.mapper;
 
-import com.dreamcatcher.mobile.dto.DreamDTO;
 import com.dreamcatcher.mobile.dto.CallDreamDTO;
 import com.dreamcatcher.mobile.entity.Dream;
 import org.springframework.stereotype.Component;
