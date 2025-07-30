@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     modalContent: {
-        backgroundColor: 'rgba(25, 25, 50, 0.95)',
+        backgroundColor: 'rgba(108, 155, 172, 0.95)',
         borderRadius: 20,
         padding: 20,
         margin: 20,
