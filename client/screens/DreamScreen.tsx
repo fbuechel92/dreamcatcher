@@ -41,6 +41,43 @@ export default function DreamScreen() {
         }));
     };
 
+    const saveDream = async() => {
+        const mock_user_id = "1"; // to be removed later
+
+        try {
+            const response = await fetch(`http://localhost:8080/users/${mock_user_id}/dreams`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    visitor: dreamData.visitor,
+                    plot: dreamData.plot,
+                    location: dreamData.location,
+                    mood: dreamData.mood,
+                    sleepQuality: dreamData.sleepQuality,
+                    additionalInfo: dreamData.anything,
+                }),
+            });
+
+            if (response.ok) {
+                // Reset form or navigate back
+                setDreamData({
+                    visitor: '',
+                    plot: '',
+                    location: '',
+                    mood: '',
+                    sleepQuality: '',
+                    anything: '',
+                });
+                setCurrentStep(0);
+                // You might want to show a success message or navigate to archive
+            }
+        } catch (error) {
+            console.error('Error saving dream:', error);
+        }
+    }
+
     const currentQuestion = questions[currentStep];
     const currentValue = dreamData[currentQuestion.key as keyof typeof dreamData];
 
@@ -81,7 +118,7 @@ export default function DreamScreen() {
                     ]}>
 
                         {currentStep === questions.length -1 && (
-                            <TouchableOpacity style={[styles.button, styles.submitButton]}>
+                            <TouchableOpacity style={[styles.button, styles.submitButton]} onPress={saveDream}>
                                 <Text style={styles.buttonText}>Save Dream</Text>
                             </TouchableOpacity>
                         )}
