@@ -54,7 +54,7 @@ export default function ArchiveScreen() {
 
                 <View style={styles.upperSection}>
                     <Text style={styles.title}>
-                        Revisiting Dreams
+                        Dream Archive
                     </Text>
                 </View>
 
