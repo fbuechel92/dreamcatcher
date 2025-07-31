@@ -193,7 +193,6 @@ const styles = StyleSheet.create({
     dreamText: {
         color: 'white',
         fontSize: 16,
-        fontFamily: 'Bradley Hand',
         lineHeight: 22,
     },
     dreamCard: {
@@ -226,9 +225,8 @@ const styles = StyleSheet.create({
     },
     dateText: {
         color: 'white',
-        fontSize: 12,
-        fontFamily: 'Bradley Hand',
-        fontWeight: 'bold',
+        fontSize: 13,
+        fontWeight: '600',
     },
     moodBadge: {
         backgroundColor: 'rgba(255, 215, 0, 0.3)',
@@ -240,14 +238,12 @@ const styles = StyleSheet.create({
     },
     moodText: {
         color: '#FFD700',
-        fontSize: 12,
-        fontFamily: 'Bradley Hand',
-        fontWeight: 'bold',
+        fontSize: 13,
+        fontWeight: '600',
     },
     dreamPreview: {
         color: 'white',
         fontSize: 16,
-        fontFamily: 'Bradley Hand',
         lineHeight: 22,
         marginBottom: 12,
     },
@@ -259,12 +255,12 @@ const styles = StyleSheet.create({
     locationText: {
         color: 'rgba(255, 255, 255, 0.8)',
         fontSize: 14,
-        fontFamily: 'Bradley Hand',
+        fontWeight: '500',
     },
     readMoreText: {
         color: 'rgba(255, 255, 255, 0.6)',
-        fontSize: 12,
-        fontFamily: 'Bradley Hand',
+        fontSize: 13,
+        fontWeight: '500',
         fontStyle: 'italic',
     },
     listContainer: {
@@ -304,7 +300,6 @@ const styles = StyleSheet.create({
     modalTitle: {
         color: 'white',
         fontSize: 24,
-        fontFamily: 'Bradley Hand',
         fontWeight: 'bold',
         textAlign: 'center',
         marginBottom: 20,
@@ -315,14 +310,12 @@ const styles = StyleSheet.create({
     detailLabel: {
         color: '#FFD700',
         fontSize: 16,
-        fontFamily: 'Bradley Hand',
         fontWeight: 'bold',
         marginBottom: 5,
     },
     detailText: {
         color: 'white',
         fontSize: 16,
-        fontFamily: 'Bradley Hand',
         lineHeight: 22,
     },
 });

@@ -64,9 +64,10 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
     marginBottom: 40,
-    fontFamily: 'Bradley Hand',
     color: 'rgb(255,255,255)',
     fontSize: 30,
+    fontWeight: 'bold',
+    fontFamily: 'Bradley Hand',
   },
   buttonContainer: {
     backgroundColor: 'transparent',
