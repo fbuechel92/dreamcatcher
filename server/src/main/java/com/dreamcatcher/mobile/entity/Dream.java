@@ -2,6 +2,9 @@ package com.dreamcatcher.mobile.entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,7 +32,11 @@ public class Dream {
     private String mood;
     private String sleepQuality;
     private String additionalInfo;
+
+    @CreationTimestamp 
     private LocalDateTime createdAt;
+
+    @UpdateTimestamp 
     private LocalDateTime updatedAt;
 
     //Constructor
@@ -44,6 +51,15 @@ public class Dream {
         this.additionalInfo = additionalInfo;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public Dream(String visitor, String plot, String location, String mood, String sleepQuality, String additionalInfo){
+        this.visitor = visitor;
+        this.plot = plot;
+        this.location = location;
+        this.mood = mood;
+        this.sleepQuality = sleepQuality;
+        this.additionalInfo = additionalInfo;
     }
 
     //Getters
@@ -83,7 +99,7 @@ public class Dream {
         return additionalInfo;
     }
     
-    public LocalDateTime getcreatedAt(){
+    public LocalDateTime getCreatedAt(){
         return createdAt;
     }
 

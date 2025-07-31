@@ -2,7 +2,7 @@ package com.dreamcatcher.mobile.dto;
 
 import java.time.LocalDateTime;
 
-public record DreamDTO(
+public record CallDreamDTO(
     Integer dreamId,
     String visitor,
     String plot,

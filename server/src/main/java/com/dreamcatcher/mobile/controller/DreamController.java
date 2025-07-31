@@ -1,6 +1,7 @@
 package com.dreamcatcher.mobile.controller;
 
-import com.dreamcatcher.mobile.dto.DreamDTO;
+import com.dreamcatcher.mobile.dto.SubmitDreamDTO;
+import com.dreamcatcher.mobile.dto.CallDreamDTO;
 import com.dreamcatcher.mobile.service.DreamManagementService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,22 +22,22 @@ public class DreamController {
 
     //Creating dreams
     @PostMapping("users/{userId}/dreams")
-    public ResponseEntity<DreamDTO> createDream(@PathVariable Integer userId, @RequestBody DreamDTO dreamDTO){
-        DreamDTO createdDream = dreamManagementService.createDream(userId, dreamDTO);
+    public ResponseEntity<CallDreamDTO> createDream(@PathVariable Integer userId, @RequestBody SubmitDreamDTO submitDreamDTO){
+        CallDreamDTO createdDream = dreamManagementService.createDream(userId, submitDreamDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdDream);
     }
 
     //Getting specific dream
     @GetMapping("dreams/{dreamId}")
-    public ResponseEntity<DreamDTO> getDreamById(@PathVariable Integer dreamId) {
-        DreamDTO foundDream = dreamManagementService.getDreamById(dreamId);
+    public ResponseEntity<CallDreamDTO> getDreamById(@PathVariable Integer dreamId) {
+        CallDreamDTO foundDream = dreamManagementService.getDreamById(dreamId);
         return ResponseEntity.status(HttpStatus.OK).body(foundDream);
     }
 
     //Getting all dreams
     @GetMapping("/users/{userId}/dreams")
-    public ResponseEntity<List<DreamDTO>> getAllDreamsByUser(@PathVariable Integer userId) {
-        List<DreamDTO> foundDreams = dreamManagementService.getAllDreamsByUserId(userId);
+    public ResponseEntity<List<CallDreamDTO>> getAllDreamsByUser(@PathVariable Integer userId) {
+        List<CallDreamDTO> foundDreams = dreamManagementService.getAllDreamsByUserId(userId);
         return ResponseEntity.status(HttpStatus.OK).body(foundDreams);
     }
 

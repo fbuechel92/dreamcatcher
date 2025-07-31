@@ -1,6 +1,7 @@
 package com.dreamcatcher.mobile.service;
 
-import com.dreamcatcher.mobile.dto.DreamDTO;
+import com.dreamcatcher.mobile.dto.SubmitDreamDTO;
+import com.dreamcatcher.mobile.dto.CallDreamDTO;
 import com.dreamcatcher.mobile.entity.Dream;
 import com.dreamcatcher.mobile.mapper.DreamEntityMapper;
 import com.dreamcatcher.mobile.mapper.DreamDTOMapper;
@@ -30,10 +31,10 @@ public class DreamManagementService {
     }
 
     //Create Dream Method
-    public DreamDTO createDream(Integer userId, DreamDTO dreamDTO){
+    public CallDreamDTO createDream(Integer userId, SubmitDreamDTO submitDreamDTO){
 
         //Translate DTO to entity
-        Dream createdDream = dreamEntityMapper.mapToDreamEntity(dreamDTO);
+        Dream createdDream = dreamEntityMapper.mapToDreamEntity(submitDreamDTO);
 
         //Get user from database
         User user = userRepository.findById(userId).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + userId + " not found", 1));
@@ -51,13 +52,13 @@ public class DreamManagementService {
     }
 
     //Get Dream by ID
-    public DreamDTO getDreamById(Integer dreamId){
+    public CallDreamDTO getDreamById(Integer dreamId){
         Dream foundDream = dreamRepository.findById(dreamId).orElseThrow(() -> new EmptyResultDataAccessException("Dream with ID " + dreamId + " not found", 1));
         return dreamDTOMapper.mapToDreamDTO(foundDream);
     }
 
     //Get all dreams for a user by userID
-    public List<DreamDTO> getAllDreamsByUserId(Integer userId){
+    public List<CallDreamDTO> getAllDreamsByUserId(Integer userId){
         List<Dream> foundDreams = dreamRepository.findByUserId(userId);
         return foundDreams.stream()
             .map(dreamDTOMapper::mapToDreamDTO)
