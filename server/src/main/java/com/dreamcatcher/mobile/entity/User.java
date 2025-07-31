@@ -5,6 +5,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 public class User {
@@ -19,6 +23,12 @@ public class User {
     private LocalDate birthdate;
     private String country;
     private String occupation;
+
+    @CreationTimestamp 
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp 
+    private LocalDateTime updatedAt;
 
     //Constructors
     public User(String gender, LocalDate birthdate, String country, String occupation){
