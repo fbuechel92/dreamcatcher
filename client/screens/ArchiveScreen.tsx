@@ -87,7 +87,6 @@ export default function ArchiveScreen() {
                                 
                                 <View style={styles.cardFooter}>
                                     <Text style={styles.locationText}>📍 {item.location}</Text>
-                                    <Text style={styles.readMoreText}>Tap to read more</Text>
                                 </View>
                                 
                             </TouchableOpacity>
@@ -177,8 +176,8 @@ const styles = StyleSheet.create({
     lowerSection: {
         flex: 1,
         flexDirection: 'column',
-        alignItems: 'center',
         justifyContent: 'flex-start',
+        marginHorizontal: 30, 
         paddingTop: 25,
     },
     dreamItem: {
@@ -198,7 +197,7 @@ const styles = StyleSheet.create({
     dreamCard: {
         backgroundColor: 'rgba(255, 255, 255, 0.15)',
         borderRadius: 20,
-        padding: 20,
+        padding: 10,
         marginVertical: 10,
         borderColor: 'rgba(255, 255, 255, 0.3)',
         borderWidth: 1,
