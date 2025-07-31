@@ -10,8 +10,8 @@ services:
       MYSQL_DATABASE: dreamdb
     volumes:
       - mysql_test_data:/var/lib/mysql
-      - ./src/main/resources/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
-      - ./src/main/resources/data.sql:/docker-entrypoint-initdb.d/02-data.sql
+      - ./server/src/main/resources/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./server/src/main/resources/data.sql:/docker-entrypoint-initdb.d/02-data.sql
     command: --default-authentication-plugin=mysql_native_password
 
 volumes:
