@@ -183,12 +183,14 @@ const styles = StyleSheet.create({
         marginTop: 20,
         textAlignVertical: 'top',
         fontSize: 16,
+        color: 'white',
     },
     inputLabel: {
         fontSize: 20,
         fontWeight: '600',
         color: 'rgb(255,255,255)',
         marginBottom: 10,
+        fontFamily: 'Bradley Hand'
     },
     stepIndicator: {
         textAlign: 'center',
