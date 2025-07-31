@@ -182,9 +182,8 @@ const styles = StyleSheet.create({
         padding: 10,
         marginTop: 20,
         textAlignVertical: 'top',
-        fontSize: 18,
+        fontSize: 16,
         color: 'white', 
-        fontFamily: 'Bradley Hand'
     },
     inputLabel: {
         fontSize: 20,
