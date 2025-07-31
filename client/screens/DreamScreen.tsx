@@ -189,13 +189,12 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         color: 'rgb(255,255,255)',
         marginBottom: 10,
-        fontFamily: 'Bradley Hand'
     },
     stepIndicator: {
         textAlign: 'center',
         fontSize: 16,
         color: 'rgba(255, 255, 255, 0.8)',
-        fontFamily: 'Bradley Hand',
+        fontWeight: '500',
         marginTop: 10,
     },
     navigationButtons: {
@@ -227,6 +226,5 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 16,
         fontWeight: '600',
-        fontFamily: 'Bradley Hand',
     },
 });
