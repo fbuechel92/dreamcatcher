@@ -1,7 +1,5 @@
 package com.dreamcatcher.mobile.enums;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-
 public enum Mood {
     HAPPY("Happy"),
     EXCITED("Excited"),
@@ -20,7 +18,6 @@ public enum Mood {
         this.displayName = displayName;
     }
 
-    @JsonValue
     public String getDisplayName(){
         return displayName;
     }

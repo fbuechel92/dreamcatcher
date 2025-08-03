@@ -1,7 +1,5 @@
 package com.dreamcatcher.mobile.enums;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-
 public enum SleepQuality {
     EXCELLENT("Excellent"),
     GOOD("Good"),
@@ -15,7 +13,6 @@ public enum SleepQuality {
         this.displayName = displayName;
     }
 
-    @JsonValue
     public String getDisplayName() {
         return displayName;
     }

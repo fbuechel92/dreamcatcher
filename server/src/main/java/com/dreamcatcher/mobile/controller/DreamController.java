@@ -5,6 +5,8 @@ import com.dreamcatcher.mobile.dto.CallDreamDTO;
 import com.dreamcatcher.mobile.service.DreamManagementService;
 import com.dreamcatcher.mobile.enums.Mood;
 import com.dreamcatcher.mobile.enums.SleepQuality;
+
+import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -52,13 +54,19 @@ public class DreamController {
 
     //Getting the mood options
     @GetMapping("/options/moods")
-    public ResponseEntity<Mood[]> getMoodOptions() {
-        return ResponseEntity.ok(Mood.values());
+    public ResponseEntity<String[]> getMoodOptions() {
+        String[] displayName = Arrays.stream(Mood.values())
+            .map(Mood::getDisplayName)
+            .toArray(String[]::new);
+        return ResponseEntity.ok(displayName);
     }
 
     //Getting the sleep quality options
-    @GetMapping("options/sleep-qualities")
-    public ResponseEntity<SleepQuality[]> getSleepQualityOptions() {
-        return ResponseEntity.ok(SleepQuality.values());
+    @GetMapping("/options/sleep-qualities")
+    public ResponseEntity<String[]> getSleepQualityOptions() {
+        String[] displayNames = Arrays.stream(SleepQuality.values())
+            .map(SleepQuality::getDisplayName)
+            .toArray(String[]::new);
+    return ResponseEntity.ok(displayNames);
     }
 }
