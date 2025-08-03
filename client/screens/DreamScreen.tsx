@@ -299,18 +299,12 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
     pickerContainer: {
-    width: '80%',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.6)',
-    borderRadius: 10,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    marginTop: 20,
-    overflow: 'hidden',
+        width: '80%',
+        marginTop: 20,
     },
     picker: {
+        height: 150,
         color: 'white',
-        backgroundColor: 'transparent',
-        height: 150, // iOS picker needs more height
     },
     pickerItem: {
         color: 'white',
