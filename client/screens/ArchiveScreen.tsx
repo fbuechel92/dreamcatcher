@@ -6,8 +6,8 @@ interface Dream {
     visitor: string;
     plot: string;
     location: string;
-    mood: string;
-    sleepQuality: string;
+    mood: any;
+    sleepQuality: any;
     additionalInfo: string;
     createdAt: string;
 }
