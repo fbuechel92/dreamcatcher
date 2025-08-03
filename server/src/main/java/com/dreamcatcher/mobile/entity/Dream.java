@@ -6,11 +6,16 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.EnumType;
+
+import com.dreamcatcher.mobile.enums.Mood;
+import com.dreamcatcher.mobile.enums.SleepQuality;
 
 @Entity
 public class Dream {
@@ -29,8 +34,13 @@ public class Dream {
     private String visitor;
     private String plot;
     private String location;
-    private String mood;
-    private String sleepQuality;
+
+    @Enumerated(EnumType.STRING)
+    private Mood mood;
+
+    @Enumerated(EnumType.STRING)
+    private SleepQuality sleepQuality;
+
     private String additionalInfo;
 
     @CreationTimestamp 
@@ -42,7 +52,7 @@ public class Dream {
     //Constructor
     public Dream(){};
 
-    public Dream(String visitor, String plot, String location, String mood, String sleepQuality, String additionalInfo, LocalDateTime createdAt, LocalDateTime updatedAt){
+    public Dream(String visitor, String plot, String location, Mood mood, SleepQuality sleepQuality, String additionalInfo, LocalDateTime createdAt, LocalDateTime updatedAt){
         this.visitor = visitor;
         this.plot = plot;
         this.location = location;
@@ -53,7 +63,7 @@ public class Dream {
         this.updatedAt = updatedAt;
     }
 
-    public Dream(String visitor, String plot, String location, String mood, String sleepQuality, String additionalInfo){
+    public Dream(String visitor, String plot, String location, Mood mood, SleepQuality sleepQuality, String additionalInfo){
         this.visitor = visitor;
         this.plot = plot;
         this.location = location;
@@ -87,11 +97,11 @@ public class Dream {
         return location;
     }
 
-    public String getMood(){
+    public Mood getMood(){
         return mood;
     }
 
-    public String getSleepQuality(){
+    public SleepQuality getSleepQuality(){
         return sleepQuality;
     }
 
@@ -132,11 +142,11 @@ public class Dream {
         this.location = location;
     }
 
-    public void setMood(String mood) {
+    public void setMood(Mood mood) {
         this.mood = mood;
     }
 
-    public void setSleepQuality(String sleepQuality) {
+    public void setSleepQuality(SleepQuality sleepQuality) {
         this.sleepQuality = sleepQuality;
     }
 
