@@ -51,7 +51,7 @@ public class DreamController {
     }
 
     //Getting the mood options
-    @GetMapping("/options/mood")
+    @GetMapping("/options/moods")
     public ResponseEntity<Mood[]> getMoodOptions() {
         return ResponseEntity.ok(Mood.values());
     }
