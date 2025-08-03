@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, ImageBackground, View, TextInput, TouchableOpacity } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
+import { Picker } from '@react-native-picker/picker';
 
 export default function DreamScreen() {
     
@@ -68,17 +68,23 @@ export default function DreamScreen() {
     const renderInput = () => {
         if (currentQuestion.type === 'picker') {
             return (
-                <RNPickerSelect
-                    onValueChange={updateDreamData}
-                    items={getPickerOptions()}
-                    value={currentValue}
-                    placeholder={{
-                        label: 'Select an option...',
-                        value: null,
-                        color: 'rgba(255, 255, 255, 0.5)',
-                    }}
-                    style={pickerSelectStyles}
-                />
+                <View style={styles.pickerContainer}>
+                    <Picker
+                        selectedValue={currentValue}
+                        onValueChange={updateDreamData}
+                        style={styles.picker}
+                        itemStyle={styles.pickerItem}
+                    >
+                        <Picker.Item label="Select an option..." value="" />
+                        {getPickerOptions().map((option) => (
+                            <Picker.Item 
+                                key={option.value} 
+                                label={option.label} 
+                                value={option.value} 
+                            />
+                        ))}
+                    </Picker>
+                </View>
             );
         }
 
@@ -93,7 +99,7 @@ export default function DreamScreen() {
                 placeholderTextColor="rgba(255, 255, 255, 0.5)"
             />
         );
-    };
+    }
 
     const handleNext = () => {
         if (currentStep < questions.length - 1) {
@@ -292,33 +298,23 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '600',
     },
-});
-
-const pickerSelectStyles = StyleSheet.create({
-    inputIOS: {
-        width: '80%',
-        fontSize: 16,
-        paddingVertical: 12,
-        paddingHorizontal: 10,
-        borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.6)',
-        borderRadius: 10,
-        color: 'white',
-        paddingRight: 30,
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        marginTop: 20,
+    pickerContainer: {
+    width: '80%',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.6)',
+    borderRadius: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    marginTop: 20,
+    overflow: 'hidden',
     },
-    inputAndroid: {
-        width: '80%',
-        fontSize: 16,
-        paddingHorizontal: 10,
-        paddingVertical: 8,
-        borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.6)',
-        borderRadius: 10,
+    picker: {
         color: 'white',
-        paddingRight: 30,
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        marginTop: 20,
+        backgroundColor: 'transparent',
+        height: 150, // iOS picker needs more height
+    },
+    pickerItem: {
+        color: 'white',
+        fontSize: 16,
+        height: 150,
     },
 });
