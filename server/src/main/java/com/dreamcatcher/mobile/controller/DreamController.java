@@ -3,6 +3,8 @@ package com.dreamcatcher.mobile.controller;
 import com.dreamcatcher.mobile.dto.SubmitDreamDTO;
 import com.dreamcatcher.mobile.dto.CallDreamDTO;
 import com.dreamcatcher.mobile.service.DreamManagementService;
+import com.dreamcatcher.mobile.enums.Mood;
+import com.dreamcatcher.mobile.enums.SleepQuality;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -46,5 +48,17 @@ public class DreamController {
     public ResponseEntity<Void> deleteDreamById(@PathVariable Integer dreamId){
         dreamManagementService.deleteDreamById(dreamId);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    //Getting the mood options
+    @GetMapping("/options/moods")
+    public ResponseEntity<Mood[]> getMoodOptions() {
+        return ResponseEntity.ok(Mood.values());
+    }
+
+    //Getting the sleep quality options
+    @GetMapping("options/sleep-qualities")
+    public ResponseEntity<SleepQuality[]> getSleepQualityOptions() {
+        return ResponseEntity.ok(SleepQuality.values());
     }
 }

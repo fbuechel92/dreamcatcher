@@ -1,8 +1,20 @@
 import React from 'react';
 import { StyleSheet, Text, ImageBackground, View, TextInput, TouchableOpacity } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 
 export default function DreamScreen() {
     
+    interface PickerOption {
+        label: string;
+        value: string;
+    }
+
+    interface Question {
+        key: string;
+        label: string;
+        type: 'text' | 'picker';
+    }
+
     const [currentStep, setCurrentStep] = React.useState(0);
     const [dreamData, setDreamData] = React.useState({
         visitor: '',
@@ -13,14 +25,81 @@ export default function DreamScreen() {
         anything: '',
     });
 
-    const questions = [
-        { key: 'visitor', label: 'Who was in your dream?' },
-        { key: 'plot', label: 'What happened in your dream?' },
-        { key: 'location', label: 'Where did your dream take place?' },
-        { key: 'mood', label: 'How did the dream make you feel?' },
-        { key: 'sleepQuality', label: 'How well did you sleep?' },
-        { key: 'anything', label: 'Anyting else you remember?' },
+    const [moodOptions, setMoodOptions] = React.useState<PickerOption[]>([]);
+    const [sleepQualityOptions, setSleepQualityOptions] = React.useState<PickerOption[]>([]);
+
+    // Fetch options on component mount
+    React.useEffect(() => {
+        const fetchOptions = async () => {
+            try {
+                const [moodResponse, sleepResponse] = await Promise.all([
+                    fetch('http://localhost:8080/options/moods'),
+                    fetch('http://localhost:8080/options/sleep-qualities')
+                ]);
+
+                const moods = await moodResponse.json();
+                const sleepQualities = await sleepResponse.json();
+
+                setMoodOptions(moods.map((mood: string) => ({ label: mood, value: mood })));
+                setSleepQualityOptions(sleepQualities.map((quality: string) => ({ label: quality, value: quality })));
+            } catch (error) {
+                console.error('Error fetching options:', error);
+            }
+        };
+
+        fetchOptions();
+    }, []);
+
+    const questions: Question[] = [
+        { key: 'visitor', label: 'Who was in your dream?', type: 'text' },
+        { key: 'plot', label: 'What happened in your dream?', type: 'text' },
+        { key: 'location', label: 'Where did your dream take place?', type: 'text' },
+        { key: 'mood', label: 'How did the dream make you feel?', type: 'picker' },
+        { key: 'sleepQuality', label: 'How well did you sleep?', type: 'picker' },
+        { key: 'anything', label: 'Anything else you remember?', type: 'text' },
     ];
+
+    const getPickerOptions = (): PickerOption[] => {
+        if (currentQuestion.key === 'mood') return moodOptions;
+        if (currentQuestion.key === 'sleepQuality') return sleepQualityOptions;
+        return [];
+    };
+
+    const renderInput = () => {
+        if (currentQuestion.type === 'picker') {
+            return (
+                <View style={styles.pickerContainer}>
+                    <Picker
+                        selectedValue={currentValue}
+                        onValueChange={updateDreamData}
+                        style={styles.picker}
+                        itemStyle={styles.pickerItem}
+                    >
+                        <Picker.Item label="Select an option..." value="" />
+                        {getPickerOptions().map((option) => (
+                            <Picker.Item 
+                                key={option.value} 
+                                label={option.label} 
+                                value={option.value} 
+                            />
+                        ))}
+                    </Picker>
+                </View>
+            );
+        }
+
+        return (
+            <TextInput
+                style={styles.input}
+                value={currentValue}
+                onChangeText={updateDreamData}
+                multiline={true}
+                numberOfLines={4}
+                placeholder="Share your dream..."
+                placeholderTextColor="rgba(255, 255, 255, 0.5)"
+            />
+        );
+    }
 
     const handleNext = () => {
         if (currentStep < questions.length - 1) {
@@ -61,7 +140,6 @@ export default function DreamScreen() {
             });
 
             if (response.ok) {
-                // Reset form or navigate back
                 setDreamData({
                     visitor: '',
                     plot: '',
@@ -71,7 +149,6 @@ export default function DreamScreen() {
                     anything: '',
                 });
                 setCurrentStep(0);
-                // You might want to show a success message or navigate to archive
             }
         } catch (error) {
             console.error('Error saving dream:', error);
@@ -102,15 +179,7 @@ export default function DreamScreen() {
 
                 <View style={styles.lowerSection}>
                     <Text style={styles.inputLabel}>{currentQuestion.label}</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={currentValue}
-                        onChangeText={updateDreamData}
-                        multiline={true}
-                        numberOfLines={4}
-                        placeholder="Share your dream..."
-                        placeholderTextColor="rgba(255, 255, 255, 0.5)"
-                    />
+                    {renderInput()}
                 </View>
 
                     <View style={[
@@ -228,5 +297,18 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 16,
         fontWeight: '600',
+    },
+    pickerContainer: {
+        width: '80%',
+        marginTop: 20,
+    },
+    picker: {
+        height: 150,
+        color: 'white',
+    },
+    pickerItem: {
+        color: 'white',
+        fontSize: 16,
+        height: 150,
     },
 });

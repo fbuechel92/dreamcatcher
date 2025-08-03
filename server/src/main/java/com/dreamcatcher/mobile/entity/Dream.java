@@ -31,6 +31,7 @@ public class Dream {
     private String location;
     private String mood;
     private String sleepQuality;
+
     private String additionalInfo;
 
     @CreationTimestamp 
