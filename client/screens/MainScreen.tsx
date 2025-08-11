@@ -1,8 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, ImageBackground, View, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
+import AuthButton from '../components/AuthButton';
 
-export default function MainScreen() {
+interface MainScreenProps {
+  onLogout: () => void;
+}
+
+export default function MainScreen({ onLogout }: MainScreenProps) {
   
   const handleCatchDream = () => {
     router.push('/dream');
@@ -22,6 +27,9 @@ export default function MainScreen() {
         
         <View style={styles.upperSection}>
           <Text style={styles.title}>Dreamcatcher</Text>
+          <TouchableOpacity style={styles.logoutButton} onPress={onLogout}>
+            <Text style={styles.logoutText}>Sign Out</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.lowerSection}>
@@ -57,13 +65,16 @@ const styles = StyleSheet.create({
   },
   upperSection: {
     backgroundColor: 'transparent',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 40,
   },
   lowerSection: {
     backgroundColor: 'transparent',
   },
   title: {
     textAlign: 'center',
-    marginBottom: 40,
     color: 'rgb(255,255,255)',
     fontSize: 30,
     fontWeight: 'bold',
@@ -87,5 +98,18 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  logoutButton: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderColor: 'rgba(255, 255, 255, 0.3)',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+  },
+  logoutText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: '500',
   },
 });
