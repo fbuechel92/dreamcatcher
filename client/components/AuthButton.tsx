@@ -13,7 +13,11 @@ interface User {
   sub?: string;
 }
 
-export default function AuthButton() {
+interface AuthButtonProps {
+  onLoginSuccess?: () => void;
+}
+
+export default function AuthButton({ onLoginSuccess }: AuthButtonProps) {
   const [user, setUser] = React.useState<User | null>(null);
 
   // First, let's see what redirect URI is being generated
@@ -53,6 +57,7 @@ export default function AuthButton() {
         .then(userInfo => {
           setUser(userInfo);
           Alert.alert('Success', `Welcome ${userInfo.name}!`);
+          onLoginSuccess?.();
         })
         .catch(error => {
           console.error('User info error:', error);
@@ -62,7 +67,7 @@ export default function AuthButton() {
         Alert.alert('Error', 'Login failed');
       }
     }
-  }, [result]);
+  }, [result, onLoginSuccess]);
 
   const login = () => {
     promptAsync();
@@ -99,6 +104,8 @@ export default function AuthButton() {
     </View>
   );
 }
+
+
 
 const styles = StyleSheet.create({
   container: { padding: 20 },

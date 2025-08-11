@@ -5,8 +5,8 @@ import AuthButton from '../components/AuthButton';
 
 export default function MainScreen() {
   
-  const handleCatchDream = () => {
-    router.push('/main');
+  const handleSuccessfulLogin = () => {
+    router.replace('/');
   };
   
   return (
