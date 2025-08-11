@@ -19,7 +19,6 @@ export default function MainScreen() {
 
         <View style={styles.upperSection}>
             <Text style={styles.title}>Dreamcatcher</Text>
-            <AuthButton />
         </View>
 
         <View style={styles.lowerSection}>
@@ -45,6 +44,9 @@ const styles = StyleSheet.create({
   },
   lowerSection: {
     backgroundColor: 'transparent',
+    justifyContent: "center",
+    flex: 1,
+    marginBottom: 100
   },
   title: {
     textAlign: 'center',

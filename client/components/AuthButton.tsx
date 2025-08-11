@@ -108,7 +108,32 @@ export default function AuthButton({ onLoginSuccess }: AuthButtonProps) {
 
 
 const styles = StyleSheet.create({
-  container: { padding: 20 },
-  button: { backgroundColor: '#007bff', padding: 15, borderRadius: 5 },
-  buttonText: { color: 'white', textAlign: 'center', fontSize: 16 },
+  container: { 
+    padding: 20,
+    alignItems: 'center',
+  },
+  button: { 
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderColor: 'rgba(255, 255, 255, 0.6)',
+    borderWidth: 1,
+    borderRadius: 25,
+    paddingHorizontal: 30,
+    paddingVertical: 15,
+    alignItems: 'center',
+    minWidth: 200,
+  },
+  buttonText: { 
+    color: 'white', 
+    textAlign: 'center', 
+    fontSize: 18,
+  },
+  logoutButton: {
+    backgroundColor: 'rgba(255, 100, 100, 0.3)',
+    borderColor: 'rgba(255, 100, 100, 0.6)',
+    borderWidth: 1,
+    borderRadius: 25,
+    paddingHorizontal: 25,
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
 });
