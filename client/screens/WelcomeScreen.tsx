@@ -1,0 +1,57 @@
+import React from 'react';
+import { StyleSheet, Text, ImageBackground, View, TouchableOpacity } from 'react-native';
+import { router } from 'expo-router';
+import AuthButton from '../components/AuthButton';
+
+export default function MainScreen() {
+  
+  const handleCatchDream = () => {
+    router.push('/main');
+  };
+  
+  return (
+    <ImageBackground 
+      source={require('../assets/images/nightsky_milky.png')} 
+      style={styles.backgroundImage}
+      resizeMode="cover"
+    >
+      <View style={styles.container}>
+
+        <View style={styles.upperSection}>
+            <Text style={styles.title}>Dreamcatcher</Text>
+            <AuthButton />
+        </View>
+
+        <View style={styles.lowerSection}>
+            <AuthButton />
+        </View>
+        
+      </View>
+    </ImageBackground>
+  );
+}
+
+const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: 'transparent',
+  },
+    upperSection: {
+    backgroundColor: 'transparent',
+  },
+  lowerSection: {
+    backgroundColor: 'transparent',
+  },
+  title: {
+    textAlign: 'center',
+    marginBottom: 40,
+    color: 'rgb(255,255,255)',
+    fontSize: 30,
+    fontWeight: 'bold',
+    fontFamily: 'Bradley Hand',
+  },
+});
