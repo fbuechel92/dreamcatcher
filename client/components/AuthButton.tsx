@@ -37,6 +37,7 @@ export default function AuthButton({ onLoginSuccess, onLogout }: AuthButtonProps
     redirectUri: redirectUri, // Use the variable instead of inline
     extraParams: {
       audience: `https://${auth0Config.domain}/api/v2/`,
+      prompt: 'login',
     },
   },
   {
@@ -57,7 +58,6 @@ export default function AuthButton({ onLoginSuccess, onLogout }: AuthButtonProps
         .then(response => response.json())
         .then(userInfo => {
           setUser(userInfo);
-          Alert.alert('Success', `Welcome ${userInfo.name}!`);
           onLoginSuccess?.();
         })
         .catch(error => {
@@ -74,12 +74,7 @@ export default function AuthButton({ onLoginSuccess, onLogout }: AuthButtonProps
     promptAsync();
   };
 
-  const logout = async () => {
-    await WebBrowser.openAuthSessionAsync(
-      `https://${auth0Config.domain}/v2/logout?client_id=${auth0Config.clientId}&returnTo=${encodeURIComponent(redirectUri)}`,
-      redirectUri
-    );
-    
+  const logout = async () => {    
     setUser(null);
     onLogout?.();
     Alert.alert('Success', 'Logged out');
