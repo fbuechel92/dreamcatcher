@@ -16,15 +16,20 @@ interface User {
 export default function AuthButton() {
   const [user, setUser] = React.useState<User | null>(null);
 
+  // First, let's see what redirect URI is being generated
+  const redirectUri = AuthSession.makeRedirectUri({
+    scheme: 'exp'
+  });
+  
+  console.log('Redirect URI:', redirectUri);
+
   // Configure the auth request
   const [request, result, promptAsync] = AuthSession.useAuthRequest(
   {
     clientId: auth0Config.clientId,
     scopes: ['openid', 'profile', 'email'],
     responseType: AuthSession.ResponseType.Token,
-    redirectUri: AuthSession.makeRedirectUri({
-      scheme: 'exp'
-    }),
+    redirectUri: redirectUri, // Use the variable instead of inline
     extraParams: {
       audience: `https://${auth0Config.domain}/api/v2/`,
     },
@@ -63,7 +68,12 @@ export default function AuthButton() {
     promptAsync();
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await WebBrowser.openAuthSessionAsync(
+      `https://${auth0Config.domain}/v2/logout?client_id=${auth0Config.clientId}&returnTo=${encodeURIComponent(redirectUri)}`,
+      redirectUri
+    );
+    
     setUser(null);
     Alert.alert('Success', 'Logged out');
   };
