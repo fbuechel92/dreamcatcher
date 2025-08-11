@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, ImageBackground, View, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
+import AuthButton from '../components/AuthButton';
 
 export default function MainScreen() {
   
@@ -22,6 +23,7 @@ export default function MainScreen() {
         
         <View style={styles.upperSection}>
           <Text style={styles.title}>Dreamcatcher</Text>
+          <AuthButton />
         </View>
 
         <View style={styles.lowerSection}>
