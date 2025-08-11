@@ -3,11 +3,11 @@ import { StyleSheet, Text, ImageBackground, View, TouchableOpacity } from 'react
 import { router } from 'expo-router';
 import AuthButton from '../components/AuthButton';
 
-export default function MainScreen() {
-  
-  const handleSuccessfulLogin = () => {
-    router.replace('/');
-  };
+interface WelcomeScreenProps {
+  onLoginSuccess: () => void;
+}
+
+export default function WelcomeScreen({ onLoginSuccess }: WelcomeScreenProps) {
   
   return (
     <ImageBackground 
@@ -22,7 +22,7 @@ export default function MainScreen() {
         </View>
 
         <View style={styles.lowerSection}>
-            <AuthButton onLoginSuccess={handleSuccessfulLogin}/>
+            <AuthButton onLoginSuccess={onLoginSuccess}/>
         </View>
         
       </View>

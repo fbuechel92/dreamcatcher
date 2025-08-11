@@ -15,9 +15,10 @@ interface User {
 
 interface AuthButtonProps {
   onLoginSuccess?: () => void;
+  onLogout?: () => void;
 }
 
-export default function AuthButton({ onLoginSuccess }: AuthButtonProps) {
+export default function AuthButton({ onLoginSuccess, onLogout }: AuthButtonProps) {
   const [user, setUser] = React.useState<User | null>(null);
 
   // First, let's see what redirect URI is being generated
@@ -80,6 +81,7 @@ export default function AuthButton({ onLoginSuccess }: AuthButtonProps) {
     );
     
     setUser(null);
+    onLogout?.();
     Alert.alert('Success', 'Logged out');
   };
 
