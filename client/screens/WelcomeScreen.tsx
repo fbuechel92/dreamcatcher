@@ -23,7 +23,7 @@ export default function MainScreen() {
         </View>
 
         <View style={styles.lowerSection}>
-            <AuthButton />
+            <AuthButton onLoginSuccess={handleSuccessfulLogin}/>
         </View>
         
       </View>

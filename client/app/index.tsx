@@ -1,6 +1,6 @@
 import React from 'react';
-import MainScreen from "../screens/MainScreen";
+import WelcomeScreen from "../screens/WelcomeScreen";
 
 export default () => (
-  <MainScreen />
+  <WelcomeScreen />
 );
