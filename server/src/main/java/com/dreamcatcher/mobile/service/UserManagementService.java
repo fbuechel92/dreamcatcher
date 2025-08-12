@@ -10,7 +10,6 @@ import com.dreamcatcher.mobile.utilities.UserUpdater;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,16 +18,14 @@ public class UserManagementService {
     private UserRepository userRepository;
     private UserEntityMapper userEntityMapper;
     private UserDTOMapper userDTOMapper;
-    private BCryptPasswordEncoder passwordEncoder;
     private UserUpdater userUpdater;
 
     @Autowired
     public UserManagementService(UserRepository userRepository, UserEntityMapper userEntityMapper,
-                                 UserDTOMapper userDTOMapper, BCryptPasswordEncoder passwordEncoder, UserUpdater userUpdater) {
+                                 UserDTOMapper userDTOMapper, UserUpdater userUpdater) {
         this.userRepository = userRepository;
         this.userEntityMapper = userEntityMapper;
         this.userDTOMapper = userDTOMapper;
-        this.passwordEncoder = passwordEncoder;
         this.userUpdater = userUpdater;
     }
 
@@ -40,10 +37,6 @@ public class UserManagementService {
         }
 
         User createdUser = userEntityMapper.mapToUserAuthEntity(userAuthDTO);
-
-        //Create hashed password
-        String hashedPassword = passwordEncoder.encode(userAuthDTO.password());
-        createdUser.setPassword(hashedPassword);
 
         try {
             User savedUser = userRepository.save(createdUser);

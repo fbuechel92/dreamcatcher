@@ -2,18 +2,10 @@ package com.dreamcatcher.mobile.utilities;
 
 import com.dreamcatcher.mobile.entity.User;
 import jakarta.transaction.Transactional;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserUpdater {
-
-    private final PasswordEncoder passwordEncoder;
-
-    // Constructor injection for PasswordEncoder
-    public UserUpdater(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
 
     //Method updates profile fields if changes are detected
     @Transactional
@@ -60,13 +52,6 @@ public class UserUpdater {
         try {
             if (!currentUser.getEmail().equals(submittedUser.getEmail())) {
                 currentUser.setEmail(submittedUser.getEmail());
-                userAppliedChange = true;
-            }
-
-            String hashedPassword = passwordEncoder.encode(submittedUser.getPassword());
-
-            if (!currentUser.getPassword().equals(hashedPassword)) {
-                currentUser.setPassword(hashedPassword);
                 userAppliedChange = true;
             }
 
