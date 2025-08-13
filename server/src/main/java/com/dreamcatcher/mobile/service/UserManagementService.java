@@ -47,19 +47,19 @@ public class UserManagementService {
     }
 
     //Method to provide user information if user visits user profile
-    public UserProfileDTO getUser(Integer userId) {
+    public UserProfileDTO getUser(String auth0Id) {
 
-        //Retrieve user from db
-        User foundUser = userRepository.findById(userId).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + userId + " not found", 1));
+        //Retrieve user from db using auth0Id
+        User foundUser = userRepository.findByAuth0Id(auth0Id).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + auth0Id + " not found", 1));
 
         return userDTOMapper.mapToUserProfileDTO(foundUser);
     }
 
     //Method to change profile data
-    public UserProfileDTO modifyProfile(Integer userId, UserProfileDTO userProfileDTO) {
+    public UserProfileDTO modifyProfile(String auth0Id, UserProfileDTO userProfileDTO) {
 
-        //Retrieving user by id from repo and converting dto user to entity user
-        User currentUser = userRepository.findById(userId).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + userId + " not found", 1));
+        //Retrieving user by auth0Id from repo and converting dto user to entity user
+        User currentUser = userRepository.findByAuth0Id(auth0Id).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + auth0Id + " not found", 1));
 
         User submittedUser = userEntityMapper.mapToUserProfileEntity(userProfileDTO);
 
@@ -79,10 +79,10 @@ public class UserManagementService {
     }
 
     //Method to change user auth data
-    public UserAuthDTO modifyAuth(Integer userId, UserAuthDTO userAuthDTO) {
+    public UserAuthDTO modifyAuth(String auth0Id, UserAuthDTO userAuthDTO) {
 
         //Retrieving user by id from repo and converting dto user to entity user
-        User currentUser = userRepository.findById(userId).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + userId + " not found", 1));
+        User currentUser = userRepository.findByAuth0Id(auth0Id).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + auth0Id + " not found", 1));
 
         User submittedUser = userEntityMapper.mapToUserAuthEntity(userAuthDTO);
 
@@ -102,9 +102,14 @@ public class UserManagementService {
     }
 
     //Method to delete User
-    public void deleteUser(Integer userId){
+    public void deleteUser(String auth0Id){
+        
+        //retrieve userId by auth0Id
+        User user = userRepository.findByAuth0Id(auth0Id).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + auth0Id + " not found", 1));
+        int foundUser = user.getUserId();
+
         try {
-            userRepository.deleteById(userId);
+            userRepository.deleteById(foundUser);
         } catch (DataAccessException e) {
             throw new RuntimeException("Database error occurred while deleting the user", e);
         }
