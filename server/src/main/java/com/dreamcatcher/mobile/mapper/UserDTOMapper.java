@@ -10,8 +10,8 @@ public class UserDTOMapper {
 
     public UserAuthDTO mapToUserAuthDTO(User user) {
         return new UserAuthDTO(
+            user.getAuth0Id(),
             user.getEmail(),
-            user.getPassword(),
             user.getName()
         );
     }

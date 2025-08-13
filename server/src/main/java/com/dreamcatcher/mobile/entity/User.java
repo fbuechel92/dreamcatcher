@@ -15,9 +15,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
+    private String auth0Id;
 
     private String email;
-    private String password;
     private String name;
     private String gender;
     private LocalDate birthdate;
@@ -38,9 +38,9 @@ public class User {
         this.occupation = occupation;
     };
 
-    public User(String email, String password, String name){
+    public User(String auth0Id, String email, String name){
+        this.auth0Id = auth0Id;
         this.email = email;
-        this.password = password;
         this.name = name;
     };
 
@@ -51,12 +51,12 @@ public class User {
         return userId;
     }
 
-    public String getEmail(){
-        return email;
+    public String getAuth0Id(){
+        return auth0Id;
     }
 
-    public String getPassword(){
-        return password;
+    public String getEmail(){
+        return email;
     }
 
     public String getName(){
@@ -83,12 +83,12 @@ public class User {
         this.userId = userId;
     }
 
-    public void setEmail(String email){
-        this.email = email;
+    public void setAuth0Id(String auth0Id){
+        this.auth0Id = auth0Id;
     }
 
-    public void setPassword(String password){
-        this.password = password;
+    public void setEmail(String email){
+        this.email = email;
     }
 
     public void setName(String name){
@@ -115,8 +115,8 @@ public class User {
     public String toString(){
         return "User{" +
             "userId=" + userId +
+            ", auth0Id=" + auth0Id +
             ", email=" + email +
-            ", password=" + password +
             ", name=" + name +
             ", gender=" + gender +
             ", birthdate=" + birthdate +

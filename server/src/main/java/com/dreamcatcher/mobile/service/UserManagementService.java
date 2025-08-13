@@ -10,7 +10,6 @@ import com.dreamcatcher.mobile.utilities.UserUpdater;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,16 +18,14 @@ public class UserManagementService {
     private UserRepository userRepository;
     private UserEntityMapper userEntityMapper;
     private UserDTOMapper userDTOMapper;
-    private BCryptPasswordEncoder passwordEncoder;
     private UserUpdater userUpdater;
 
     @Autowired
     public UserManagementService(UserRepository userRepository, UserEntityMapper userEntityMapper,
-                                 UserDTOMapper userDTOMapper, BCryptPasswordEncoder passwordEncoder, UserUpdater userUpdater) {
+                                 UserDTOMapper userDTOMapper, UserUpdater userUpdater) {
         this.userRepository = userRepository;
         this.userEntityMapper = userEntityMapper;
         this.userDTOMapper = userDTOMapper;
-        this.passwordEncoder = passwordEncoder;
         this.userUpdater = userUpdater;
     }
 
@@ -41,10 +38,6 @@ public class UserManagementService {
 
         User createdUser = userEntityMapper.mapToUserAuthEntity(userAuthDTO);
 
-        //Create hashed password
-        String hashedPassword = passwordEncoder.encode(userAuthDTO.password());
-        createdUser.setPassword(hashedPassword);
-
         try {
             User savedUser = userRepository.save(createdUser);
             return userDTOMapper.mapToUserAuthDTO(savedUser);
@@ -54,19 +47,19 @@ public class UserManagementService {
     }
 
     //Method to provide user information if user visits user profile
-    public UserProfileDTO getUser(Integer userId) {
+    public UserProfileDTO getUser(String auth0Id) {
 
-        //Retrieve user from db
-        User foundUser = userRepository.findById(userId).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + userId + " not found", 1));
+        //Retrieve user from db using auth0Id
+        User foundUser = userRepository.findByAuth0Id(auth0Id).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + auth0Id + " not found", 1));
 
         return userDTOMapper.mapToUserProfileDTO(foundUser);
     }
 
     //Method to change profile data
-    public UserProfileDTO modifyProfile(Integer userId, UserProfileDTO userProfileDTO) {
+    public UserProfileDTO modifyProfile(String auth0Id, UserProfileDTO userProfileDTO) {
 
-        //Retrieving user by id from repo and converting dto user to entity user
-        User currentUser = userRepository.findById(userId).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + userId + " not found", 1));
+        //Retrieving user by auth0Id from repo and converting dto user to entity user
+        User currentUser = userRepository.findByAuth0Id(auth0Id).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + auth0Id + " not found", 1));
 
         User submittedUser = userEntityMapper.mapToUserProfileEntity(userProfileDTO);
 
@@ -86,10 +79,10 @@ public class UserManagementService {
     }
 
     //Method to change user auth data
-    public UserAuthDTO modifyAuth(Integer userId, UserAuthDTO userAuthDTO) {
+    public UserAuthDTO modifyAuth(String auth0Id, UserAuthDTO userAuthDTO) {
 
         //Retrieving user by id from repo and converting dto user to entity user
-        User currentUser = userRepository.findById(userId).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + userId + " not found", 1));
+        User currentUser = userRepository.findByAuth0Id(auth0Id).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + auth0Id + " not found", 1));
 
         User submittedUser = userEntityMapper.mapToUserAuthEntity(userAuthDTO);
 
@@ -109,9 +102,14 @@ public class UserManagementService {
     }
 
     //Method to delete User
-    public void deleteUser(Integer userId){
+    public void deleteUser(String auth0Id){
+        
+        //retrieve userId by auth0Id
+        User user = userRepository.findByAuth0Id(auth0Id).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + auth0Id + " not found", 1));
+        int foundUser = user.getUserId();
+
         try {
-            userRepository.deleteById(userId);
+            userRepository.deleteById(foundUser);
         } catch (DataAccessException e) {
             throw new RuntimeException("Database error occurred while deleting the user", e);
         }
