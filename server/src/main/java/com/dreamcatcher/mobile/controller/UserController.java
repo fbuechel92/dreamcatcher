@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,9 +24,10 @@ public class UserController {
     private final UserManagementService userManagementService;
 
     //Controller Methods
-    @GetMapping("/profile/{userId}")
-    public ResponseEntity<UserProfileDTO> getUser(@PathVariable Integer userId){
-        UserProfileDTO foundUserProfile = userManagementService.getUser(userId);
+    @GetMapping("/profile")
+    public ResponseEntity<UserProfileDTO> getUser(@AuthenticationPrincipal Jwt jwt){
+        String auth0Id = jwt.getSubject();
+        UserProfileDTO foundUserProfile = userManagementService.getUser(auth0Id);
         return ResponseEntity.status(HttpStatus.OK).body(foundUserProfile);
     }
 
@@ -34,21 +37,24 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
-    @PutMapping("/profile/{userId}")
-    public ResponseEntity<UserProfileDTO> modifyUser(@PathVariable Integer userId, @RequestBody UserProfileDTO userProfileDTO){
-        UserProfileDTO modifiedUser = userManagementService.modifyProfile(userId, userProfileDTO);
+    @PutMapping("/profile")
+    public ResponseEntity<UserProfileDTO> modifyUser(@AuthenticationPrincipal Jwt jwt, @RequestBody UserProfileDTO userProfileDTO){
+        String auth0Id = jwt.getSubject();
+        UserProfileDTO modifiedUser = userManagementService.modifyProfile(auth0Id, userProfileDTO);
         return ResponseEntity.status(HttpStatus.OK).body(modifiedUser);
     }
 
-    @PutMapping("/auth/{userId}")
-    public ResponseEntity<UserAuthDTO> modifyAuth(@PathVariable Integer userId, @RequestBody UserAuthDTO userAuthDTO){
-        UserAuthDTO modifiedUser = userManagementService.modifyAuth(userId, userAuthDTO);
+    @PutMapping("/auth")
+    public ResponseEntity<UserAuthDTO> modifyAuth(@AuthenticationPrincipal Jwt jwt, @RequestBody UserAuthDTO userAuthDTO){
+        String auth0Id = jwt.getSubject();
+        UserAuthDTO modifiedUser = userManagementService.modifyAuth(auth0Id, userAuthDTO);
         return ResponseEntity.status(HttpStatus.OK).body(modifiedUser);
     }
 
     @DeleteMapping("/profile")
-    public ResponseEntity<Void> deleteUser(@RequestParam Integer userId){
-        userManagementService.deleteUser(userId);
+    public ResponseEntity<Void> deleteUser(@AuthenticationPrincipal Jwt jwt){
+        String auth0Id = jwt.getSubject();
+        userManagementService.deleteUser(auth0Id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
