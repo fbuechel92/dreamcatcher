@@ -9,6 +9,7 @@ import com.dreamcatcher.mobile.enums.SleepQuality;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 @RequiredArgsConstructor
 @RestController
@@ -25,9 +28,10 @@ public class DreamController {
     private final DreamManagementService dreamManagementService;
 
     //Creating dreams
-    @PostMapping("users/{userId}/dreams")
-    public ResponseEntity<CallDreamDTO> createDream(@PathVariable Integer userId, @RequestBody SubmitDreamDTO submitDreamDTO){
-        CallDreamDTO createdDream = dreamManagementService.createDream(userId, submitDreamDTO);
+    @PostMapping("dreams")
+    public ResponseEntity<CallDreamDTO> createDream(@AuthenticationPrincipal Jwt jwt, @RequestBody SubmitDreamDTO submitDreamDTO){
+        String auth0Id = jwt.getSubject();
+        CallDreamDTO createdDream = dreamManagementService.createDream(auth0Id, submitDreamDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdDream);
     }
 
@@ -39,9 +43,10 @@ public class DreamController {
     }
 
     //Getting all dreams
-    @GetMapping("/users/{userId}/dreams")
-    public ResponseEntity<List<CallDreamDTO>> getAllDreamsByUser(@PathVariable Integer userId) {
-        List<CallDreamDTO> foundDreams = dreamManagementService.getAllDreamsByUserId(userId);
+    @GetMapping("/dreams")
+    public ResponseEntity<List<CallDreamDTO>> getAllDreamsByUser(@AuthenticationPrincipal Jwt jwt) {
+        String auth0Id = jwt.getSubject();
+        List<CallDreamDTO> foundDreams = dreamManagementService.getAllDreamsByUserId(auth0Id);
         return ResponseEntity.status(HttpStatus.OK).body(foundDreams);
     }
 
