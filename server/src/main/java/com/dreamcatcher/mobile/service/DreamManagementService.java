@@ -31,13 +31,13 @@ public class DreamManagementService {
     }
 
     //Create Dream Method
-    public CallDreamDTO createDream(Integer userId, SubmitDreamDTO submitDreamDTO){
+    public CallDreamDTO createDream(String auth0Id, SubmitDreamDTO submitDreamDTO){
 
         //Translate DTO to entity
         Dream createdDream = dreamEntityMapper.mapToDreamEntity(submitDreamDTO);
 
-        //Get user from database
-        User user = userRepository.findById(userId).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + userId + " not found", 1));
+        //Look up user based on auth0Id
+        User user = userRepository.findByAuth0Id(auth0Id).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + auth0Id + " not found", 1));
 
         //we need this because we require the FK from user
         createdDream.setUser(user);
@@ -58,8 +58,12 @@ public class DreamManagementService {
     }
 
     //Get all dreams for a user by userID
-    public List<CallDreamDTO> getAllDreamsByUserId(Integer userId){
-        List<Dream> foundDreams = dreamRepository.findByUserId(userId);
+    public List<CallDreamDTO> getAllDreamsByUserId(String auth0Id){
+        
+        //Look up user based on auth0Id
+        User user = userRepository.findByAuth0Id(auth0Id).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + auth0Id + " not found", 1));
+        
+        List<Dream> foundDreams = dreamRepository.findByUserId(user.getUserId());
         return foundDreams.stream()
             .map(dreamDTOMapper::mapToDreamDTO)
             .toList();
