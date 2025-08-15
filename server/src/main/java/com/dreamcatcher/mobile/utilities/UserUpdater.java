@@ -42,30 +42,4 @@ public class UserUpdater {
             throw new RuntimeException("An unexpected error occurred while updating user profile fields.", e);
         }
     }
-
-    //Method updates auth fields if changes are detected
-    @Transactional
-    public boolean updateAuthFields(User currentUser, User submittedUser) {
-
-        boolean userAppliedChange = false;
-
-        try {
-            if (!currentUser.getEmail().equals(submittedUser.getEmail())) {
-                currentUser.setEmail(submittedUser.getEmail());
-                userAppliedChange = true;
-            }
-
-            if (!currentUser.getName().equals(submittedUser.getName())) {
-                currentUser.setName(submittedUser.getName());
-                userAppliedChange = true;
-            }
-
-            return userAppliedChange;
-
-        } catch (NullPointerException e) {
-            throw new RuntimeException("Failed to update user profile fields due to null values.", e);
-        } catch (Exception e) {
-            throw new RuntimeException("An unexpected error occurred while updating user profile fields.", e);
-        }
-    }
 }

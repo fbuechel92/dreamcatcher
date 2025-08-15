@@ -45,13 +45,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(modifiedUser);
     }
 
-    @PutMapping("/auth")
-    public ResponseEntity<UserAuthDTO> modifyAuth(@AuthenticationPrincipal Jwt jwt, @RequestBody UserAuthDTO userAuthDTO){
-        String auth0Id = jwt.getSubject();
-        UserAuthDTO modifiedUser = userManagementService.modifyAuth(auth0Id, userAuthDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(modifiedUser);
-    }
-
     @DeleteMapping("/profile")
     public ResponseEntity<Void> deleteUser(@AuthenticationPrincipal Jwt jwt){
         String auth0Id = jwt.getSubject();
