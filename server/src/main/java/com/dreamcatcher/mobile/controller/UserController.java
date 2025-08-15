@@ -30,8 +30,11 @@ public class UserController {
     }
 
     @PostMapping("/profile")
-    public ResponseEntity<UserAuthDTO> createUser(@RequestBody UserAuthDTO userAuthDTO){
-        UserAuthDTO createdUser = userManagementService.createUser(userAuthDTO);
+    public ResponseEntity<UserAuthDTO> createUser(@AuthenticationPrincipal Jwt jwt){
+        String auth0Id = jwt.getSubject();
+        String email = jwt.getClaim("email");
+        String name = jwt.getClaim("name");
+        UserAuthDTO createdUser = userManagementService.createUser(auth0Id, email, name);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 

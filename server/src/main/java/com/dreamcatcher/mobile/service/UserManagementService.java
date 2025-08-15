@@ -30,7 +30,9 @@ public class UserManagementService {
     }
 
     //Method to save user to the database
-    public UserAuthDTO createUser(UserAuthDTO userAuthDTO) {
+    public UserAuthDTO createUser(String auth0Id, String email, String name) {
+        UserAuthDTO userAuthDTO = new UserAuthDTO(auth0Id, email, name);
+        
         //Check if mail already exists in db
         if (userRepository.existsByEmail(userAuthDTO.email())) {
             throw new IllegalArgumentException("The createUser method in the UserService class failed because the email exists already.");
