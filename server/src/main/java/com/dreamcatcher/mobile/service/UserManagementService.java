@@ -30,7 +30,9 @@ public class UserManagementService {
     }
 
     //Method to save user to the database
-    public UserAuthDTO createUser(UserAuthDTO userAuthDTO) {
+    public UserAuthDTO createUser(String auth0Id, String email, String name) {
+        UserAuthDTO userAuthDTO = new UserAuthDTO(auth0Id, email, name);
+        
         //Check if mail already exists in db
         if (userRepository.existsByEmail(userAuthDTO.email())) {
             throw new IllegalArgumentException("The createUser method in the UserService class failed because the email exists already.");
@@ -75,29 +77,6 @@ public class UserManagementService {
             }
         } else {
             return userDTOMapper.mapToUserProfileDTO(currentUser);
-        }
-    }
-
-    //Method to change user auth data
-    public UserAuthDTO modifyAuth(String auth0Id, UserAuthDTO userAuthDTO) {
-
-        //Retrieving user by id from repo and converting dto user to entity user
-        User currentUser = userRepository.findByAuth0Id(auth0Id).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + auth0Id + " not found", 1));
-
-        User submittedUser = userEntityMapper.mapToUserAuthEntity(userAuthDTO);
-
-        //Apply change to current user and check if change was made
-        boolean userAppliedChange = userUpdater.updateAuthFields(currentUser, submittedUser);
-
-        if (userAppliedChange) {
-            try {
-                User savedUser = userRepository.save(currentUser);
-                return userDTOMapper.mapToUserAuthDTO(savedUser);
-            } catch (DataAccessException e) {
-                throw new RuntimeException("Database error occurred while saving the user", e);
-            }
-        } else {
-            return userDTOMapper.mapToUserAuthDTO(currentUser);
         }
     }
 

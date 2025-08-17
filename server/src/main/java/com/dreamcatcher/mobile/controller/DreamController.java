@@ -37,8 +37,9 @@ public class DreamController {
 
     //Getting specific dream
     @GetMapping("/dreams/{dreamId}")
-    public ResponseEntity<CallDreamDTO> getDreamById(@PathVariable Integer dreamId) {
-        CallDreamDTO foundDream = dreamManagementService.getDreamById(dreamId);
+    public ResponseEntity<CallDreamDTO> getDreamById(@AuthenticationPrincipal Jwt jwt, @PathVariable Integer dreamId) {
+        String auth0Id = jwt.getSubject();
+        CallDreamDTO foundDream = dreamManagementService.getDreamById(auth0Id, dreamId);
         return ResponseEntity.status(HttpStatus.OK).body(foundDream);
     }
 
@@ -52,8 +53,9 @@ public class DreamController {
 
     //Delete dream
     @DeleteMapping("/dreams/{dreamId}")
-    public ResponseEntity<Void> deleteDreamById(@PathVariable Integer dreamId){
-        dreamManagementService.deleteDreamById(dreamId);
+    public ResponseEntity<Void> deleteDreamById(@AuthenticationPrincipal Jwt jwt, @PathVariable Integer dreamId){
+        String auth0Id = jwt.getSubject();
+        dreamManagementService.deleteDreamById(auth0Id, dreamId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

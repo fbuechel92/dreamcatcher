@@ -52,9 +52,16 @@ public class DreamManagementService {
     }
 
     //Get Dream by ID
-    public CallDreamDTO getDreamById(Integer dreamId){
-        Dream foundDream = dreamRepository.findById(dreamId).orElseThrow(() -> new EmptyResultDataAccessException("Dream with ID " + dreamId + " not found", 1));
-        return dreamDTOMapper.mapToDreamDTO(foundDream);
+    public CallDreamDTO getDreamById(String auth0Id, Integer dreamId){
+        Dream dream = dreamRepository.findById(dreamId).orElseThrow(() -> new EmptyResultDataAccessException("Dream with ID " + dreamId + " not found", 1));
+        String dreamUserAuthId = dream.getUser().getAuth0Id();
+        String requestUserAuthId = auth0Id;
+
+        if(! dreamUserAuthId.equals(requestUserAuthId)){
+            throw new RuntimeException("Action not permitted.");
+        }
+
+        return dreamDTOMapper.mapToDreamDTO(dream);
     }
 
     //Get all dreams for a user by userID
@@ -70,9 +77,14 @@ public class DreamManagementService {
     }
 
     //Delete Dream by ID
-    public void deleteDreamById(Integer dreamId){
-        if (!dreamRepository.existsById(dreamId)) {
-            throw new RuntimeException("Dream with ID " + dreamId + " does not exist.");
+    public void deleteDreamById(String auth0Id, Integer dreamId){
+        //check if dream is associated with the user that put the request
+        Dream dream = dreamRepository.findById(dreamId).orElseThrow(() -> new EmptyResultDataAccessException("Dream with ID " + dreamId + " not found", 1));
+        String dreamUserAuthId = dream.getUser().getAuth0Id();
+        String requestUserAuthId = auth0Id;
+
+        if(! dreamUserAuthId.equals(requestUserAuthId)){
+            throw new RuntimeException("Dream with ID " + dreamId + " cannot be deleted. User does not have permission or dream does not exist.");
         }
 
         try {

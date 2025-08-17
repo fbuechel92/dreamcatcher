@@ -10,8 +10,8 @@ public class UserEntityMapper {
 
     public User mapToUserAuthEntity(UserAuthDTO userAuthDTO) {
         return new User(
+            userAuthDTO.auth0Id(),
             userAuthDTO.email(),
-            userAuthDTO.password(),
             userAuthDTO.name()
         );
     }

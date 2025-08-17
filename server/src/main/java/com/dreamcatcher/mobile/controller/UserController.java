@@ -30,8 +30,11 @@ public class UserController {
     }
 
     @PostMapping("/profile")
-    public ResponseEntity<UserAuthDTO> createUser(@RequestBody UserAuthDTO userAuthDTO){
-        UserAuthDTO createdUser = userManagementService.createUser(userAuthDTO);
+    public ResponseEntity<UserAuthDTO> createUser(@AuthenticationPrincipal Jwt jwt){
+        String auth0Id = jwt.getSubject();
+        String email = jwt.getClaim("email");
+        String name = jwt.getClaim("name");
+        UserAuthDTO createdUser = userManagementService.createUser(auth0Id, email, name);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
@@ -39,13 +42,6 @@ public class UserController {
     public ResponseEntity<UserProfileDTO> modifyUser(@AuthenticationPrincipal Jwt jwt, @RequestBody UserProfileDTO userProfileDTO){
         String auth0Id = jwt.getSubject();
         UserProfileDTO modifiedUser = userManagementService.modifyProfile(auth0Id, userProfileDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(modifiedUser);
-    }
-
-    @PutMapping("/auth")
-    public ResponseEntity<UserAuthDTO> modifyAuth(@AuthenticationPrincipal Jwt jwt, @RequestBody UserAuthDTO userAuthDTO){
-        String auth0Id = jwt.getSubject();
-        UserAuthDTO modifiedUser = userManagementService.modifyAuth(auth0Id, userAuthDTO);
         return ResponseEntity.status(HttpStatus.OK).body(modifiedUser);
     }
 
