@@ -93,4 +93,9 @@ public class UserManagementService {
             throw new RuntimeException("Database error occurred while deleting the user", e);
         }
     }
+
+    //Method to check if user exists
+    public boolean userExists(String auth0Id){
+        return userRepository.findByAuth0Id(auth0Id).isPresent();
+    }
 }

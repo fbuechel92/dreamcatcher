@@ -51,4 +51,11 @@ public class UserController {
         userManagementService.deleteUser(auth0Id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+    @GetMapping("/profile/exists")
+    public ResponseEntity<Boolean> userExists(@AuthenticationPrincipal Jwt jwt){
+        String auth0Id = jwt.getSubject();
+        boolean userExists = userManagementService.userExists(auth0Id);
+        return ResponseEntity.status(HttpStatus.OK).body(userExists);
+    }
 }
