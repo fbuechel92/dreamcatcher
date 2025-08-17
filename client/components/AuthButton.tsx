@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 import { auth0Config } from '../services/auth0';
+import { useAuth } from '../contexts/AuthContext';
 
 // Complete the auth session
 WebBrowser.maybeCompleteAuthSession();
@@ -19,6 +20,7 @@ interface AuthButtonProps {
 }
 
 export default function AuthButton({ onLoginSuccess, onLogout }: AuthButtonProps) {
+  const { setAccessToken } = useAuth();
   const [user, setUser] = React.useState<User | null>(null);
 
   // First, let's see what redirect URI is being generated
@@ -46,7 +48,10 @@ export default function AuthButton({ onLoginSuccess, onLogout }: AuthButtonProps
 
   React.useEffect(() => {
     if (result) {
+      console.log('Login result:', result)
       if (result.type === 'success') {
+        setAccessToken(result.params.access_token);
+        console.log('Token set in context:', result.params.access_token);
         // Get user info
         fetch(`https://${auth0Config.domain}/userinfo`, {
           headers: {

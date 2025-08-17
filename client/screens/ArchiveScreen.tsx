@@ -28,6 +28,7 @@ export default function ArchiveScreen() {
 
     const fetchUserDreams = async () => {
         try {
+            console.log('Access Token:', accessToken); //remove again
             const response = await fetch(`http://localhost:8080/dreams`, {
                 method: 'GET',
                 headers: {
@@ -35,6 +36,10 @@ export default function ArchiveScreen() {
                     'Authorization' : `Bearer ${accessToken}`,
                 }
             });
+            if (!response.ok) {
+                console.error('HTTP error:', response.status, await response.text());
+                return;
+            } //remove again
             const data = await response.json();
             setDreams(data);
         } catch (error) {

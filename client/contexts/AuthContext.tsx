@@ -7,7 +7,12 @@ interface AuthContextType {
   setUser: (user: any) => void;
 }
 
-export const AuthContext = createContext<AuthContextType | null>(null);
+export const AuthContext = createContext<AuthContextType>({
+  accessToken: null,
+  setAccessToken: () => {},
+  user: null,
+  setUser: () => {},
+});
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [accessToken, setAccessToken] = useState<string | null>(null);
