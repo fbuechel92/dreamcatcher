@@ -5,9 +5,11 @@ import React from "react";
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
+  //event handlers
   const handleLoginSuccess = () => setIsLoggedIn(true);
   const handleLogout = () => setIsLoggedIn(false);
 
+  //based on isLoggedIn, we will show either main or welcome screen
   return isLoggedIn ? (
     <MainScreen onLogout={handleLogout} />
   ) : (

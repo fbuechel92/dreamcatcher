@@ -19,6 +19,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<any>(null);
 
   return (
+    //making authentication type available to child components
     <AuthContext.Provider value={{ accessToken, setAccessToken, user, setUser }}>
       {children}
     </AuthContext.Provider>
