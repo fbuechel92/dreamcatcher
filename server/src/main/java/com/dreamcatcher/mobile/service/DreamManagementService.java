@@ -70,9 +70,14 @@ public class DreamManagementService {
     }
 
     //Delete Dream by ID
-    public void deleteDreamById(Integer dreamId){
-        if (!dreamRepository.existsById(dreamId)) {
-            throw new RuntimeException("Dream with ID " + dreamId + " does not exist.");
+    public void deleteDreamById(String auth0Id, Integer dreamId){
+        //check if dream is associated with the user that put the request
+        Dream dream = dreamRepository.findById(dreamId).orElseThrow(() -> new EmptyResultDataAccessException("Dream with ID " + dreamId + " not found", 1));
+        String DreamUserAuthId = dream.getUser().getAuth0Id();
+        String requestUserAuthId = auth0Id;
+
+        if(! DreamUserAuthId.equals(requestUserAuthId)){
+            throw new RuntimeException("Dream with ID " + dreamId + " cannot be deleted. Missing permission or missing dream");
         }
 
         try {
