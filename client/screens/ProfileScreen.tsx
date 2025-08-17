@@ -1,9 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text, ImageBackground, View, TouchableOpacity } from 'react-native';
-import { router } from 'expo-router';
+import { useState } from 'react';
+import { StyleSheet, Text, ImageBackground, View, TextInput } from 'react-native';
 
 export default function ProfileScreen() {
   
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [gender, setGender] = useState('');
+  const [birthdate, setBirthdate] = useState('');
+  const [country, setCountry] = useState('');
+  const [occupation, setOccupation] = useState('');
+
   return (
     <ImageBackground 
       source={require('../assets/images/nightsky_milky.png')} 
@@ -17,6 +24,43 @@ export default function ProfileScreen() {
         </View>
 
         <View style={styles.lowerSection}>
+          <TextInput
+            style={styles.input}
+            placeholder="Name"
+            value={name}
+            onChangeText={setName}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Gender"
+            value={gender}
+            onChangeText={setGender}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Birthdate (YYYY-MM-DD)"
+            value={birthdate}
+            onChangeText={setBirthdate}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Country"
+            value={country}
+            onChangeText={setCountry}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Occupation"
+            value={occupation}
+            onChangeText={setOccupation}
+          />
         </View>
         
       </View>
@@ -33,7 +77,7 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: 'transparent',
   },
-    upperSection: {
+  upperSection: {
     backgroundColor: 'transparent',
   },
   lowerSection: {
@@ -49,5 +93,23 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     fontFamily: 'Bradley Hand',
+  },
+  input: {
+    backgroundColor: 'rgba(255,255,255,0.8)',
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 12,
+  },
+  saveButton: {
+    backgroundColor: '#4B0082',
+    padding: 14,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  saveButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
