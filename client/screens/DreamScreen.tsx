@@ -1,9 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, ImageBackground, View, TextInput, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { useAuth } from '../contexts/AuthContext'; 
 
 export default function DreamScreen() {
     
+    const auth = useAuth();
+    const accessToken = auth?.accessToken;
+
     interface PickerOption {
         label: string;
         value: string;
@@ -121,13 +125,13 @@ export default function DreamScreen() {
     };
 
     const saveDream = async() => {
-        const mock_user_id = "1"; // to be removed later
 
         try {
-            const response = await fetch(`http://localhost:8080/users/${mock_user_id}/dreams`, {
+            const response = await fetch(`http://localhost:8080/dreams`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization' : `Bearer ${accessToken}`,
                 },
                 body: JSON.stringify({
                     visitor: dreamData.visitor,
