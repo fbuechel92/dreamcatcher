@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TextInput, TouchableOpacity, StyleSheet, Text, ImageBackground, View, FlatList, Modal, ScrollView } from 'react-native';
+import { useAuth } from '../contexts/AuthContext';
 
 interface Dream {
     dreamId: number;
@@ -14,10 +15,12 @@ interface Dream {
 
 export default function ArchiveScreen() {
 
+    const auth = useAuth();
+    const accessToken = auth?.accessToken;
+
     const[dreams, setDreams] = useState<Dream[]>([]);
     const[selectedDream, setSelectedDream] = useState<Dream | null>(null);
     const[modalVisible, setModalVisible] = useState(false);
-    const mock_user_id = "1"; //to be removed later
 
     useEffect(() => {
         fetchUserDreams();
@@ -25,7 +28,13 @@ export default function ArchiveScreen() {
 
     const fetchUserDreams = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/users/${mock_user_id}/dreams`);
+            const response = await fetch(`http://localhost:8080/dreams`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization' : `Bearer ${accessToken}`,
+                }
+            });
             const data = await response.json();
             setDreams(data);
         } catch (error) {
