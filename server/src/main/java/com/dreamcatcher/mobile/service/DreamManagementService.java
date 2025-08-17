@@ -58,7 +58,7 @@ public class DreamManagementService {
         String requestUserAuthId = auth0Id;
 
         if(! dreamUserAuthId.equals(requestUserAuthId)){
-            throw new RuntimeException("Action not permitted");
+            throw new RuntimeException("Action not permitted.");
         }
 
         return dreamDTOMapper.mapToDreamDTO(dream);
@@ -84,7 +84,7 @@ public class DreamManagementService {
         String requestUserAuthId = auth0Id;
 
         if(! dreamUserAuthId.equals(requestUserAuthId)){
-            throw new RuntimeException("Dream with ID " + dreamId + " cannot be deleted. Missing permission or missing dream");
+            throw new RuntimeException("Dream with ID " + dreamId + " cannot be deleted. User does not have permission or dream does not exist.");
         }
 
         try {
