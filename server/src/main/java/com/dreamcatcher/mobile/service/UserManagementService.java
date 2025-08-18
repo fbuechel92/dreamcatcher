@@ -29,8 +29,8 @@ public class UserManagementService {
         this.userUpdater = userUpdater;
     }
 
-    //Method to save user to the database
-    public UserAuthDTO createUser(String auth0Id, String email, String name) {
+    //Method to save auth info
+    public UserAuthDTO createAuth(String auth0Id, String email, String name) {
         UserAuthDTO userAuthDTO = new UserAuthDTO(auth0Id, email, name);
         
         //Check if mail already exists in db
@@ -38,18 +38,27 @@ public class UserManagementService {
             throw new IllegalArgumentException("The createUser method in the UserService class failed because the email exists already.");
         }
 
-        User createdUser = userEntityMapper.mapToUserAuthEntity(userAuthDTO);
+        User createdAuth = userEntityMapper.mapToUserAuthEntity(userAuthDTO);
 
         try {
-            User savedUser = userRepository.save(createdUser);
-            return userDTOMapper.mapToUserAuthDTO(savedUser);
+            User savedAuth = userRepository.save(createdAuth);
+            return userDTOMapper.mapToUserAuthDTO(savedAuth);
         } catch (DataAccessException e) {
             throw new RuntimeException("Database error occurred while saving the user", e);
         }
     }
 
-    //Method to provide user information if user visits user profile
-    public UserProfileDTO getUser(String auth0Id) {
+    //Method get auth info
+    public UserAuthDTO getAuth(String auth0Id) {
+        
+        //Retrieve user from db using auth0Id
+        User foundUser = userRepository.findByAuth0Id(auth0Id).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + auth0Id + " not found", 1));
+
+        return userDTOMapper.mapToUserAuthDTO(foundUser);
+    }
+
+    //Method to get profile info
+    public UserProfileDTO getProfile(String auth0Id) {
 
         //Retrieve user from db using auth0Id
         User foundUser = userRepository.findByAuth0Id(auth0Id).orElseThrow(() -> new EmptyResultDataAccessException("User with ID " + auth0Id + " not found", 1));
@@ -57,7 +66,7 @@ public class UserManagementService {
         return userDTOMapper.mapToUserProfileDTO(foundUser);
     }
 
-    //Method to change profile data
+    //Method to change profile info
     public UserProfileDTO modifyProfile(String auth0Id, UserProfileDTO userProfileDTO) {
 
         //Retrieving user by auth0Id from repo and converting dto user to entity user
@@ -92,5 +101,10 @@ public class UserManagementService {
         } catch (DataAccessException e) {
             throw new RuntimeException("Database error occurred while deleting the user", e);
         }
+    }
+
+    //Method to check if user exists
+    public boolean userExists(String auth0Id){
+        return userRepository.findByAuth0Id(auth0Id).isPresent();
     }
 }

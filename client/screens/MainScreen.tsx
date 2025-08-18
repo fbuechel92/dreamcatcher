@@ -16,6 +16,10 @@ export default function MainScreen({ onLogout }: MainScreenProps) {
   const handleArchive = () => {
     router.push('/archive');
   };
+
+  const handleProfile = () => {
+    router.push('/profile');
+  };
   
   return (
     <ImageBackground 
@@ -29,6 +33,9 @@ export default function MainScreen({ onLogout }: MainScreenProps) {
           <Text style={styles.title}>Dreamcatcher</Text>
           <TouchableOpacity style={styles.logoutButton} onPress={onLogout}>
             <Text style={styles.logoutText}>Sign Out</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.logoutButton} onPress={handleProfile}>
+            <Text style={styles.logoutText}>Profile</Text>
           </TouchableOpacity>
         </View>
 
@@ -104,7 +111,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.3)',
     borderWidth: 1,
     borderRadius: 8,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingVertical: 8,
   },
   logoutText: {
