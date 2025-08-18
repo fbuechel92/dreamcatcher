@@ -15,8 +15,9 @@ export default function ProfileScreen() {
   const [country, setCountry] = useState('');
   const [occupation, setOccupation] = useState('');
 
+  //call auth info
   useEffect(() => {
-      const fetchProfile = async () => {
+      const fetchAuth = async () => {
         try {
           const response = await fetch('http://localhost:8080/auth', {
             method: 'GET',
@@ -30,7 +31,31 @@ export default function ProfileScreen() {
             setEmail(data.email || '');
           }
         } catch (error) {
-          console.error('Error fetching profile:', error);
+          console.error('Error fetching auth info:', error);
+        }
+      };
+      fetchAuth();
+    }, [accessToken]);
+
+  //call profile info
+  useEffect(() => {
+      const fetchProfile = async () => {
+        try {
+          const response = await fetch('http://localhost:8080/profile', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+            },
+          });
+          if (response.ok) {
+            const data = await response.json();
+            setGender(data.gender || '');
+            setBirthdate(data.birthday || '');
+            setCountry(data.country || '');
+            setOccupation(data.occupation || '');
+          }
+        } catch (error) {
+          console.error('Error fetching profile info:', error);
         }
       };
       fetchProfile();
