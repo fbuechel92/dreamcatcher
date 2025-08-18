@@ -50,7 +50,7 @@ export default function ProfileScreen() {
           if (response.ok) {
             const data = await response.json();
             setGender(data.gender || '');
-            setBirthdate(data.birthday || '');
+            setBirthdate(data.birthdate || '');
             setCountry(data.country || '');
             setOccupation(data.occupation || '');
           }
