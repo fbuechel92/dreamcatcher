@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StyleSheet, Text, ImageBackground, View, TextInput, TouchableOpacity } from 'react-native';
 import { useAuth } from '../contexts/AuthContext'; 
 
@@ -15,8 +15,28 @@ export default function ProfileScreen() {
   const [country, setCountry] = useState('');
   const [occupation, setOccupation] = useState('');
 
+  useEffect(() => {
+      const fetchProfile = async () => {
+        try {
+          const response = await fetch('http://localhost:8080/auth', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+            },
+          });
+          if (response.ok) {
+            const data = await response.json();
+            setName(data.name || '');
+            setEmail(data.email || '');
+          }
+        } catch (error) {
+          console.error('Error fetching profile:', error);
+        }
+      };
+      fetchProfile();
+    }, [accessToken]);
+
   const handleSave = async() => {
-    
     try {
       const response = await fetch(`http://localhost:8080/profile`, {
         method: 'PUT',
