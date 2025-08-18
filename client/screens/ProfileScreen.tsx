@@ -1,9 +1,13 @@
 import React from 'react';
 import { useState } from 'react';
 import { StyleSheet, Text, ImageBackground, View, TextInput, TouchableOpacity } from 'react-native';
+import { useAuth } from '../contexts/AuthContext'; 
 
 export default function ProfileScreen() {
   
+  const auth = useAuth();
+  const accessToken = auth?.accessToken;
+
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [gender, setGender] = useState('');
@@ -11,8 +15,25 @@ export default function ProfileScreen() {
   const [country, setCountry] = useState('');
   const [occupation, setOccupation] = useState('');
 
-  const handleSave = () => {
-    // Save profile logic here
+  const handleSave = async() => {
+    
+    try {
+      const response = await fetch(`http://localhost:8080/profile`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization' : `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+            gender: gender,
+            birthdate: birthdate,
+            country: country,
+            occupation: occupation,
+        }),
+      });
+    } catch (error) {
+          console.error('Error saving profile:', error);
+    }
   };
 
   return (

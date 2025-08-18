@@ -21,38 +21,50 @@ public class UserController {
 
     private final UserManagementService userManagementService;
 
-    //Controller Methods
-    @GetMapping("/profile")
-    public ResponseEntity<UserProfileDTO> getUser(@AuthenticationPrincipal Jwt jwt){
+    //to save profile changes
+    @PutMapping("/profile")
+    public ResponseEntity<UserProfileDTO> modifyProfile(@AuthenticationPrincipal Jwt jwt, @RequestBody UserProfileDTO userProfileDTO){
         String auth0Id = jwt.getSubject();
-        UserProfileDTO foundUserProfile = userManagementService.getUser(auth0Id);
-        return ResponseEntity.status(HttpStatus.OK).body(foundUserProfile);
+        UserProfileDTO modifiedProfile = userManagementService.modifyProfile(auth0Id, userProfileDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(modifiedProfile);
     }
 
-    @PostMapping("/profile")
-    public ResponseEntity<UserAuthDTO> createUser(@AuthenticationPrincipal Jwt jwt){
+    //to get the profile
+    @GetMapping("/profile")
+    public ResponseEntity<UserProfileDTO> getProfile(@AuthenticationPrincipal Jwt jwt){
+        String auth0Id = jwt.getSubject();
+        UserProfileDTO foundProfile = userManagementService.getProfile(auth0Id);
+        return ResponseEntity.status(HttpStatus.OK).body(foundProfile);
+    }
+
+    //to save auth info
+    @PostMapping("/auth")
+    public ResponseEntity<UserAuthDTO> createAuth(@AuthenticationPrincipal Jwt jwt){
         String auth0Id = jwt.getSubject();
         String email = jwt.getClaim("email");
         String name = jwt.getClaim("name");
-        UserAuthDTO createdUser = userManagementService.createUser(auth0Id, email, name);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+        UserAuthDTO createdAuth = userManagementService.createAuth(auth0Id, email, name);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdAuth);
     }
 
-    @PutMapping("/profile")
-    public ResponseEntity<UserProfileDTO> modifyUser(@AuthenticationPrincipal Jwt jwt, @RequestBody UserProfileDTO userProfileDTO){
+    //to get auth info
+    @GetMapping("/auth")
+    public ResponseEntity<UserAuthDTO> getAuth(@AuthenticationPrincipal Jwt jwt){
         String auth0Id = jwt.getSubject();
-        UserProfileDTO modifiedUser = userManagementService.modifyProfile(auth0Id, userProfileDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(modifiedUser);
+        UserAuthDTO foundAuth = userManagementService.getAuth(auth0Id);
+        return ResponseEntity.status(HttpStatus.CREATED).body(foundAuth);
     }
 
-    @DeleteMapping("/profile")
+    //to delete user record
+    @DeleteMapping("/user")
     public ResponseEntity<Void> deleteUser(@AuthenticationPrincipal Jwt jwt){
         String auth0Id = jwt.getSubject();
         userManagementService.deleteUser(auth0Id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @GetMapping("/profile/exists")
+    //check if user exists in db
+    @GetMapping("/user/exists")
     public ResponseEntity<Boolean> userExists(@AuthenticationPrincipal Jwt jwt){
         String auth0Id = jwt.getSubject();
         boolean userExists = userManagementService.userExists(auth0Id);
