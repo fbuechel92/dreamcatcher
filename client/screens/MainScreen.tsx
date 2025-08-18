@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.3)',
     borderWidth: 1,
     borderRadius: 8,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingVertical: 8,
   },
   logoutText: {
