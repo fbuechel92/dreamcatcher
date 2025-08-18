@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { StyleSheet, Text, ImageBackground, View, TextInput } from 'react-native';
+import { StyleSheet, Text, ImageBackground, View, TextInput, TouchableOpacity } from 'react-native';
 
 export default function ProfileScreen() {
   
@@ -10,6 +10,10 @@ export default function ProfileScreen() {
   const [birthdate, setBirthdate] = useState('');
   const [country, setCountry] = useState('');
   const [occupation, setOccupation] = useState('');
+
+  const handleSave = () => {
+    // Save profile logic here
+  };
 
   return (
     <ImageBackground 
@@ -24,43 +28,59 @@ export default function ProfileScreen() {
         </View>
 
         <View style={styles.lowerSection}>
-          <TextInput
-            style={styles.input}
-            placeholder="Name"
-            value={name}
-            onChangeText={setName}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Gender"
-            value={gender}
-            onChangeText={setGender}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Birthdate (YYYY-MM-DD)"
-            value={birthdate}
-            onChangeText={setBirthdate}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Country"
-            value={country}
-            onChangeText={setCountry}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Occupation"
-            value={occupation}
-            onChangeText={setOccupation}
-          />
+          <View style={styles.inputWrapper}>
+            <Text style={styles.label}>Name</Text>
+            <TextInput
+              style={styles.input}
+              value={name}
+              onChangeText={setName}
+            />
+          </View>
+          <View style={styles.inputWrapper}>
+            <Text style={styles.label}>Email</Text>
+            <TextInput
+              style={styles.input}
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+            />
+          </View>
+          <View style={styles.inputWrapper}>
+            <Text style={styles.label}>Gender</Text>
+            <TextInput
+              style={styles.input}
+              value={gender}
+              onChangeText={setGender}
+            />
+          </View>
+          <View style={styles.inputWrapper}>
+            <Text style={styles.label}>Birthdate</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="YYYY-MM-DD"
+              value={birthdate}
+              onChangeText={setBirthdate}
+            />
+          </View>
+          <View style={styles.inputWrapper}>
+            <Text style={styles.label}>Country</Text>
+            <TextInput
+              style={styles.input}
+              value={country}
+              onChangeText={setCountry}
+            />
+          </View>
+          <View style={styles.inputWrapper}>
+            <Text style={styles.label}>Occupation</Text>
+            <TextInput
+              style={styles.input}
+              value={occupation}
+              onChangeText={setOccupation}
+            />
+          </View>
+          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+            <Text style={styles.saveButtonText}>Save Profile</Text>
+          </TouchableOpacity>
         </View>
         
       </View>
@@ -74,7 +94,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 20,
     backgroundColor: 'transparent',
   },
   upperSection: {
@@ -82,9 +101,9 @@ const styles = StyleSheet.create({
   },
   lowerSection: {
     backgroundColor: 'transparent',
-    justifyContent: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     flex: 1,
-    marginBottom: 100
   },
   title: {
     textAlign: 'center',
@@ -94,22 +113,44 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontFamily: 'Bradley Hand',
   },
+  inputWrapper: {
+    width: 300,
+    alignItems: 'flex-start',
+    marginBottom: 16,
+  },
   input: {
-    backgroundColor: 'rgba(255,255,255,0.8)',
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 12,
+    width: '100%',
+    height: 48,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.6)',
+    borderRadius: 20,
+    padding: 12,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    color: 'white',
+    fontSize: 16,
   },
   saveButton: {
-    backgroundColor: '#4B0082',
-    padding: 14,
-    borderRadius: 8,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.6)',
     alignItems: 'center',
     marginTop: 20,
+    marginBottom: 100,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   saveButtonText: {
     color: 'white',
-    fontWeight: 'bold',
+    fontWeight: '600',
     fontSize: 16,
+  },
+  label: {
+    color: 'rgba(255,255,255,0.7)',
+    fontSize: 15,
+    marginBottom: 4,
+    marginLeft: 0,
   },
 });
