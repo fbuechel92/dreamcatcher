@@ -52,18 +52,20 @@ export default function ProfileScreen() {
           <View style={styles.inputWrapper}>
             <Text style={styles.label}>Name</Text>
             <TextInput
-              style={styles.input}
+              style={styles.inputReadOnly}
               value={name}
               onChangeText={setName}
+              editable={false}
             />
           </View>
           <View style={styles.inputWrapper}>
             <Text style={styles.label}>Email</Text>
             <TextInput
-              style={styles.input}
+              style={styles.inputReadOnly}
               value={email}
               onChangeText={setEmail}
               keyboardType="email-address"
+              editable={false}
             />
           </View>
           <View style={styles.inputWrapper}>
@@ -147,6 +149,17 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 12,
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    color: 'white',
+    fontSize: 16,
+  },
+  inputReadOnly: {
+    width: '100%',
+    height: 48,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.6)',
+    borderRadius: 20,
+    padding: 12,
+    backgroundColor: 'rgba(80, 80, 80, 0.3)',
     color: 'white',
     fontSize: 16,
   },
