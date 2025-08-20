@@ -11,13 +11,13 @@ public class UserEntityMapper {
     public User mapToUserAuthEntity(UserAuthDTO userAuthDTO) {
         return new User(
             userAuthDTO.auth0Id(),
-            userAuthDTO.email(),
-            userAuthDTO.name()
+            userAuthDTO.email()
         );
     }
 
     public User mapToUserProfileEntity(UserProfileDTO userProfileDTO) {
         return new User(
+            userProfileDTO.name(),
             userProfileDTO.gender(),
             userProfileDTO.birthdate(),
             userProfileDTO.country(),

@@ -31,17 +31,17 @@ public class User {
     private LocalDateTime updatedAt;
 
     //Constructors
-    public User(String gender, LocalDate birthdate, String country, String occupation){
+    public User(String name, String gender, LocalDate birthdate, String country, String occupation){
+        this.name = name;
         this.gender = gender;
         this.birthdate = birthdate;
         this.country = country;
         this.occupation = occupation;
     };
 
-    public User(String auth0Id, String email, String name){
+    public User(String auth0Id, String email){
         this.auth0Id = auth0Id;
         this.email = email;
-        this.name = name;
     };
 
     public User(){};

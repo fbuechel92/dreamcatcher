@@ -11,13 +11,13 @@ public class UserDTOMapper {
     public UserAuthDTO mapToUserAuthDTO(User user) {
         return new UserAuthDTO(
             user.getAuth0Id(),
-            user.getEmail(),
-            user.getName()
+            user.getEmail()
         );
     }
 
     public UserProfileDTO mapToUserProfileDTO(User user){
         return new UserProfileDTO(
+            user.getName(),
             user.getGender(),
             user.getBirthdate(),
             user.getCountry(),

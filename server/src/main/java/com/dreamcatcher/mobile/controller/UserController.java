@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,11 +40,10 @@ public class UserController {
 
     //to save auth info
     @PostMapping("/auth")
-    public ResponseEntity<UserAuthDTO> createAuth(@AuthenticationPrincipal Jwt jwt){
+    public ResponseEntity<UserAuthDTO> createAuth(@AuthenticationPrincipal Jwt jwt, @RequestBody Map<String, String> userInfo){
         String auth0Id = jwt.getSubject();
         String email = jwt.getClaim("email");
-        String name = jwt.getClaim("name");
-        UserAuthDTO createdAuth = userManagementService.createAuth(auth0Id, email, name);
+        UserAuthDTO createdAuth = userManagementService.createAuth(auth0Id, email);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdAuth);
     }
 
