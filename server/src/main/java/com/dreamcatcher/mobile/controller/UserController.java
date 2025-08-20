@@ -42,7 +42,7 @@ public class UserController {
     @PostMapping("/auth")
     public ResponseEntity<UserAuthDTO> createAuth(@AuthenticationPrincipal Jwt jwt, @RequestBody Map<String, String> userInfo){
         String auth0Id = jwt.getSubject();
-        String email = jwt.getClaim("email");
+        String email = userInfo.get("email");
         UserAuthDTO createdAuth = userManagementService.createAuth(auth0Id, email);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdAuth);
     }
