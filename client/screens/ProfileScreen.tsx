@@ -113,7 +113,6 @@ export default function ProfileScreen() {
               style={styles.input}
               value={name}
               onChangeText={setName}
-              editable={false}
             />
           </View>
 
