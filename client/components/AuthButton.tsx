@@ -50,29 +50,41 @@ export default function AuthButton({ onLoginSuccess, onLogout }: AuthButtonProps
     if (result) {
       if (result.type === 'success') {
         setAccessToken(result.params.access_token);
+        
         // Get user info
         fetch(`https://${auth0Config.domain}/userinfo`, {
           headers: {
-            Authorization: `Bearer ${result.params.access_token}`,
+            'Authorization': `Bearer ${result.params.access_token}`,
           },
         })
         .then(response => response.json())
         .then(userInfo => {
           setUser(userInfo);
           
-          // Send user info to backend
-          fetch('http://localhost:8080/auth', {
-            method: 'POST',
+          // First check if user exists
+          fetch(`http://localhost:8080/user/exists/`, {
             headers: {
-              'Authorization': `Bearer ${result.params.access_token}`,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              email: userInfo.email,
-            })
+               'Authorization': `Bearer ${result.params.access_token}`,
+              }
           })
           .then(response => response.json())
-          .catch(error => console.error('Error saving user:', error));
+          .then(data => {
+            if (!data.exists) {
+              // User doesn't exist - create them
+              return fetch('http://localhost:8080/auth', {
+                method: 'POST',
+                headers: {
+                  'Authorization': `Bearer ${result.params.access_token}`,
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  email: userInfo.email,
+                })
+              });
+            }
+          })
+          .catch(error => console.error('Error checking/creating user:', error));
+          
             
           onLoginSuccess?.();
         })
