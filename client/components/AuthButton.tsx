@@ -49,7 +49,8 @@ export default function AuthButton({ onLoginSuccess, onLogout }: AuthButtonProps
   React.useEffect(() => {
     if (result) {
       if (result.type === 'success') {
-        setAccessToken(result.params.access_token);
+        const accessToken = result.params.access_token;
+        setAccessToken(accessToken);
         
         // Get user info
         fetch(`https://${auth0Config.domain}/userinfo`, {
