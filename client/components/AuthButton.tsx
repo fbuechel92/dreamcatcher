@@ -59,6 +59,21 @@ export default function AuthButton({ onLoginSuccess, onLogout }: AuthButtonProps
         .then(response => response.json())
         .then(userInfo => {
           setUser(userInfo);
+          
+          // Send user info to backend
+          fetch('http://localhost:8080/auth', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${result.params.access_token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              email: userInfo.email,
+            })
+          })
+          .then(response => response.json())
+          .catch(error => console.error('Error saving user:', error));
+            
           onLoginSuccess?.();
         })
         .catch(error => {

@@ -30,8 +30,8 @@ public class UserManagementService {
     }
 
     //Method to save auth info
-    public UserAuthDTO createAuth(String auth0Id, String email, String name) {
-        UserAuthDTO userAuthDTO = new UserAuthDTO(auth0Id, email, name);
+    public UserAuthDTO createAuth(String auth0Id, String email) {
+        UserAuthDTO userAuthDTO = new UserAuthDTO(auth0Id, email);
         
         //Check if mail already exists in db
         if (userRepository.existsByEmail(userAuthDTO.email())) {
