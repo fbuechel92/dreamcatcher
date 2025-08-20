@@ -49,6 +49,7 @@ export default function ProfileScreen() {
           });
           if (response.ok) {
             const data = await response.json();
+            setName(data.name || '');
             setGender(data.gender || '');
             setBirthdate(data.birthdate || '');
             setCountry(data.country || '');
@@ -70,6 +71,7 @@ export default function ProfileScreen() {
             'Authorization' : `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
+            name: name,
             gender: gender,
             birthdate: birthdate,
             country: country,
@@ -113,7 +115,6 @@ export default function ProfileScreen() {
               style={styles.input}
               value={name}
               onChangeText={setName}
-              editable={false}
             />
           </View>
 

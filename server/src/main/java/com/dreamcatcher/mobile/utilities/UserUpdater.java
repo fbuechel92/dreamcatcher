@@ -2,6 +2,9 @@ package com.dreamcatcher.mobile.utilities;
 
 import com.dreamcatcher.mobile.entity.User;
 import jakarta.transaction.Transactional;
+
+import java.util.Objects;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,27 +17,27 @@ public class UserUpdater {
         boolean userAppliedChange = false;
 
         try {
-            if (!currentUser.getName().equals(submittedUser.getName())) {
+            if (!Objects.equals(currentUser.getName(), submittedUser.getName())) {
                 currentUser.setName(submittedUser.getName());
                 userAppliedChange = true;
             }
             
-            if (!currentUser.getGender().equals(submittedUser.getGender())) {
+            if (!Objects.equals(currentUser.getGender(), submittedUser.getGender())) {
                 currentUser.setGender(submittedUser.getGender());
                 userAppliedChange = true;
             }
 
-            if (!currentUser.getBirthdate().equals(submittedUser.getBirthdate())) {
+            if (!Objects.equals(currentUser.getBirthdate(), submittedUser.getBirthdate())) {
                 currentUser.setBirthdate(submittedUser.getBirthdate());
                 userAppliedChange = true;
             }
 
-            if (!currentUser.getCountry().equals(submittedUser.getCountry())) {
+            if (!Objects.equals(currentUser.getCountry(), submittedUser.getCountry())) {
                 currentUser.setCountry(submittedUser.getCountry());
                 userAppliedChange = true;
             }
 
-            if (!currentUser.getOccupation().equals(submittedUser.getOccupation())) {
+            if (!Objects.equals(currentUser.getOccupation(), submittedUser.getOccupation())) {
                 currentUser.setOccupation(submittedUser.getOccupation());
                 userAppliedChange = true;
             }
