@@ -94,15 +94,8 @@ export default function ProfileScreen() {
         </View>
 
         <View style={styles.lowerSection}>
-          <View style={styles.inputWrapper}>
-            <Text style={styles.label}>Name</Text>
-            <TextInput
-              style={styles.inputReadOnly}
-              value={name}
-              onChangeText={setName}
-              editable={false}
-            />
-          </View>
+          
+          
           <View style={styles.inputWrapper}>
             <Text style={styles.label}>Email</Text>
             <TextInput
@@ -113,6 +106,17 @@ export default function ProfileScreen() {
               editable={false}
             />
           </View>
+
+          <View style={styles.inputWrapper}>
+            <Text style={styles.label}>Name</Text>
+            <TextInput
+              style={styles.input}
+              value={name}
+              onChangeText={setName}
+              editable={false}
+            />
+          </View>
+
           <View style={styles.inputWrapper}>
             <Text style={styles.label}>Gender</Text>
             <TextInput
