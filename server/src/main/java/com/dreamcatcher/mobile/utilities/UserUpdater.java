@@ -14,6 +14,11 @@ public class UserUpdater {
         boolean userAppliedChange = false;
 
         try {
+            if (!currentUser.getName().equals(submittedUser.getName())) {
+                currentUser.setName(submittedUser.getName());
+                userAppliedChange = true;
+            }
+            
             if (!currentUser.getGender().equals(submittedUser.getGender())) {
                 currentUser.setGender(submittedUser.getGender());
                 userAppliedChange = true;
