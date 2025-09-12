@@ -25,7 +25,8 @@ export default function AuthButton({ onLoginSuccess, onLogout }: AuthButtonProps
 
   // First, let's see what redirect URI is being generated
   const redirectUri = AuthSession.makeRedirectUri({
-    scheme: 'dreamcatcher'
+    scheme: 'dreamcatcher',
+    path: 'callback'
   });
   Alert.alert('Redirect URI', redirectUri);
 
