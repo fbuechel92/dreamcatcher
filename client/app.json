@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "client",
-    "slug": "client",
+    "name": "Dreamcatcher",
+    "slug": "dreamcatcher",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "client",
+    "scheme": "dreamcatcher",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
