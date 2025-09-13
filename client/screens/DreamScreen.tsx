@@ -3,6 +3,7 @@ import { StyleSheet, Text, ImageBackground, View, TextInput, TouchableOpacity } 
 import { Picker } from '@react-native-picker/picker';
 import { useAuth } from '../contexts/AuthContext'; 
 import { saveDream } from '../services/dreamService';
+import { fetchOptions } from '../services/optionsService'
 
 export default function DreamScreen() {
     
@@ -35,24 +36,19 @@ export default function DreamScreen() {
 
     // Fetch options on component mount
     React.useEffect(() => {
-        const fetchOptions = async () => {
+        const loadOptions = async () => {
             try {
-                const [moodResponse, sleepResponse] = await Promise.all([
-                    fetch('http://localhost:8080/options/moods'),
-                    fetch('http://localhost:8080/options/sleep-qualities')
-                ]);
-
-                const moods = await moodResponse.json();
-                const sleepQualities = await sleepResponse.json();
+                const { moods, sleepQualities } = await fetchOptions();
 
                 setMoodOptions(moods.map((mood: string) => ({ label: mood, value: mood })));
                 setSleepQualityOptions(sleepQualities.map((quality: string) => ({ label: quality, value: quality })));
+
             } catch (error) {
                 console.error('Error fetching options:', error);
             }
         };
 
-        fetchOptions();
+        loadOptions();
     }, []);
 
     const questions: Question[] = [
