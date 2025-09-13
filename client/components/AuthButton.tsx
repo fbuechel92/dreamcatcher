@@ -15,7 +15,7 @@ interface User {
 }
 
 interface AuthButtonProps {
-  onLoginSuccess?: () => void;
+  onLoginSuccess?: (token: string) => void;
   onLogout?: () => void;
 }
 
@@ -25,8 +25,10 @@ export default function AuthButton({ onLoginSuccess, onLogout }: AuthButtonProps
 
   // First, let's see what redirect URI is being generated
   const redirectUri = AuthSession.makeRedirectUri({
-    scheme: 'exp'
+    scheme: 'dreamcatcher',
+    path: 'callback'
   });
+  console.log(redirectUri);
 
   // Configure the auth request
   const [request, result, promptAsync] = AuthSession.useAuthRequest(
@@ -87,7 +89,7 @@ export default function AuthButton({ onLoginSuccess, onLogout }: AuthButtonProps
           .catch(error => console.error('Error checking/creating user:', error));
           
             
-          onLoginSuccess?.();
+          onLoginSuccess?.(result.params.access_token);
         })
         .catch(error => {
           console.error('User info error:', error);

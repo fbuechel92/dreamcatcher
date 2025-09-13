@@ -4,7 +4,7 @@ import { router } from 'expo-router';
 import AuthButton from '../components/AuthButton';
 
 interface WelcomeScreenProps {
-  onLoginSuccess: () => void;
+  onLoginSuccess: (token: string) => void;
 }
 
 export default function WelcomeScreen({ onLoginSuccess }: WelcomeScreenProps) {
