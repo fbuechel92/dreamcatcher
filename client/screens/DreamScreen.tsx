@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, ImageBackground, View, TextInput, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useAuth } from '../contexts/AuthContext'; 
+import { saveDream } from '../services/dreamService';
 
 export default function DreamScreen() {
     
@@ -124,24 +125,19 @@ export default function DreamScreen() {
         }));
     };
 
-    const saveDream = async() => {
-
+    const saveDreamHandler = async() => {
+        if(!accessToken) return;
+        
         try {
-            const response = await fetch(`http://localhost:8080/dreams`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization' : `Bearer ${accessToken}`,
-                },
-                body: JSON.stringify({
-                    visitor: dreamData.visitor,
-                    plot: dreamData.plot,
-                    location: dreamData.location,
-                    mood: dreamData.mood,
-                    sleepQuality: dreamData.sleepQuality,
-                    additionalInfo: dreamData.anything,
-                }),
-            });
+            const response = await saveDream(
+                accessToken,
+                dreamData.visitor,
+                dreamData.plot,
+                dreamData.location,
+                dreamData.mood,
+                dreamData.sleepQuality,
+                dreamData.anything
+            );
 
             if (response.ok) {
                 setDreamData({
@@ -152,12 +148,13 @@ export default function DreamScreen() {
                     sleepQuality: '',
                     anything: '',
                 });
-                setCurrentStep(0);
+
+            setCurrentStep(0);
             }
         } catch (error) {
             console.error('Error saving dream:', error);
         }
-    }
+    };
 
     const currentQuestion = questions[currentStep];
     const currentValue = dreamData[currentQuestion.key as keyof typeof dreamData];
@@ -191,7 +188,7 @@ export default function DreamScreen() {
                     ]}>
 
                         {currentStep === questions.length -1 && (
-                            <TouchableOpacity style={[styles.button, styles.submitButton]} onPress={saveDream}>
+                            <TouchableOpacity style={[styles.button, styles.submitButton]} onPress={saveDreamHandler}>
                                 <Text style={styles.buttonText}>Save Dream</Text>
                             </TouchableOpacity>
                         )}
