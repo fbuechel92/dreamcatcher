@@ -28,7 +28,7 @@ export default function AuthButton({ onLoginSuccess, onLogout }: AuthButtonProps
     scheme: 'dreamcatcher',
     path: 'callback'
   });
-  Alert.alert('Redirect URI', redirectUri);
+  console.log(redirectUri);
 
   // Configure the auth request
   const [request, result, promptAsync] = AuthSession.useAuthRequest(
