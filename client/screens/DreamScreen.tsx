@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, ImageBackground, View, TextInput, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useAuth } from '../contexts/AuthContext'; 
+import { saveDream } from '../services/dreamService';
+import { fetchOptions } from '../services/optionsService'
 
 export default function DreamScreen() {
     
@@ -34,24 +36,19 @@ export default function DreamScreen() {
 
     // Fetch options on component mount
     React.useEffect(() => {
-        const fetchOptions = async () => {
+        const loadOptions = async () => {
             try {
-                const [moodResponse, sleepResponse] = await Promise.all([
-                    fetch('http://localhost:8080/options/moods'),
-                    fetch('http://localhost:8080/options/sleep-qualities')
-                ]);
-
-                const moods = await moodResponse.json();
-                const sleepQualities = await sleepResponse.json();
+                const { moods, sleepQualities } = await fetchOptions();
 
                 setMoodOptions(moods.map((mood: string) => ({ label: mood, value: mood })));
                 setSleepQualityOptions(sleepQualities.map((quality: string) => ({ label: quality, value: quality })));
+
             } catch (error) {
                 console.error('Error fetching options:', error);
             }
         };
 
-        fetchOptions();
+        loadOptions();
     }, []);
 
     const questions: Question[] = [
@@ -124,40 +121,35 @@ export default function DreamScreen() {
         }));
     };
 
-    const saveDream = async() => {
-
+    const saveDreamHandler = async() => {
+        if(!accessToken) return;
+        
         try {
-            const response = await fetch(`http://localhost:8080/dreams`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization' : `Bearer ${accessToken}`,
-                },
-                body: JSON.stringify({
-                    visitor: dreamData.visitor,
-                    plot: dreamData.plot,
-                    location: dreamData.location,
-                    mood: dreamData.mood,
-                    sleepQuality: dreamData.sleepQuality,
-                    additionalInfo: dreamData.anything,
-                }),
+            const response = await saveDream(
+                accessToken,
+                dreamData.visitor,
+                dreamData.plot,
+                dreamData.location,
+                dreamData.mood,
+                dreamData.sleepQuality,
+                dreamData.anything
+            );
+
+            setDreamData({
+                visitor: '',
+                plot: '',
+                location: '',
+                mood: '',
+                sleepQuality: '',
+                anything: '',
             });
 
-            if (response.ok) {
-                setDreamData({
-                    visitor: '',
-                    plot: '',
-                    location: '',
-                    mood: '',
-                    sleepQuality: '',
-                    anything: '',
-                });
-                setCurrentStep(0);
-            }
+            setCurrentStep(0);
+            
         } catch (error) {
             console.error('Error saving dream:', error);
         }
-    }
+    };
 
     const currentQuestion = questions[currentStep];
     const currentValue = dreamData[currentQuestion.key as keyof typeof dreamData];
@@ -191,7 +183,7 @@ export default function DreamScreen() {
                     ]}>
 
                         {currentStep === questions.length -1 && (
-                            <TouchableOpacity style={[styles.button, styles.submitButton]} onPress={saveDream}>
+                            <TouchableOpacity style={[styles.button, styles.submitButton]} onPress={saveDreamHandler}>
                                 <Text style={styles.buttonText}>Save Dream</Text>
                             </TouchableOpacity>
                         )}

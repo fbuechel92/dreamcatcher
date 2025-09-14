@@ -22,16 +22,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<any>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Load token from storage on mount
-  useEffect(() => {
-    AsyncStorage.getItem('accessToken').then(token => {
-      if (token) {
-        setAccessTokenState(token);
-        setIsLoggedIn(true);
-      }
-    });
-  }, []);
-
   // Persist token and update login state
   const setAccessToken = async (token: string | null) => {
     setAccessTokenState(token);

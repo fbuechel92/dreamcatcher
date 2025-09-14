@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TextInput, TouchableOpacity, StyleSheet, Text, ImageBackground, View, FlatList, Modal, ScrollView } from 'react-native';
 import { useAuth } from '../contexts/AuthContext';
+import { fetchUserDreams } from '../services/dreamService';
 
 interface Dream {
     dreamId: number;
@@ -23,24 +24,18 @@ export default function ArchiveScreen() {
     const[modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
-        fetchUserDreams();
+        if (!accessToken) return;
+        
+        const fetchDreams = async () => {
+            try{
+                const data = await fetchUserDreams(accessToken);
+                setDreams(data);
+            } catch (error){
+                console.error('Error fetching dreams:', error);
+            }
+        };
+        fetchDreams();
     }, []);
-
-    const fetchUserDreams = async () => {
-        try {
-            const response = await fetch(`http://localhost:8080/dreams`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization' : `Bearer ${accessToken}`,
-                }
-            });
-            const data = await response.json();
-            setDreams(data);
-        } catch (error) {
-            console.error('Error fetching dreams:', error);
-        }
-    }
 
     const openDream = (dream: Dream) => {
         setSelectedDream(dream);
