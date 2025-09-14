@@ -1,6 +1,8 @@
+import { BASE_URL } from './config';
+
 //api call from ArchiveScreen
 export const fetchUserDreams = async (accessToken: string) => {
-    const response = await fetch(`http://localhost:8080/dreams`, {
+    const response = await fetch(`${BASE_URL}/dreams`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -21,7 +23,7 @@ export const saveDream = async(
     sleepQuality: string, 
     additionalInfo: string 
 ) => {
-    const response = await fetch(`http://localhost:8080/dreams`, {
+    const response = await fetch(`${BASE_URL}/dreams`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

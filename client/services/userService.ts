@@ -1,4 +1,5 @@
 import { auth0Config } from './auth0';
+import { BASE_URL } from './config';
 
 //api call from AuthButton
 export const fetchUserInfo = async (accessToken: string) => {
@@ -11,7 +12,7 @@ export const fetchUserInfo = async (accessToken: string) => {
 
 //api call from AuthButton
 export const checkUserExists = async (accessToken: string) => {
-    const response = await fetch('http://localhost:8080/user/exists', {
+    const response = await fetch(`${BASE_URL}/user/exists`, {
         headers: { 'Authorization': `Bearer ${accessToken}` }
     });
     console.log('checkUserExists status:', response.status, 'ok:', response.ok);
@@ -21,7 +22,7 @@ export const checkUserExists = async (accessToken: string) => {
 
 //api call from AuthButton
 export const createUser = async (accessToken: string, email: string) => {
-    const response = await fetch('http://localhost:8080/auth', {
+    const response = await fetch(`${BASE_URL}/auth`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${accessToken}`,
