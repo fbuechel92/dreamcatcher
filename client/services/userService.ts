@@ -1,3 +1,5 @@
+import { auth0Config } from './auth0';
+
 //api call from AuthButton
 export const fetchUserInfo = async (accessToken: string) => {
     const response = await fetch(`https://${auth0Config.domain}/userinfo`, {
@@ -9,6 +11,7 @@ export const fetchUserInfo = async (accessToken: string) => {
 
 //api call from AuthButton
 export const checkUserExists = async (accessToken: string) => {
+    console.log('Access token for checkUserExists:', accessToken); // Log the token
     const response = await fetch('http://localhost:8080/user/exists/', {
         headers: { 'Authorization': `Bearer ${accessToken}` }
     });
