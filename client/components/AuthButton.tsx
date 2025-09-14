@@ -4,6 +4,7 @@ import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 import { auth0Config } from '../services/auth0';
 import { useAuth } from '../contexts/AuthContext';
+import { fetchUserInfo, checkUserExists, createUser } from '../services/userService';
 
 // Complete the auth session
 WebBrowser.maybeCompleteAuthSession();
@@ -49,57 +50,35 @@ export default function AuthButton({ onLoginSuccess, onLogout }: AuthButtonProps
 
 
   React.useEffect(() => {
-    if (result) {
-      if (result.type === 'success') {
-        const accessToken = result.params.access_token;
-        setAccessToken(accessToken);
-        
-        // Get user info
-        fetch(`https://${auth0Config.domain}/userinfo`, {
-          headers: {
-            'Authorization': `Bearer ${result.params.access_token}`,
-          },
-        })
-        .then(response => response.json())
-        .then(userInfo => {
-          setUser(userInfo);
-          
-          // First check if user exists
-          fetch(`http://localhost:8080/user/exists/`, {
-            headers: {
-               'Authorization': `Bearer ${result.params.access_token}`,
-              }
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (!data.exists) {
-              // User doesn't exist - create them
-              return fetch('http://localhost:8080/auth', {
-                method: 'POST',
-                headers: {
-                  'Authorization': `Bearer ${result.params.access_token}`,
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                  email: userInfo.email,
-                })
-              });
-            }
-          })
-          .catch(error => console.error('Error checking/creating user:', error));
-          
-            
-          onLoginSuccess?.(result.params.access_token);
-        })
-        .catch(error => {
-          console.error('User info error:', error);
-          Alert.alert('Error', 'Failed to get user info');
-        });
-      } else if (result.type === 'error') {
-        Alert.alert('Error', 'Login failed');
+  const handleAuth = async () => {
+    if (result && result.type === 'success') {
+      const accessToken = result.params.access_token;
+      setAccessToken(accessToken);
+
+      try {
+        // Get user info from Auth0
+        const userInfo = await fetchUserInfo(accessToken);
+        setUser(userInfo);
+
+        // Check if user exists in your backend
+        const existsData = await checkUserExists(accessToken);
+        if (!existsData.exists) {
+          // User doesn't exist - create them
+          await createUser(accessToken, userInfo.email);
+        }
+
+        onLoginSuccess?.(accessToken);
+      } catch (error) {
+        console.error('Auth error:', error);
+        Alert.alert('Error', 'Authentication failed');
       }
+    } else if (result && result.type === 'error') {
+      Alert.alert('Error', 'Login failed');
     }
-  }, [result, onLoginSuccess]);
+  };
+
+  handleAuth();
+}, [result, onLoginSuccess]);
 
   const login = () => {
     promptAsync();
