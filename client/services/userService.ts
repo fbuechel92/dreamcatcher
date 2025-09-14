@@ -11,10 +11,10 @@ export const fetchUserInfo = async (accessToken: string) => {
 
 //api call from AuthButton
 export const checkUserExists = async (accessToken: string) => {
-    console.log('Access token for checkUserExists:', accessToken); // Log the token
-    const response = await fetch('http://localhost:8080/user/exists/', {
+    const response = await fetch('http://localhost:8080/user/exists', {
         headers: { 'Authorization': `Bearer ${accessToken}` }
     });
+    console.log('checkUserExists status:', response.status, 'ok:', response.ok);
     if (!response.ok) throw new Error('Failed to check user existence');
     return await response.json();
 };

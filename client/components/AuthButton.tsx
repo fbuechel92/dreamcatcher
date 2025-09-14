@@ -61,8 +61,8 @@ export default function AuthButton({ onLoginSuccess, onLogout }: AuthButtonProps
         setUser(userInfo);
 
         // Check if user exists in your backend
-        const existsData = await checkUserExists(accessToken);
-        if (!existsData.exists) {
+        const userExists = await checkUserExists(accessToken);
+        if (!userExists) {
           // User doesn't exist - create them
           await createUser(accessToken, userInfo.email);
         }
