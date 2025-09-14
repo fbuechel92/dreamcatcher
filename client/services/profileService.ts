@@ -1,7 +1,9 @@
+import { BASE_URL } from './config';
+
 //api call from profile screen
 export const fetchAuth = async (accessToken: string) => {
 
-    const response = await fetch('http://localhost:8080/auth', {
+    const response = await fetch(`${BASE_URL}/auth`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${accessToken}`,
@@ -14,7 +16,7 @@ export const fetchAuth = async (accessToken: string) => {
 //api call from ProfileScreen
 export const fetchProfile = async (accessToken: string) => {
 
-    const response = await fetch('http://localhost:8080/profile', {
+    const response = await fetch(`${BASE_URL}/profile`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${accessToken}`,
@@ -34,7 +36,7 @@ export const handleSave = async(
     occupation: string
     ) => {
 
-    const response = await fetch(`http://localhost:8080/profile`, {
+    const response = await fetch(`${BASE_URL}/profile`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
