@@ -7,8 +7,8 @@ export const fetchUserDreams = async (accessToken: string) => {
             'Authorization' : `Bearer ${accessToken}`,
         }
     });
-    const data = await response.json();
-    return data;
+    if (!response.ok) throw new Error('Failed to fetch dreams');
+    return await response.json();
 }
 
 //api call from DreamScreen
@@ -36,5 +36,6 @@ export const saveDream = async(
                     additionalInfo: additionalInfo,
                 }),
     });
-    return response;
+    if (!response.ok) throw new Error('Failed to save dream');
+    return await response.json();
 }

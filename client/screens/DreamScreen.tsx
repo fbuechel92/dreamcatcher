@@ -135,18 +135,17 @@ export default function DreamScreen() {
                 dreamData.anything
             );
 
-            if (response.ok) {
-                setDreamData({
-                    visitor: '',
-                    plot: '',
-                    location: '',
-                    mood: '',
-                    sleepQuality: '',
-                    anything: '',
-                });
+            setDreamData({
+                visitor: '',
+                plot: '',
+                location: '',
+                mood: '',
+                sleepQuality: '',
+                anything: '',
+            });
 
             setCurrentStep(0);
-            }
+            
         } catch (error) {
             console.error('Error saving dream:', error);
         }

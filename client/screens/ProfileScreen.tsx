@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { StyleSheet, Text, ImageBackground, View, TextInput, TouchableOpacity } from 'react-native';
 import { useAuth } from '../contexts/AuthContext'; 
+import { fetchAuth, fetchProfile, handleSave } from '../services/profileService';
 
 export default function ProfileScreen() {
   
@@ -17,69 +18,57 @@ export default function ProfileScreen() {
 
   //call auth info
   useEffect(() => {
-      const fetchAuth = async () => {
+      const fetchAuthInfo = async () => {
+        if(!accessToken) return;
+        
         try {
-          const response = await fetch('http://localhost:8080/auth', {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${accessToken}`,
-            },
-          });
-          if (response.ok) {
-            const data = await response.json();
-            setName(data.name || '');
-            setEmail(data.email || '');
-          }
+          const response = await fetchAuth(accessToken);
+            
+          setName(response.name || '');
+          setEmail(response.email || '');
+
         } catch (error) {
           console.error('Error fetching auth info:', error);
         }
       };
-      fetchAuth();
+      fetchAuthInfo();
     }, [accessToken]);
 
   //call profile info
   useEffect(() => {
-      const fetchProfile = async () => {
+      const fetchProfileInfo = async () => {
+        if(!accessToken) return;
+        
         try {
-          const response = await fetch('http://localhost:8080/profile', {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${accessToken}`,
-            },
-          });
-          if (response.ok) {
-            const data = await response.json();
-            setName(data.name || '');
-            setGender(data.gender || '');
-            setBirthdate(data.birthdate || '');
-            setCountry(data.country || '');
-            setOccupation(data.occupation || '');
-          }
+          const response = await fetchProfile(accessToken);
+            
+            setName(response.name || '');
+            setGender(response.gender || '');
+            setBirthdate(response.birthdate || '');
+            setCountry(response.country || '');
+            setOccupation(response.occupation || '');
+
         } catch (error) {
           console.error('Error fetching profile info:', error);
         }
       };
-      fetchProfile();
+      fetchProfileInfo();
     }, [accessToken]);
 
-  const handleSave = async() => {
+  const saveProfileHandler = async() => {
+    if(!accessToken) return;
+
     try {
-      const response = await fetch(`http://localhost:8080/profile`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization' : `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({
-            name: name,
-            gender: gender,
-            birthdate: birthdate,
-            country: country,
-            occupation: occupation,
-        }),
-      });
+      await handleSave(
+        accessToken,
+        name,
+        gender,
+        birthdate,
+        country,
+        occupation,
+      );
     } catch (error) {
-          console.error('Error saving profile:', error);
+        console.error('Error saving profile:', error);
     }
   };
 
@@ -151,7 +140,7 @@ export default function ProfileScreen() {
               onChangeText={setOccupation}
             />
           </View>
-          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+          <TouchableOpacity style={styles.saveButton} onPress={saveProfileHandler}>
             <Text style={styles.saveButtonText}>Save Profile</Text>
           </TouchableOpacity>
         </View>
