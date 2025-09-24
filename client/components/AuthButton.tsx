@@ -53,6 +53,10 @@ export default function AuthButton({ onLoginSuccess, onLogout }: AuthButtonProps
   const handleAuth = async () => {
     if (result && result.type === 'success') {
       const accessToken = result.params.access_token;
+
+      console.log('Access Token:', accessToken);
+      console.log('Token length:', accessToken?.length);
+
       setAccessToken(accessToken);
 
       try {
