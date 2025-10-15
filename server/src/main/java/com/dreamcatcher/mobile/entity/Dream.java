@@ -160,14 +160,14 @@ public class Dream {
             "dreamId=" + dreamId +
             ", userId=" + (user != null ? user.getUserId() : null) +
             ", analysisId=" + (dreamAnalysis != null ? dreamAnalysis.getDreamAnalysisId() : null) +
-            ", visitor=" + visitor +
-            ", plot=" + plot +
-            ", location=" + location +
+            ", visitor=[ENCRYPTED]" +
+            ", plot=[ENCRYPTED]" +
+            ", location=[ENCRYPTED]" +
             ", mood=" + mood +
             ", sleepQuality=" + sleepQuality +
-            ", additionalInfo=" + additionalInfo +
-            ", additionalInfo=" + createdAt +
-            ", additionalInfo=" + updatedAt +
+            ", additionalInfo=[ENCRYPTED]" +
+            ", createdAt=" + createdAt +
+            ", updatedAt=" + updatedAt +
             "}";
     }
 }
