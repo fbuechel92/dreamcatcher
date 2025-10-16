@@ -118,10 +118,10 @@ public class User {
             ", auth0Id=" + auth0Id +
             ", email=" + email +
             ", name=" + name +
-            ", gender=" + gender +
-            ", birthdate=" + birthdate +
-            ", country=" + country +
-            ", occupation=" + occupation +
+            ", gender=[ENCRYPTED]" +
+            ", birthdate=[ENCRYPTED]" +
+            ", country=[ENCRYPTED]" +
+            ", occupation=[ENCRYPTED]" +
             "}";
     }
 }

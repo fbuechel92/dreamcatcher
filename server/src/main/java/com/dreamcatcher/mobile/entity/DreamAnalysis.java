@@ -114,10 +114,10 @@ public class DreamAnalysis {
                 "DreamAnalysisId=" + dreamAnalysisId +
                 ", user=" + user +
                 ", theory=" + theory +
-                ", dreamTitle=" + dreamTitle +
-                ", dreamTheme=" + dreamTheme +
-                ", interpretation=" + interpretation +
-                ", implications=" + implications +
+                ", dreamTitle=[ENCRYPTED]" +
+                ", dreamTheme=[ENCRYPTED]" +
+                ", interpretation=[ENCRYPTED]" +
+                ", implications=[ENCRYPTED]" +
                 "}";
     }
 }
