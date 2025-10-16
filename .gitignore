@@ -9,3 +9,4 @@ server/build
 server/bin
 server/target
 server/out
+.env
