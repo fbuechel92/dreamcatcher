@@ -74,7 +74,6 @@ public class SimpleEncryptionService {
             byte[] decryptedData = cipher.doFinal(encrypted);
             return new String(decryptedData, StandardCharsets.UTF_8);
         } catch (Exception e) {
-            // If decryption fails, might be old format or corrupted data
             throw new RuntimeException("Decryption failed", e);
         }
     }
