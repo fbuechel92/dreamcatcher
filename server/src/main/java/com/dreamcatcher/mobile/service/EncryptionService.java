@@ -12,7 +12,7 @@ import java.security.SecureRandom;
 import java.util.Base64;
 
 @Service
-public class SimpleEncryptionService {
+public class EncryptionService {
 
     @Value("${app.encryption.key}")
     private String masterKey;
