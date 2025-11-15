@@ -1,7 +1,5 @@
 package com.dreamcatcher.mobile.dto;
 
-import java.time.LocalDateTime;
-
 public record DreamAnalysisDTO(
     Integer dreamAnalysisId,
     Integer userId,
@@ -10,7 +8,5 @@ public record DreamAnalysisDTO(
     String dreamTitle,
     String dreamTheme,
     String interpretation,
-    String implications,
-    LocalDateTime createdAt,
-    LocalDateTime updatedAt
+    String implications
 ) {}
