@@ -1,14 +1,16 @@
 package com.dreamcatcher.mobile.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.dreamcatcher.mobile.dto.DreamAnalysisDTO;
 import com.dreamcatcher.mobile.entity.Dream;
 import com.dreamcatcher.mobile.entity.DreamAnalysis;
 import com.dreamcatcher.mobile.entity.Theory;
 import com.dreamcatcher.mobile.entity.User;
+import com.dreamcatcher.mobile.mapper.DreamAnalysisDTOMapper;
 import com.dreamcatcher.mobile.repository.DreamAnalysisRepository;
+import com.dreamcatcher.mobile.repository.DreamRepository;
 import com.dreamcatcher.mobile.repository.TheoryRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,19 +20,29 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class DreamAnalysisService {
     
-    @Autowired
     private OllamaClient ollamaClient;
-    
-    @Autowired
     private DreamAnalysisRepository dreamAnalysisRepository;
-    
-    @Autowired
     private TheoryRepository theoryRepository;
-    
-    @Autowired
     private EncryptionService encryptionService;
+    private DreamRepository dreamRepository;
+    private DreamAnalysisDTOMapper dreamAnalysisDTOMapper;
+    private final ObjectMapper objectMapper;
     
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    public DreamAnalysisService(
+            OllamaClient ollamaClient,
+            DreamAnalysisRepository dreamAnalysisRepository,
+            TheoryRepository theoryRepository,
+            EncryptionService encryptionService,
+            DreamRepository dreamRepository,
+            DreamAnalysisDTOMapper dreamAnalysisDTOMapper) {
+        this.ollamaClient = ollamaClient;
+        this.dreamAnalysisRepository = dreamAnalysisRepository;
+        this.theoryRepository = theoryRepository;
+        this.encryptionService = encryptionService;
+        this.dreamRepository = dreamRepository;
+        this.dreamAnalysisDTOMapper = dreamAnalysisDTOMapper;
+        this.objectMapper = new ObjectMapper();
+    }
     
     @Async
     public CompletableFuture<DreamAnalysis> analyzeDreamAsync(Dream dream, User user) {
@@ -65,6 +77,10 @@ public class DreamAnalysisService {
             // Save to database
             DreamAnalysis savedAnalysis = dreamAnalysisRepository.save(analysis);
             
+            // Link analysis back to dream
+            dream.setDreamAnalysis(savedAnalysis);
+            dreamRepository.save(dream);
+
             return CompletableFuture.completedFuture(savedAnalysis);
             
         } catch (Exception e) {
@@ -149,4 +165,35 @@ public class DreamAnalysisService {
         String interpretation;
         String implications;
     }
+
+    public DreamAnalysisDTO getAnalysisForDream(Integer dreamId, String auth0Id) {
+    // Find the dream and verify ownership
+    Dream dream = dreamRepository.findById(dreamId)
+        .orElseThrow(() -> new RuntimeException("Dream not found"));
+    
+    // Verify user owns this dream
+    if (!dream.getUser().getAuth0Id().equals(auth0Id)) {
+        throw new RuntimeException("Unauthorized access to dream analysis");
+    }
+    
+    // Check if analysis exists for this dream
+    if (dream.getDreamAnalysis() == null) {
+        return null; // Analysis not yet complete
+    }
+    
+    DreamAnalysis analysis = dream.getDreamAnalysis();
+    
+    // Decrypt fields in service (following your pattern)
+    try {
+        analysis.setDreamTitle(encryptionService.decrypt(analysis.getDreamTitle()));
+        analysis.setDreamTheme(encryptionService.decrypt(analysis.getDreamTheme()));
+        analysis.setInterpretation(encryptionService.decrypt(analysis.getInterpretation()));
+        analysis.setImplications(encryptionService.decrypt(analysis.getImplications()));
+    } catch (Exception e) {
+        throw new RuntimeException("Failed to decrypt analysis data", e);
+    }
+    
+    // Use mapper to convert decrypted entity to DTO
+    return dreamAnalysisDTOMapper.mapToDreamAnalysisDTO(analysis);
+}
 }
