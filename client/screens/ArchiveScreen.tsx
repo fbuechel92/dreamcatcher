@@ -106,10 +106,6 @@ export default function ArchiveScreen() {
                                 <Text style={styles.dreamTitle}>
                                     {dreamTitles[item.dreamId] || 'Loading title...'}
                                 </Text>
-
-                                <Text style={styles.dreamPreview} numberOfLines={2}>
-                                    {item.plot}
-                                </Text>
                                 
                                 <View style={styles.cardFooter}>
                                     <Text style={styles.locationText}>📍 {item.location}</Text>
@@ -201,9 +197,7 @@ const styles = StyleSheet.create({
     dreamTitle: {
         color: 'white',
         fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 8,
-        fontStyle: 'italic',
+        marginBottom: 10,
     },
     dreamPreview: {
         color: 'white',
