@@ -4,6 +4,7 @@ public record DreamAnalysisDTO(
     Integer dreamAnalysisId,
     Integer userId,
     Integer theoryId,
+    String theoryName,
     String dreamTitle,
     String dreamTheme,
     String interpretation,
