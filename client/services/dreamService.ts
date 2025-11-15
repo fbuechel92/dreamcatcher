@@ -1,5 +1,18 @@
 import { BASE_URL } from './config';
 
+export interface DreamAnalysis {
+  dreamAnalysisId: number;
+  userId: string;
+  theoryId: number;
+  theoryName: string;
+  dreamTitle: string;
+  dreamTheme: string;
+  interpretation: string;
+  implications: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 //api call from ArchiveScreen
 export const fetchUserDreams = async (accessToken: string) => {
     const response = await fetch(`${BASE_URL}/dreams`, {
@@ -41,3 +54,24 @@ export const saveDream = async(
     if (!response.ok) throw new Error('Failed to save dream');
     return await response.json();
 }
+
+//api call from ArchiveScreen
+export const fetchDreamAnalysis = async (accessToken: string, dreamId: number): Promise<DreamAnalysis | null> => {
+  const response = await fetch(`${BASE_URL}/dreams/${dreamId}/analysis`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+    },
+  });
+
+  if (response.status === 202) {
+    // Still analyzing - return null
+    return null;
+  }
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch dream analysis');
+  }
+
+  return await response.json();
+};
