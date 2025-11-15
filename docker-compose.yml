@@ -12,6 +12,28 @@ services:
       - ./server/src/main/resources/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
       - ./server/src/main/resources/data.sql:/docker-entrypoint-initdb.d/02-data.sql
     command: --default-authentication-plugin=mysql_native_password
+    networks:
+      - backend
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama-test
+    restart: always
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_test_data:/root/.ollama
+      - ./init-ollama.sh:/init-ollama.sh
+    networks:
+      - backend
+    environment:
+      - OLLAMA_HOST=0.0.0.0:11434
+    entrypoint: ["/bin/sh", "/init-ollama.sh"]
 
 volumes:
   mysql_test_data:
+  ollama_test_data:
+
+networks:
+  backend:
+    driver: bridge
