@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { TextInput, TouchableOpacity, StyleSheet, Text, ImageBackground, View, FlatList, Modal, ScrollView } from 'react-native';
+import { router } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { FlatList, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useAuth } from '../contexts/AuthContext';
-import { fetchUserDreams } from '../services/dreamService';
+import { fetchDreamAnalysis, fetchUserDreams } from '../services/dreamService';
 
 interface Dream {
     dreamId: number;
@@ -12,6 +13,7 @@ interface Dream {
     sleepQuality: any;
     additionalInfo: string;
     createdAt: string;
+    dreamTitle?: string; // From analysis
 }
 
 export default function ArchiveScreen() {
@@ -20,8 +22,7 @@ export default function ArchiveScreen() {
     const accessToken = auth?.accessToken;
 
     const[dreams, setDreams] = useState<Dream[]>([]);
-    const[selectedDream, setSelectedDream] = useState<Dream | null>(null);
-    const[modalVisible, setModalVisible] = useState(false);
+    const[dreamTitles, setDreamTitles] = useState<{[key: number]: string}>({});
 
     useEffect(() => {
         if (!accessToken) return;
@@ -30,6 +31,26 @@ export default function ArchiveScreen() {
             try{
                 const data = await fetchUserDreams(accessToken);
                 setDreams(data);
+                
+                // Fetch titles for all dreams
+                data.forEach(async (dream: Dream) => {
+                    try {
+                        const analysis = await fetchDreamAnalysis(accessToken, dream.dreamId);
+                        if (analysis) {
+                            setDreamTitles(prev => ({
+                                ...prev,
+                                [dream.dreamId]: analysis.dreamTitle
+                            }));
+                        } else {
+                            setDreamTitles(prev => ({
+                                ...prev,
+                                [dream.dreamId]: 'Analysis in progress...'
+                            }));
+                        }
+                    } catch (error) {
+                        console.error(`Error fetching analysis for dream ${dream.dreamId}:`, error);
+                    }
+                });
             } catch (error){
                 console.error('Error fetching dreams:', error);
             }
@@ -37,14 +58,11 @@ export default function ArchiveScreen() {
         fetchDreams();
     }, []);
 
-    const openDream = (dream: Dream) => {
-        setSelectedDream(dream);
-        setModalVisible(true);
-    }
-
-    const closeDream = () => {
-        setModalVisible(false);
-        setSelectedDream(null);
+    const openDreamDetail = (dream: Dream) => {
+        router.push({
+            pathname: '/dream-detail',
+            params: { dreamId: dream.dreamId }
+        });
     }
 
     return(
@@ -70,7 +88,7 @@ export default function ArchiveScreen() {
                         renderItem={({item}) => (
                             <TouchableOpacity 
                                 style={styles.dreamCard} 
-                                onPress={() => openDream(item)}
+                                onPress={() => openDreamDetail(item)}
                                 activeOpacity={0.8}
                             >
 
@@ -85,8 +103,8 @@ export default function ArchiveScreen() {
                                     </View>
                                 </View>
 
-                                <Text style={styles.dreamPreview} numberOfLines={3}>
-                                    {item.plot}
+                                <Text style={styles.dreamTitle}>
+                                    {dreamTitles[item.dreamId] || 'Loading title...'}
                                 </Text>
                                 
                                 <View style={styles.cardFooter}>
@@ -98,60 +116,6 @@ export default function ArchiveScreen() {
                         contentContainerStyle={styles.listContainer}
                     />
                 </View>
-
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisible}
-                    onRequestClose={closeDream}
-                >
-
-                    <View style={styles.modalOverlay}>
-                        <View style={styles.modalContent}>
-                            <TouchableOpacity style={styles.closeButton} onPress={closeDream}>
-                                <Text style={styles.closeButtonText}>×</Text>
-                            </TouchableOpacity>
-                            
-                            {selectedDream && (
-                                <ScrollView style={styles.dreamDetailContent}>
-                                    <Text style={styles.modalTitle}>Dream Details</Text>
-                                    
-                                    <View style={styles.detailSection}>
-                                        <Text style={styles.detailLabel}>Story:</Text>
-                                        <Text style={styles.detailText}>{selectedDream.plot}</Text>
-                                    </View>
-                            
-                                    <View style={styles.detailSection}>
-                                        <Text style={styles.detailLabel}>Visitor:</Text>
-                                        <Text style={styles.detailText}>{selectedDream.visitor}</Text>
-                                    </View>
-                                    
-                                    <View style={styles.detailSection}>
-                                        <Text style={styles.detailLabel}>Location:</Text>
-                                        <Text style={styles.detailText}>{selectedDream.location}</Text>
-                                    </View>
-                                    
-                                    <View style={styles.detailSection}>
-                                        <Text style={styles.detailLabel}>Mood:</Text>
-                                        <Text style={styles.detailText}>{selectedDream.mood}</Text>
-                                    </View>
-                            
-                                    <View style={styles.detailSection}>
-                                        <Text style={styles.detailLabel}>Sleep Quality:</Text>
-                                        <Text style={styles.detailText}>{selectedDream.sleepQuality}</Text>
-                                    </View>
-                                    
-                                    {selectedDream.additionalInfo && (
-                                        <View style={styles.detailSection}>
-                                            <Text style={styles.detailLabel}>Additional Notes:</Text>
-                                            <Text style={styles.detailText}>{selectedDream.additionalInfo}</Text>
-                                        </View>
-                                    )}
-                                </ScrollView>
-                            )}
-                        </View>
-                    </View>
-                </Modal>
             </View>
         
         </ImageBackground>
@@ -183,20 +147,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         marginHorizontal: 30, 
         paddingTop: 25,
-    },
-    dreamItem: {
-        backgroundColor: 'rgba(255, 255, 255, 0.15)',
-        borderRadius: 15,
-        padding: 15,
-        marginVertical: 8,
-        marginHorizontal: 20,
-        borderColor: 'rgba(255, 255, 255, 0.3)',
-        borderWidth: 1,
-    },
-    dreamText: {
-        color: 'white',
-        fontSize: 16,
-        lineHeight: 22,
     },
     dreamCard: {
         backgroundColor: 'rgba(255, 255, 255, 0.15)',
@@ -244,6 +194,11 @@ const styles = StyleSheet.create({
         fontSize: 13,
         fontWeight: '600',
     },
+    dreamTitle: {
+        color: 'white',
+        fontSize: 18,
+        marginBottom: 10,
+    },
     dreamPreview: {
         color: 'white',
         fontSize: 16,
@@ -260,65 +215,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '500',
     },
-    readMoreText: {
-        color: 'rgba(255, 255, 255, 0.6)',
-        fontSize: 13,
-        fontWeight: '500',
-        fontStyle: 'italic',
-    },
     listContainer: {
         paddingBottom: 20,
-    },
-    modalOverlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    modalContent: {
-        backgroundColor: 'rgba(108, 155, 172, 0.95)',
-        borderRadius: 20,
-        padding: 20,
-        margin: 20,
-        maxHeight: '80%',
-        width: '90%',
-        borderColor: 'rgba(255, 255, 255, 0.3)',
-        borderWidth: 1,
-    },
-    closeButton: {
-        position: 'absolute',
-        top: 15,
-        right: 20,
-        zIndex: 1,
-        padding: 5,
-    },
-    closeButtonText: {
-        color: 'white',
-        fontSize: 30,
-        fontWeight: 'bold',
-    },
-    dreamDetailContent: {
-        marginTop: 30,
-    },
-    modalTitle: {
-        color: 'white',
-        fontSize: 24,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginBottom: 20,
-    },
-    detailSection: {
-        marginBottom: 15,
-    },
-    detailLabel: {
-        color: '#FFD700',
-        fontSize: 16,
-        fontWeight: 'bold',
-        marginBottom: 5,
-    },
-    detailText: {
-        color: 'white',
-        fontSize: 16,
-        lineHeight: 22,
     },
 });
