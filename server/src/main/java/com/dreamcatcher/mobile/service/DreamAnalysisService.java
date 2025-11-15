@@ -27,13 +27,19 @@ public class DreamAnalysisService {
     @Autowired
     private TheoryRepository theoryRepository;
     
+    @Autowired
+    private EncryptionService encryptionService;
+    
     private final ObjectMapper objectMapper = new ObjectMapper();
     
     @Async
     public CompletableFuture<DreamAnalysis> analyzeDreamAsync(Dream dream, User user) {
         try {
+            // Decrypt dream fields before analysis
+            Dream decryptedDream = decryptDream(dream);
+            
             // Build prompt for LLM
-            String prompt = buildDreamAnalysisPrompt(dream);
+            String prompt = buildDreamAnalysisPrompt(decryptedDream);
             
             // Call Ollama
             String llmResponse = ollamaClient.generateAnalysis(prompt);
@@ -49,10 +55,12 @@ public class DreamAnalysisService {
             DreamAnalysis analysis = new DreamAnalysis();
             analysis.setUser(user);
             analysis.setTheory(defaultTheory);
-            analysis.setDreamTitle(parsedResponse.title);
-            analysis.setDreamTheme(parsedResponse.theme);
-            analysis.setInterpretation(parsedResponse.interpretation);
-            analysis.setImplications(parsedResponse.implications);
+            
+            // Encrypt analysis fields before saving
+            analysis.setDreamTitle(encryptionService.encrypt(parsedResponse.title));
+            analysis.setDreamTheme(encryptionService.encrypt(parsedResponse.theme));
+            analysis.setInterpretation(encryptionService.encrypt(parsedResponse.interpretation));
+            analysis.setImplications(encryptionService.encrypt(parsedResponse.implications));
             
             // Save to database
             DreamAnalysis savedAnalysis = dreamAnalysisRepository.save(analysis);
@@ -64,6 +72,26 @@ public class DreamAnalysisService {
             e.printStackTrace();
             return CompletableFuture.failedFuture(e);
         }
+    }
+    
+    // Decrypt dream fields for LLM processing
+    private Dream decryptDream(Dream dream) {
+        Dream decrypted = new Dream();
+        decrypted.setDreamId(dream.getDreamId());
+        decrypted.setUser(dream.getUser());
+        
+        try {
+            decrypted.setVisitor(encryptionService.decrypt(dream.getVisitor()));
+            decrypted.setPlot(encryptionService.decrypt(dream.getPlot()));
+            decrypted.setLocation(encryptionService.decrypt(dream.getLocation()));
+            decrypted.setMood(encryptionService.decrypt(dream.getMood()));
+            decrypted.setSleepQuality(encryptionService.decrypt(dream.getSleepQuality()));
+            decrypted.setAdditionalInfo(encryptionService.decrypt(dream.getAdditionalInfo()));
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to decrypt dream data for analysis", e);
+        }
+        
+        return decrypted;
     }
     
     // create prompt
