@@ -22,13 +22,15 @@ public class DreamManagementService {
     private DreamEntityMapper dreamEntityMapper;
     private DreamDTOMapper dreamDTOMapper;
     private EncryptionService encryptionService;
+    private DreamAnalysisService dreamAnalysisService;
 
-    public DreamManagementService(DreamRepository dreamRepository, UserRepository userRepository, DreamDTOMapper dreamDTOMapper, DreamEntityMapper dreamEntityMapper, EncryptionService encryptionService){
+    public DreamManagementService(DreamRepository dreamRepository, UserRepository userRepository, DreamDTOMapper dreamDTOMapper, DreamEntityMapper dreamEntityMapper, EncryptionService encryptionService, DreamAnalysisService dreamAnalysisService){
         this.dreamRepository = dreamRepository;
         this.userRepository = userRepository;
         this.dreamEntityMapper = dreamEntityMapper;
         this.dreamDTOMapper = dreamDTOMapper;
         this.encryptionService = encryptionService;
+        this.dreamAnalysisService = dreamAnalysisService;
     }
 
     //Create Dream Method
@@ -54,6 +56,13 @@ public class DreamManagementService {
         //save dream to db
         try {
             Dream savedDream = dreamRepository.save(createdDream);
+
+            // Trigger async analysis (fire and forget - don't wait for result)
+            dreamAnalysisService.analyzeDreamAsync(savedDream, user)
+                .exceptionally(ex -> {
+                    System.err.println("Dream analysis failed for dream ID " + savedDream.getDreamId() + ": " + ex.getMessage());
+                    return null;
+                });
 
             //Make sure to return decrypted values
             savedDream.setVisitor(encryptionService.decrypt(savedDream.getVisitor()));
