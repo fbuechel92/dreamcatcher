@@ -50,6 +50,16 @@ public class DreamAnalysis {
         this.implications = implications;
     }
 
+    //for default theory == 1
+    public DreamAnalysis(Integer dreamAnalysisId, User user, String dreamTitle, String dreamTheme, String interpretation, String implications) {
+        this.dreamAnalysisId = dreamAnalysisId;
+        this.user = user;
+        this.dreamTitle = dreamTitle;
+        this.dreamTheme = dreamTheme;
+        this.interpretation = interpretation;
+        this.implications = implications;
+    }
+
     // Getters
     public Integer getDreamAnalysisId() {
         return dreamAnalysisId;
