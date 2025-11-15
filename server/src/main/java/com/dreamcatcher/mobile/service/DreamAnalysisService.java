@@ -77,8 +77,6 @@ public class DreamAnalysisService {
     // Decrypt dream fields for LLM processing
     private Dream decryptDream(Dream dream) {
         Dream decrypted = new Dream();
-        decrypted.setDreamId(dream.getDreamId());
-        decrypted.setUser(dream.getUser());
         
         try {
             decrypted.setVisitor(encryptionService.decrypt(dream.getVisitor()));
