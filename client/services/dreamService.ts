@@ -15,15 +15,33 @@ export interface DreamAnalysis {
 
 //api call from ArchiveScreen
 export const fetchUserDreams = async (accessToken: string) => {
-    const response = await fetch(`${BASE_URL}/dreams`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization' : `Bearer ${accessToken}`,
+    try {
+        console.log('Fetching dreams from:', `${BASE_URL}/dreams`);
+        console.log('Access token:', accessToken ? 'Present' : 'Missing');
+        console.log('Access token value:', accessToken); // Log the actual token
+        
+        const response = await fetch(`${BASE_URL}/dreams`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${accessToken}`,
+            }
+        });
+        
+        console.log('Response status:', response.status);
+        console.log('Response ok:', response.ok);
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.log('Error response:', errorText);
+            throw new Error(`Failed to fetch dreams: ${response.status} - ${errorText}`);
         }
-    });
-    if (!response.ok) throw new Error('Failed to fetch dreams');
-    return await response.json();
+        
+        return await response.json();
+    } catch (error) {
+        console.error('Fetch dreams error:', error);
+        throw error;
+    }
 }
 
 //api call from DreamScreen
