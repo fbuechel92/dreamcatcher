@@ -78,8 +78,14 @@ public class DreamAnalysisService {
             DreamAnalysis savedAnalysis = dreamAnalysisRepository.save(analysis);
             
             // Link analysis back to dream
-            dream.setDreamAnalysis(savedAnalysis);
-            dreamRepository.save(dream);
+            Dream existingDream = dreamRepository.findById(dream.getDreamId())
+                .orElseThrow(() -> new RuntimeException("Dream not found"));
+
+            // Update only the DreamAnalysis field
+            existingDream.setDreamAnalysis(savedAnalysis);
+
+            // Save the updated Dream entity
+            dreamRepository.save(existingDream);
 
             return CompletableFuture.completedFuture(savedAnalysis);
             
