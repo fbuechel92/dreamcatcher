@@ -32,22 +32,25 @@ public class UserManagementService {
 
     //Method to save auth info
     @Transactional
-    public UserAuthDTO createAuth(String auth0Id, String email) {
-        UserAuthDTO userAuthDTO = new UserAuthDTO(auth0Id, email);
-        
-        //Check if mail already exists in db
-        if (userRepository.existsByEmail(userAuthDTO.email())) {
-            throw new IllegalArgumentException("The createUser method in the UserService class failed because the email exists already.");
-        }
+    public UserAuthDTO checkAndCreateUser(String auth0Id, String email) {
+        // Check if the user already exists
+        return userRepository.findByAuth0Id(auth0Id)
+            .map(user -> {
+                // User exists, return the existing user
+                return userDTOMapper.mapToUserAuthDTO(user);
+            })
+            .orElseGet(() -> {
+                // User does not exist, create a new user
+                UserAuthDTO userAuthDTO = new UserAuthDTO(auth0Id, email);
+                User createdAuth = userEntityMapper.mapToUserAuthEntity(userAuthDTO);
 
-        User createdAuth = userEntityMapper.mapToUserAuthEntity(userAuthDTO);
-
-        try {
-            User savedAuth = userRepository.save(createdAuth);
-            return userDTOMapper.mapToUserAuthDTO(savedAuth);
-        } catch (DataAccessException e) {
-            throw new RuntimeException("Database error occurred while saving the user", e);
-        }
+                try {
+                    User savedAuth = userRepository.save(createdAuth);
+                    return userDTOMapper.mapToUserAuthDTO(savedAuth);
+                } catch (DataAccessException e) {
+                    throw new RuntimeException("Database error occurred while saving the user", e);
+                }
+            });
     }
 
     //Method get auth info
@@ -103,10 +106,5 @@ public class UserManagementService {
         } catch (DataAccessException e) {
             throw new RuntimeException("Database error occurred while deleting the user", e);
         }
-    }
-
-    //Method to check if user exists
-    public boolean userExists(String auth0Id){
-        return userRepository.findByAuth0Id(auth0Id).isPresent();
     }
 }
