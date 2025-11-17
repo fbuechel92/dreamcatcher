@@ -32,8 +32,8 @@ public class OllamaClient {
 
     public OllamaClient() {
         // Set timeouts
-        Timeout connectTimeout = Timeout.ofSeconds(20); // 20 seconds
-        Timeout responseTimeout = Timeout.ofSeconds(60); // 60 seconds
+        Timeout connectTimeout = Timeout.ofSeconds(240);
+        Timeout responseTimeout = Timeout.ofSeconds(240);
 
         // Configure RequestConfig with timeouts
         RequestConfig config = RequestConfig.custom()
