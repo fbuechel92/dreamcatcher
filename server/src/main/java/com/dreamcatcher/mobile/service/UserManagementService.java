@@ -12,6 +12,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.Optional;
 
 @Service
 public class UserManagementService {
@@ -33,24 +34,18 @@ public class UserManagementService {
     //Method to save auth info
     @Transactional
     public UserAuthDTO checkAndCreateUser(String auth0Id, String email) {
-        // Check if the user already exists
-        return userRepository.findByAuth0Id(auth0Id)
-            .map(user -> {
-                // User exists, return the existing user
-                return userDTOMapper.mapToUserAuthDTO(user);
-            })
-            .orElseGet(() -> {
-                // User does not exist, create a new user
-                UserAuthDTO userAuthDTO = new UserAuthDTO(auth0Id, email);
-                User createdAuth = userEntityMapper.mapToUserAuthEntity(userAuthDTO);
+        // Acquire a lock on the user record
+        Optional<User> existingUser = userRepository.findByAuth0IdWithLock(auth0Id);
+        if (existingUser.isPresent()) {
+            return userDTOMapper.mapToUserAuthDTO(existingUser.get());
+        }
 
-                try {
-                    User savedAuth = userRepository.save(createdAuth);
-                    return userDTOMapper.mapToUserAuthDTO(savedAuth);
-                } catch (DataAccessException e) {
-                    throw new RuntimeException("Database error occurred while saving the user", e);
-                }
-            });
+        // If the user does not exist, create it
+        UserAuthDTO userAuthDTO = new UserAuthDTO(auth0Id, email);
+        User createdAuth = userEntityMapper.mapToUserAuthEntity(userAuthDTO);
+
+        User savedAuth = userRepository.save(createdAuth);
+        return userDTOMapper.mapToUserAuthDTO(savedAuth);
     }
 
     //Method get auth info
