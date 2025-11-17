@@ -4,7 +4,7 @@ import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 import { auth0Config } from '../services/auth0';
 import { useAuth } from '../contexts/AuthContext';
-import { fetchUserInfo, checkUserExists, createUser } from '../services/userService';
+import { fetchUserInfo, createOrCheckUser } from '../services/userService';
 
 // Complete the auth session
 WebBrowser.maybeCompleteAuthSession();
@@ -49,40 +49,37 @@ export default function AuthButton({ onLoginSuccess, onLogout }: AuthButtonProps
 );
 
 
-  React.useEffect(() => {
-  const handleAuth = async () => {
-    if (result && result.type === 'success') {
-      const accessToken = result.params.access_token;
+React.useEffect(() => {
+const handleAuth = async () => {
+  if (result && result.type === 'success') {
+    const accessToken = result.params.access_token;
 
-      console.log('Access Token:', accessToken);
-      console.log('Token length:', accessToken?.length);
+    console.log('Access Token:', accessToken);
+    console.log('Token length:', accessToken?.length);
 
-      setAccessToken(accessToken);
+    setAccessToken(accessToken);
 
-      try {
-        // Get user info from Auth0
-        const userInfo = await fetchUserInfo(accessToken);
-        setUser(userInfo);
+    try {
+      // Get user info from Auth0
+      const userInfo = await fetchUserInfo(accessToken);
+      setUser(userInfo);
 
-        // Check if user exists in your backend
-        const userExists = await checkUserExists(accessToken);
-        if (!userExists) {
-          // User doesn't exist - create them
-          await createUser(accessToken, userInfo.email);
-        }
+      // Directly call the backend to check and create the user
+      await createOrCheckUser(accessToken, userInfo.email);
 
-        onLoginSuccess?.(accessToken);
-      } catch (error) {
-        console.error('Auth error:', error);
-        Alert.alert('Error', 'Authentication failed');
-      }
-    } else if (result && result.type === 'error') {
-      Alert.alert('Error', 'Login failed');
+      onLoginSuccess?.(accessToken);
+    } catch (error) {
+      console.error('Auth error:', error);
+      Alert.alert('Error', 'Authentication failed');
     }
-  };
+  } else if (result && result.type === 'error') {
+    Alert.alert('Error', 'Login failed');
+  }
+};
 
   handleAuth();
 }, [result, onLoginSuccess]);
+   
 
   const login = () => {
     promptAsync();

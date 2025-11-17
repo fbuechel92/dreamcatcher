@@ -38,13 +38,18 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(foundProfile);
     }
 
-    //to save auth info
+    //to checka nd save auth info
     @PostMapping("/auth")
-    public ResponseEntity<UserAuthDTO> createAuth(@AuthenticationPrincipal Jwt jwt, @RequestBody Map<String, String> userInfo){
+    public ResponseEntity<UserAuthDTO> checkAndCreateUser(@AuthenticationPrincipal Jwt jwt, @RequestBody Map<String, String> userInfo) {
         String auth0Id = jwt.getSubject();
         String email = userInfo.get("email");
-        UserAuthDTO createdAuth = userManagementService.createAuth(auth0Id, email);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdAuth);
+
+        // Delegate the check-and-create logic to the service
+        UserAuthDTO userAuthDTO = userManagementService.checkAndCreateUser(auth0Id, email);
+
+        // Return 201 Created for new users, or 200 OK for existing users
+        HttpStatus status = userAuthDTO != null ? HttpStatus.CREATED : HttpStatus.OK;
+        return ResponseEntity.status(status).body(userAuthDTO);
     }
 
     //to get auth info
@@ -61,13 +66,5 @@ public class UserController {
         String auth0Id = jwt.getSubject();
         userManagementService.deleteUser(auth0Id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-
-    //check if user exists in db
-    @GetMapping("/user/exists")
-    public ResponseEntity<Boolean> userExists(@AuthenticationPrincipal Jwt jwt){
-        String auth0Id = jwt.getSubject();
-        boolean userExists = userManagementService.userExists(auth0Id);
-        return ResponseEntity.status(HttpStatus.OK).body(userExists);
     }
 }
