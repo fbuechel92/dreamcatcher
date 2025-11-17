@@ -11,17 +11,7 @@ export const fetchUserInfo = async (accessToken: string) => {
 };
 
 //api call from AuthButton
-export const checkUserExists = async (accessToken: string) => {
-    const response = await fetch(`${BASE_URL}/user/exists`, {
-        headers: { 'Authorization': `Bearer ${accessToken}` }
-    });
-    console.log('checkUserExists status:', response.status, 'ok:', response.ok);
-    if (!response.ok) throw new Error('Failed to check user existence');
-    return await response.json();
-};
-
-//api call from AuthButton
-export const createUser = async (accessToken: string, email: string) => {
+export const createOrCheckUser = async (accessToken: string, email: string) => {
     const response = await fetch(`${BASE_URL}/auth`, {
         method: 'POST',
         headers: {
@@ -30,6 +20,6 @@ export const createUser = async (accessToken: string, email: string) => {
         },
         body: JSON.stringify({ email })
     });
-    if (!response.ok) throw new Error('Failed to create user');
+    if (!response.ok) throw new Error('Failed to check or create user');
     return await response.json();
 };
